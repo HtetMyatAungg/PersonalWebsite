@@ -1,0 +1,88 @@
+*{
+    color: white;
+    background-color: #0d0d14;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.intro{
+    position: sticky;
+    top: 0;
+    
+}
+
+.intro-text{
+    color: #867bff;
+    display: inline-block;
+    background-color: #857bf82d;
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    padding: 0%;
+    border: 2px solid #867bff;
+    float: right;
+}
+.title{
+    color: #867bff;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    
+}
+.experience-list{
+    display: flex;
+    flex-direction: column;
+    li::marker {
+        color: red;
+    }
+}
+
+.position{
+    font-weight: bold;
+}
+
+.company{
+    color: #867bff;
+    font-size: 12px;
+}
+
+.year{
+    color: gray;
+    font-size: 10px;
+}
+
+.description{
+    color: lightgray;
+    font-size: 10px;
+}
+
+.About, .Projects, .Experience, .Skills{
+    color:  gray;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1000;
+    border-bottom: 1px solid #bbb0b0;}
+
+.Skills{
+    padding-right: 100px;
+}
+
+.logo{
+    font-weight: bold;
+    padding-right: 100px;
+}
