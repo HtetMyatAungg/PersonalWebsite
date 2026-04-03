@@ -6,10 +6,10 @@
     padding-left: 20px;
 }
 
-.intro{
-    position: sticky;
-    top: 0;
-    
+div.intro{
+    padding-top: 60px;
+    display:inline-block;
+    margin: 0;
 }
 
 .intro-text{
@@ -18,6 +18,8 @@
     background-color: #857bf82d;
     border-radius: 20px;
     padding: 3px 10px;
+    margin-left: 20px;
+    margin-bottom: 0;
 }
 
 img {
@@ -56,12 +58,12 @@ body{
 
 .year{
     color: gray;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .description{
     color: lightgray;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .About, .Projects, .Experience, .Skills{
