@@ -74,12 +74,30 @@ body{
     flex-direction: column;
     
 }
+
+.project-card{
+    display: flex;
+    gap: 20px;
+}
+
+.project-1{
+    border: 1px solid lightgreen;
+    border-radius: 20px;
+    
+}
+
+.project-2{
+    border: 1px solid #867bff;
+    border-radius: 20px;
+}
+
 .experience-list{
     display: flex;
     flex-direction: column;
     li::marker {
         color: red;
     }
+    border-bottom: 1px solid #bbb0b0;
 }
 
 .position{

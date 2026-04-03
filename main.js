@@ -31,3 +31,11 @@ experience.addEventListener("click", function() {
     projects.style.color = "gray"
     skills.style.color = "gray"
     experience.style.color = "white"})
+
+const buttons = document.getElementsByClassName("ProjectButton")[0]
+buttons.addEventListener("click", function() {
+    window.open("https://github.com/htetmyataungg", "_blank", "noopener,noreferrer");})
+
+const cvButton = document.getElementsByClassName("CVButton")[0]
+cvButton.addEventListener("click", function() {
+    window.open("https://drive.google.com/file/d/1vX0FUemX7igfGN29Lf-QfLNFq5MMTZrH/view?usp=drive_link", "_blank", "noopener,noreferrer");})
