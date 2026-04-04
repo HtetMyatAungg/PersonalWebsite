@@ -149,6 +149,11 @@ body{
     font-size: 0.8em;
 }
 
+.project-title{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 .project-2{
     border: 1px solid #867bff;
     border-radius: 2em;
