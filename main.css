@@ -101,6 +101,22 @@ body{
     
 }
 
+.stack-item{
+    display: inline-block;
+    background-color: #47464998;
+    color: white;
+    font-size: 0.7em;
+    padding: 0.5em 1em;
+    border-radius: 0.6em;
+    margin-right: 0.5em;
+    margin-top: 0.5em;
+}
+
+.project-description{
+    color: rgb(116, 91, 91);
+    font-size: 0.8em;
+}
+
 .project-2{
     border: 1px solid #867bff;
     border-radius: 2em;
