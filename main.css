@@ -166,3 +166,25 @@ body{
     font-weight: bold;
     padding-right: 1em;
 }
+
+.footer1{
+    border: 1px solid #bbb0b0;
+    border-radius: 2em;
+    text-align: center;
+    padding: 1em;
+    display: flex;
+    flex-direction: row;
+}
+
+.contact-me{
+    background-color: #0b0458;
+    border: 1px solid #2516c7;
+    color: white;
+    padding: 1em 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    border-radius: 1em;
+    cursor: pointer;
+}
