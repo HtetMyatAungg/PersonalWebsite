@@ -11,6 +11,11 @@ img, video, iframe {
   height: auto;
 }
 
+.title {
+  font-weight: bold;
+  text-decoration-line: line-through 1px #0b0458;
+}
+
 .text {
   font-size: 1rem;
 }
@@ -79,6 +84,19 @@ img {
     border: 2px solid #867bff;
     float: right;
 }
+
+.separator{
+    display: flex;
+    border-bottom: #0b0458 solid 1px;
+    margin: 2em 0;
+}
+
+.value{
+    color: #867bff;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 .title{
     color: #867bff;
 }
@@ -132,13 +150,16 @@ body{
     border-radius: 2em;
 }
 
+.experience{
+    padding-top: 2em;
+}
+
 .experience-list{
     display: flex;
     flex-direction: column;
     li::marker {
         color: red;
     }
-    border-bottom: 1px solid #bbb0b0;
 }
 
 .position{
@@ -172,7 +193,7 @@ body{
     top: 0;
     color: white;
     z-index: 1000;
-    border-bottom: 1px solid #bbb0b0;}
+    border-bottom: 1px solid #131e7c;}
 
 .Skills{
     padding-right: 1em;
