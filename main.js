@@ -39,3 +39,7 @@ buttons.addEventListener("click", function() {
 const cvButton = document.getElementsByClassName("CVButton")[0]
 cvButton.addEventListener("click", function() {
     window.open("https://drive.google.com/file/d/1vX0FUemX7igfGN29Lf-QfLNFq5MMTZrH/view?usp=drive_link", "_blank", "noopener,noreferrer");})
+
+const contactButton = document.getElementsByClassName("contact-me")[0]
+contactButton.addEventListener("click", function() {
+    window.open("https://www.linkedin.com/in/htet-myat-aung-4a370932a/", "_blank", "noopener,noreferrer");})
