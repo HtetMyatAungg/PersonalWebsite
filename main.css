@@ -122,18 +122,9 @@ body{
 }
 
 .GitHubButton{
-    background-color: #0b0458;
-    border: 1px solid #2516c7;
-    color: white;
-    padding: 0.5em 1em;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 0.7em;
-    border-radius: 0.7em;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
+    background-color: #302986;
+    border-radius: 0.5em;
+    padding-bottom: 0.2em;
 }
 
 .project-1{

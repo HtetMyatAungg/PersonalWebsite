@@ -47,3 +47,13 @@ cvButton.addEventListener("click", function() {
 const contactButton = document.getElementsByClassName("contact-me")[0]
 contactButton.addEventListener("click", function() {
     window.open("https://www.linkedin.com/in/htet-myat-aung-4a370932a/", "_blank", "noopener,noreferrer");})
+
+const githubButtons = document.getElementsByClassName("GitHubButton")
+githubButtons[0].addEventListener("click", function() {
+    window.open("https://github.com/HtetMyatAungg/MyanLearn", "_blank", "noopener,noreferrer");})
+githubButtons[1].addEventListener("click", function() {
+    window.open("https://github.com/HtetMyatAungg/cf_ai_Htet", "_blank", "noopener,noreferrer");})
+githubButtons[2].addEventListener("click", function() {
+    window.open("https://github.com/HtetMyatAungg/HFC", "_blank", "noopener,noreferrer");})
+githubButtons[3].addEventListener("click", function() {
+    window.open("https://github.com/HtetMyatAungg/Minesweeper-Efficiency", "_blank", "noopener,noreferrer");})
