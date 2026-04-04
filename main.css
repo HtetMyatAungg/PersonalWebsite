@@ -12,8 +12,16 @@ img, video, iframe {
 }
 
 .title {
-  font-weight: bold;
-  text-decoration-line: line-through 1px #0b0458;
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+.title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background:rgb(72, 36, 156)
 }
 
 .text {
@@ -97,7 +105,7 @@ img {
     font-weight: bold;
 }
 
-.title{
+.ex-title{
     color: #867bff;
 }
 
@@ -111,6 +119,21 @@ body{
     display: flex;
     gap: 2em;
     padding-top: 2em;
+}
+
+.GitHubButton{
+    background-color: #0b0458;
+    border: 1px solid #2516c7;
+    color: white;
+    padding: 0.5em 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.7em;
+    border-radius: 0.7em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 .project-1{
@@ -205,12 +228,12 @@ body{
 }
 
 .footer1{
-    border: 1px solid #bbb0b0;
     border-radius: 2em;
     text-align: center;
     padding: 1em;
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 .contact-me{

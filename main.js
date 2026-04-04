@@ -9,28 +9,32 @@ about.addEventListener("click", function() {
     projects.style.color = "gray"
     experience.style.color = "gray"
     skills.style.color = "gray"
-    about.style.color = "white"})
+    about.style.color = "white"
+    window.scrollTo({top: 48, behavior: "smooth"})})
 
 const projects = document.getElementsByClassName("Projects")[0]
 projects.addEventListener("click", function() {
     about.style.color = "gray"
     experience.style.color = "gray"
     skills.style.color = "gray"
-    projects.style.color = "white"})
+    projects.style.color = "white"
+    window.scrollTo({top: 300, behavior: "smooth"})})
 
 const skills = document.getElementsByClassName("Skills")[0]
 skills.addEventListener("click", function() {
     about.style.color = "gray"
     projects.style.color = "gray"
     experience.style.color = "gray"
-    skills.style.color = "white"})
+    skills.style.color = "white"
+    window.scrollTo({top: 1000, behavior: "smooth"});})
 
 const experience = document.getElementsByClassName("Experience")[0]
 experience.addEventListener("click", function() {
     about.style.color = "gray"
     projects.style.color = "gray"
     skills.style.color = "gray"
-    experience.style.color = "white"})
+    experience.style.color = "white"
+    window.scrollTo({top: 700, behavior: "smooth"});})
 
 const buttons = document.getElementsByClassName("ProjectButton")[0]
 buttons.addEventListener("click", function() {
