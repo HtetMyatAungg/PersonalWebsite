@@ -168,7 +168,7 @@ body{
     display: flex;
     flex-direction: column;
     li::marker {
-        color: red;
+        color: rgba(99, 102, 241, 0.6);
     }
 }
 
@@ -208,8 +208,6 @@ body{
 .Skills{
     padding-right: 1em;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=DM+Mono:wght@300;400&display=swap');
 
 .skills-grid {
   display: grid;
