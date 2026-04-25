@@ -115,38 +115,197 @@ body{
     
 }
 
-.project-card, .project-card2{
-    display: flex;
-    gap: 2em;
-    padding-top: 2em;
-}
+/* ── Legacy (kept for safety, unused by new cards) ── */
+.project-card, .project-card2 { display: none; }
+.project-grid { display: none; }
+.GitHubButton { display: none; }
+.project-description { color: rgba(255,255,255,0.65); font-size: 0.8em; line-height: 1.5; }
 
-.GitHubButton{
-    background-color: #302986;
-    border-radius: 0.5em;
-    padding-bottom: 0.2em;
-}
-
-
-.stack-item{
+/* ── Stack pills (shared) ── */
+.stack-item {
     display: inline-block;
     background-color: #47464998;
-    color: white;
+    color: rgba(255,255,255,0.85);
     font-size: 0.7em;
-    padding: 0.5em 1em;
-    border-radius: 0.6em;
-    margin-right: 0.5em;
-    margin-top: 0.5em;
+    padding: 0.35em 0.8em;
+    border-radius: 0.5em;
+    margin-right: 0.4em;
+    margin-top: 0.4em;
 }
 
-.project-grid{
+/* ── Filter buttons ── */
+.project-filters {
+    display: flex;
+    gap: 0.6em;
+    margin: 1.2em 0 1.8em;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid rgba(134, 123, 255, 0.35);
+    color: rgba(255,255,255,0.55);
+    padding: 0.45em 1.1em;
+    border-radius: 2em;
+    font-size: 0.82em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: #867bff;
+    color: #867bff;
+}
+
+.filter-btn.active {
+    background: #867bff;
+    border-color: #867bff;
+    color: white;
+}
+
+/* ── Project grid ── */
+.project-grid-new {
     display: grid;
-    max-width: 800px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25em;
+    padding-bottom: 2em;
 }
 
-.project-description{
-    color: rgb(116, 91, 91);
+/* ── Project card ── */
+.pcard {
+    background: #13121f;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 1em;
+    padding: 1.4em 1.5em 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.pcard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(134, 123, 255, 0.4);
+    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.12);
+}
+
+.pcard.featured {
+    border-color: rgba(134, 123, 255, 0.3);
+    background: linear-gradient(135deg, #13121f 0%, #1a1630 100%);
+}
+
+/* ── Card header ── */
+.pcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.pcard-badge {
+    font-size: 0.68em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.3em 0.75em;
+    border-radius: 2em;
+}
+
+.pcard-badge.hackathon {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.pcard-badge.live {
+    background: rgba(52, 211, 153, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.pcard-badge.ml-badge {
+    background: rgba(99, 102, 241, 0.15);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.pcard-badge.wip-badge {
+    background: rgba(251, 146, 60, 0.12);
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+.pcard-status {
+    font-size: 0.72em;
+    color: rgba(255,255,255,0.3);
+}
+
+/* ── Card content ── */
+.pcard-title {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.pcard-metric {
+    font-size: 0.75em;
+    color: #867bff;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+.pcard-desc {
     font-size: 0.8em;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+}
+
+.pcard-stack {
+    margin-top: 0.4em;
+}
+
+/* ── Card actions ── */
+.pcard-actions {
+    display: flex;
+    gap: 0.6em;
+    margin-top: 0.6em;
+    align-items: center;
+}
+
+.pcard-btn {
+    display: inline-block;
+    padding: 0.45em 1.1em;
+    border-radius: 0.5em;
+    font-size: 0.8em;
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.pcard-btn:hover { opacity: 0.8; }
+
+.pcard-btn.github {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.pcard-wip-note {
+    font-size: 0.75em;
+    color: rgba(251, 146, 60, 0.7);
+    font-style: italic;
+}
+
+/* ── Hidden by filter ── */
+.pcard.hidden {
+    display: none;
 }
 
 .project-title{
@@ -191,8 +350,9 @@ body{
     font-size: 0.8em;
 }
 
-.About, .Projects, .Experience, .Skills{
-    color:  gray;
+.About, .Projects, .Experience, .Skills, .Contact {
+    color: gray;
+    text-decoration: none;
 }
 .header{
     display: flex;
@@ -266,24 +426,114 @@ body{
     padding-right: 1em;
 }
 
-.footer1{
-    border-radius: 2em;
+.contact-section {
+    padding: 3em 1em 4em;
     text-align: center;
-    padding: 1em;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    border-top: 1px solid rgba(99, 102, 241, 0.2);
+    margin-top: 2em;
 }
 
-.contact-me{
-    background-color: #0b0458;
-    border: 1px solid #2516c7;
+.contact-tagline {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+    margin: 0.5em 0 2em;
+}
+
+.contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+
+.contact-link {
+    display: inline-block;
+    padding: 0.75em 1.75em;
+    border-radius: 0.75em;
+    font-size: 0.95em;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.contact-link:hover {
+    opacity: 0.8;
+}
+
+.email-link {
+    background-color: #867bff;
     color: white;
-    padding: 1em 1em;
+}
+
+.linkedin-link {
+    background-color: #0a66c2;
+    color: white;
+}
+
+.github-link {
+    background-color: rgb(53, 49, 49);
+    color: white;
+}
+
+.footer-note {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.75em;
+}
+
+.ContactButton {
+    background-color: transparent;
+    border: 1px solid #867bff;
+    color: #867bff;
+    padding: 1em 1.5em;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 1em;
     border-radius: 1em;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.ContactButton:hover {
+    background-color: #867bff;
+    color: white;
+}
+
+/* ── Mobile responsiveness ── */
+@media (max-width: 600px) {
+    .header {
+        gap: 0.25em;
+        flex-wrap: wrap;
+        padding: 0.5em 0;
+    }
+
+    .About, .Projects, .Experience, .Skills, .Contact {
+        font-size: 0.75em;
+    }
+
+    h1.name {
+        font-size: 1.8em;
+    }
+
+    img {
+        width: 7em;
+        height: 7em;
+    }
+
+    .project-grid-new {
+        grid-template-columns: 1fr;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .buttons {
+        flex-wrap: wrap;
+    }
+
+    .separator {
+        flex-wrap: wrap;
+        gap: 1em;
+    }
 }

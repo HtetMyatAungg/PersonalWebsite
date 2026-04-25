@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="main.css">
-    <title>Htet Myat Aung Website</title>
+    <title>Htet Myat Aung — AI Engineer & Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
     <script type="module" src="main.js"></script>
@@ -14,6 +17,7 @@
         <a class = "Projects" href = "#projects">Projects</a>
         <a class = "Experience" href = "#experience">Experience</a>
         <a class = "Skills" href = "#skills">Skills</a>
+        <a class = "Contact" href = "#contact">Contact</a>
         <button id="hire-me">LinkedIn</button>
     </div>
     <div class = "intro">
@@ -21,12 +25,13 @@
         <h1 class = "name">Htet Myat Aung</h1>
         <p class = "ex-title">AI Engineer · Builder · RHUL Computer Science</p>
     </div>
-    <div class = "about">
+    <div class = "about" id="about">
         <img class = "profile-pic" src="profile.jpg" alt="Profile Picture">
         <p>I build and ship real products — from an AI Burmese literacy tool reaching 18 countries to a Cloudflare Workers code reviewer. First-Year Student with First Class Average, DICE Lab researcher, and on a mission to bring AI tech infrastructure to Myanmar.</p>
     <div class = "buttons">
         <button class = "ProjectButton">View Projects</button>
         <button class = "CVButton">Download CV</button>
+        <button class = "ContactButton">Get in Touch</button>
     </div>
     </div>
     <div class = "separator">
@@ -39,8 +44,8 @@
             <p class = "label">Countries reached</p>
         </div>
         <div class = "s3">
-            <p class = "value">1st</p>
-            <p class = "label">Class averages</p>
+            <p class = "value">First</p>
+            <p class = "label">Class Average</p>
         </div>
         <div class = "s4">
             <p class = "value">DICE</p>
@@ -48,59 +53,156 @@
         </div>
     </div>
 
-    <div class = "projects">
-        <p class = "title">Projects</p>
-        <div class = "project-grid">
-            <div class = "project-card">
-                <div class = "project-1">
-                <p class = "project-title">MyanLearn</p>
-                <p class = "project-description">AI-powered Burmese literacy tool — built to bridge the digital divide in Myanmar. Reached users in 18 countries within days of launch.</p>
-                <div class = "project-stack">
-                    <p class = "stack-item">React</p>
-                    <p class = "stack-item">Cloudflare Workers</p>
-                    <p class = "stack-item">Prompt Engineering</p>
-                    <button class = "GitHubButton">GitHub</button>
+    <div class="projects" id="projects">
+        <p class="title">Projects</p>
+
+        <div class="project-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="web">Web &amp; Edge</button>
+            <button class="filter-btn" data-filter="ml">AI / ML</button>
+            <button class="filter-btn" data-filter="wip">In Progress</button>
+        </div>
+
+        <div class="project-grid-new">
+
+            <div class="pcard featured" data-category="web">
+                <div class="pcard-header">
+                    <span class="pcard-badge hackathon">Hedera Hackathon · LSE</span>
+                    <span class="pcard-status">Apr 2026</span>
                 </div>
-                
+                <h3 class="pcard-title">MyanPay</h3>
+                <p class="pcard-metric">Settles HBAR in &lt;5 seconds · $0.001/tx</p>
+                <p class="pcard-desc">Voice-driven cross-border payment agent targeting Myanmar's $3.5B remittance corridor. Natural language input parsed by Claude AI, executed on-chain with NFT receipts via HTS and immutable audit trails via HCS.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">TypeScript</span>
+                    <span class="stack-item">Node.js</span>
+                    <span class="stack-item">Hedera</span>
+                    <span class="stack-item">Claude AI</span>
+                    <span class="stack-item">Groq Whisper</span>
                 </div>
-                <div class = "project-2">
-                <p class = "project-title">Cloudflare Workers Code Reviewer</p>
-                <p class = "project-description">Automated code review tool powered by Llama 3.1, deployed on Cloudflare Workers. Zero cold start, edge-native architecture.</p>
-                <div class = "project-stack">
-                    <p class = "stack-item">React</p>
-                    <p class = "stack-item">Cloudflare Workers</p>
-                    <p class = "stack-item">AI</p>
-                    <button class = "GitHubButton">GitHub</button>
-                </div>
-                </div>
-            </div>
-            <div class = "project-card2">
-                <div class = "project-3">
-                    <p class = "project-title">Face classifier</p>
-                    <p class = "project-description">MobileNetV2 human vs. non-human face classifier with real-time OpenCV webcam inference. 99%+ validation accuracy.</p>
-                    <div class = "project-stack">
-                        <p class = "stack-item">Python</p>
-                        <p class = "stack-item">OpenCV</p>
-                        <p class = "stack-item">TensorFlow</p>
-                        <p class = "stack-item">Keras</p>
-                        <p class = "stack-item">Scikit-learn</p>
-                        <button class = "GitHubButton">GitHub</button>
-                    </div>
-                </div>
-                <div class = "project-4">
-                    <p class = "project-title">Minesweeper AI</p>
-                    <p class = "project-description">Constraint-based Minesweeper agent benchmarking three solver architectures. Built purely from scratch for RHUL coursework.</p>
-                    <div class = "project-stack">
-                        <p class = "stack-item">Python</p>
-                        <p class = "stack-item">AI</p>
-                        <p class = "stack-item">Search Algorithms</p>
-                        <button class = "GitHubButton">GitHub</button>
-                    </div>
+                <div class="pcard-actions">
+                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/myanpay" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </div>
+
+            <div class="pcard featured" data-category="web">
+                <div class="pcard-header">
+                    <span class="pcard-badge live">Live</span>
+                    <span class="pcard-status">Mar 2026</span>
+                </div>
+                <h3 class="pcard-title">MyanLearn</h3>
+                <p class="pcard-metric">1,750+ sessions · 18 countries · sub-50ms globally</p>
+                <p class="pcard-desc">Full-stack LLM app with multilingual NLP pipeline for Burmese literacy. Cloudflare edge delivers sub-50ms responses worldwide; Workers AI powers a personalised content recommendation engine.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">TypeScript</span>
+                    <span class="stack-item">React</span>
+                    <span class="stack-item">Cloudflare Workers</span>
+                    <span class="stack-item">Workers AI</span>
+                    <span class="stack-item">Docker</span>
+                </div>
+                <div class="pcard-actions">
+                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/MyanLearn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+
+            <div class="pcard" data-category="ml">
+                <div class="pcard-header">
+                    <span class="pcard-badge ml-badge">AI / ML</span>
+                    <span class="pcard-status">Mar – Apr 2026</span>
+                </div>
+                <h3 class="pcard-title">NASA NEO Classifier</h3>
+                <p class="pcard-metric">Hazardous recall 1.00 · AUC-ROC 0.958</p>
+                <p class="pcard-desc">Hazardous asteroid classifier on 6,136 NASA records. Handled 5% class imbalance with stratified splits and class weighting. End-to-end ETL pipeline with MLflow experiment tracking for reproducible iteration.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">Python</span>
+                    <span class="stack-item">Keras</span>
+                    <span class="stack-item">scikit-learn</span>
+                    <span class="stack-item">NumPy</span>
+                    <span class="stack-item">MLflow</span>
+                </div>
+                <div class="pcard-actions">
+                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/NASA_NEO_Classifier" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+
+            <div class="pcard" data-category="ml wip">
+                <div class="pcard-header">
+                    <span class="pcard-badge wip-badge">In Progress</span>
+                    <span class="pcard-status">Apr 2026 – Present</span>
+                </div>
+                <h3 class="pcard-title">LLM from Scratch</h3>
+                <p class="pcard-metric">Target: GPT-2-scale architecture · Aug 2026</p>
+                <p class="pcard-desc">Transformer-based language model built from first principles using only NumPy — tokenization, multi-head attention, positional encoding, and backpropagation by hand. Cross-referencing PyTorch for validation.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">Python</span>
+                    <span class="stack-item">NumPy</span>
+                    <span class="stack-item">Transformers</span>
+                </div>
+                <div class="pcard-actions">
+                    <span class="pcard-wip-note">Repo coming soon</span>
+                </div>
+            </div>
+
+            <div class="pcard" data-category="ml">
+                <div class="pcard-header">
+                    <span class="pcard-badge ml-badge">AI / ML</span>
+                    <span class="pcard-status">Jan 2026</span>
+                </div>
+                <h3 class="pcard-title">Face Classifier</h3>
+                <p class="pcard-metric">99%+ validation accuracy · 30 FPS · &lt;10ms/frame</p>
+                <p class="pcard-desc">Real-time human vs. non-human face classifier for webcam-based access control. Fine-tuned MobileNetV2 with custom augmentation; streamlined OpenCV preprocessing stack to hit 30 FPS at under 10ms per frame.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">Python</span>
+                    <span class="stack-item">TensorFlow</span>
+                    <span class="stack-item">Keras</span>
+                    <span class="stack-item">OpenCV</span>
+                    <span class="stack-item">scikit-learn</span>
+                </div>
+                <div class="pcard-actions">
+                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/HFC" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+
+            <div class="pcard" data-category="web">
+                <div class="pcard-header">
+                    <span class="pcard-badge live">Live</span>
+                    <span class="pcard-status">Feb 2026</span>
+                </div>
+                <h3 class="pcard-title">CF Code Reviewer</h3>
+                <p class="pcard-metric">Zero cold-start · Edge-native · Structured feedback</p>
+                <p class="pcard-desc">Serverless REST API for AI code review on Cloudflare Workers. Prompt-tuned Llama 3.1 via Workers AI to reduce hallucination rate in structured output covering bugs, style, and security.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">TypeScript</span>
+                    <span class="stack-item">Cloudflare Workers</span>
+                    <span class="stack-item">Llama 3.1</span>
+                    <span class="stack-item">Workers AI</span>
+                </div>
+                <div class="pcard-actions">
+                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/cf_ai_Htet" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+
+            <div class="pcard" data-category="ml">
+                <div class="pcard-header">
+                    <span class="pcard-badge ml-badge">AI / ML</span>
+                    <span class="pcard-status">2025 – 2026</span>
+                </div>
+                <h3 class="pcard-title">Minesweeper AI</h3>
+                <p class="pcard-metric">3 solver architectures benchmarked</p>
+                <p class="pcard-desc">Constraint-based Minesweeper agent comparing CSP, probabilistic inference, and heuristic search strategies. Built entirely from scratch for RHUL coursework.</p>
+                <div class="pcard-stack">
+                    <span class="stack-item">Python</span>
+                    <span class="stack-item">CSP</span>
+                    <span class="stack-item">Search Algorithms</span>
+                </div>
+                <div class="pcard-actions">
+                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/Minesweeper-Efficiency" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+
         </div>
     </div>
-    <div class = "experience">
+    <div class = "experience" id="experience">
         <p class = "title">Experience</p>
         <ul class = "experience-list">
             <li> <p class = "position">Volunteer Research Assistant</p>
@@ -120,7 +222,7 @@
             </li>
         </ul>
     </div>
-    <div class = "skills">
+    <div class = "skills" id="skills">
         <p class = "title">Skills</p>
         <div class = "skills-grid">
             <div class = "skill-card">
@@ -143,10 +245,16 @@
             </div>
         </div>
     </div>
-    <div class = "footer1">
-        <p class = "footer-text">Available for Summer 2026 internships</p>
-        <p class = "footer-text2">Based in Egham, Surrey · Open to remote & on-site London</p>
-        <button class="contact-me">Get in Touch</button>
+    <div class="contact-section" id="contact">
+        <p class="title">Contact</p>
+        <p class="contact-tagline">Available for Summer 2026 internships · Remote or London</p>
+        <div class="contact-links">
+            <a class="contact-link email-link" href="mailto:henry.htetmyataung@gmail.com
+">henry.htetmyataung@gmail.com</a>
+            <a class="contact-link linkedin-link" href="https://www.linkedin.com/in/htet-myat-aung-4a370932a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="contact-link github-link" href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-note">Based in Egham, Surrey</p>
     </div>
 </body>
 </html>
