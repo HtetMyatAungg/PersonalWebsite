@@ -790,4 +790,161 @@ body{
     .teaser-grid {
         grid-template-columns: 1fr;
     }
+
+    .exp-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+    }
+}
+
+/* ── Experience page ── */
+.exp-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    padding: 1em 0 3em;
+}
+
+.exp-card {
+    background: #13121f;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 1em;
+    padding: 1.8em 2em;
+    transition: border-color 0.2s;
+}
+
+.exp-card:hover {
+    border-color: rgba(134,123,255,0.3);
+}
+
+.exp-card.exp-featured {
+    border-color: rgba(134,123,255,0.25);
+    background: linear-gradient(135deg, #13121f 0%, #1a1630 100%);
+}
+
+.exp-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1em;
+    margin-bottom: 1.2em;
+}
+
+.exp-card-meta .position {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.exp-card-meta .company {
+    color: #867bff;
+    font-size: 0.85em;
+    margin: 0.2em 0 0;
+    padding: 0;
+}
+
+.exp-card-meta .year {
+    color: rgba(255,255,255,0.35);
+    font-size: 0.78em;
+    margin: 0.2em 0 0;
+    padding: 0;
+}
+
+.exp-tag {
+    font-size: 0.68em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3em 0.9em;
+    border-radius: 2em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.exp-tag.research {
+    background: rgba(99,102,241,0.15);
+    color: #a5b4fc;
+    border: 1px solid rgba(99,102,241,0.3);
+}
+
+.exp-tag.leadership {
+    background: rgba(52,211,153,0.1);
+    color: #34d399;
+    border: 1px solid rgba(52,211,153,0.25);
+}
+
+.exp-tag.tech {
+    background: rgba(251,191,36,0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(251,191,36,0.25);
+}
+
+.exp-bullets {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.85em;
+    line-height: 1.7;
+    padding-left: 1.4em;
+    margin: 0 0 1em;
+}
+
+.exp-bullets li {
+    margin-bottom: 0.4em;
+}
+
+.exp-bullets li::marker {
+    color: rgba(99,102,241,0.6);
+}
+
+/* ── Screenshot block ── */
+.exp-screenshot-block {
+    margin-top: 1.5em;
+}
+
+.exp-screenshot-label {
+    font-size: 0.75em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin: 0 0 0.6em;
+    padding: 0;
+}
+
+.exp-screenshot-img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.6em;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: block;
+    float: none;
+    padding: 0;
+}
+
+.exp-img-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 3em 2em;
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed rgba(134,123,255,0.25);
+    border-radius: 0.6em;
+    color: rgba(255,255,255,0.3);
+    cursor: default;
+    min-height: 160px;
+}
+
+.exp-img-placeholder-icon {
+    font-size: 2.5em;
+    color: rgba(134,123,255,0.35);
+}
+
+.exp-img-hint {
+    font-size: 0.7em;
+    font-family: monospace;
+    color: rgba(255,255,255,0.2);
 }
