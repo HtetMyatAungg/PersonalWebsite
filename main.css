@@ -297,6 +297,12 @@ body{
     border: 1px solid rgba(255,255,255,0.12);
 }
 
+.pcard-btn.demo {
+    background: #867bff;
+    color: white;
+    border: 1px solid #867bff;
+}
+
 .pcard-wip-note {
     font-size: 0.75em;
     color: rgba(251, 146, 60, 0.7);
@@ -592,7 +598,6 @@ body{
     line-height: 1.8;
 }
 
-/* ── Header (override for multi-page, ensure img not float) ── */
 .header{
     display: flex;
     flex-direction: row;
@@ -650,7 +655,6 @@ body{
   cursor: default;
 }
 
-/* Dot before each skill */
 .skill-item::before {
   content: '';
   width: 5px; height: 5px;
@@ -738,7 +742,6 @@ body{
     color: white;
 }
 
-/* ── Mobile responsiveness ── */
 @media (max-width: 600px) {
     .header {
         gap: 0.25em;
