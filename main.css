@@ -494,7 +494,6 @@ body{
     color: rgba(134,123,255,0.4);
 }
 
-/* ── Contact page two-column grid ── */
 .contact-page-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -801,7 +800,7 @@ body{
     }
 }
 
-/* ── Experience page ── */
+
 .exp-page {
     display: flex;
     flex-direction: column;
@@ -952,7 +951,7 @@ body{
     color: rgba(255,255,255,0.2);
 }
 
-/* ── About page ── */
+
 .about-page-grid {
     display: grid;
     grid-template-columns: 260px 1fr;
