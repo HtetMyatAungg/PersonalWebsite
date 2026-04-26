@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Contact - Htet Myat Aung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <script type="module" src="contact.js"></script>
+    <div class="header">
+        <a href="index.html"><img src="profile.jpg" alt="HMA Logo" class="nav-logo"></a>
+        <a class="nav-link" href="index.html#about">About</a>
+        <a class="nav-link" href="projects.html">Projects</a>
+        <a class="nav-link" href="index.html#experience">Experience</a>
+        <a class="nav-link" href="index.html#skills">Skills</a>
+        <a class="nav-link active-page" href="contact.html">Contact</a>
+        <button id="hire-me">LinkedIn</button>
+    </div>
+
+    <div class="page-hero">
+        <p class="intro-text">Available for Summer 2026 internships</p>
+        <h1 class="name">Get in Touch</h1>
+        <p class="ex-title">Remote or on-site - London - Egham, Surrey</p>
+    </div>
+
+    <div class="contact-page-grid">
+
+        <div class="contact-form-section">
+            <p class="title">Send a Message</p>
+            <form id="contact-form" class="contact-form" novalidate>
+
+                <div class="form-group">
+                    <label for="fname">Name</label>
+                    <input type="text" id="fname" name="name" placeholder="Your name" autocomplete="name">
+                    <span class="form-error" id="fname-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="femail">Email</label>
+                    <input type="email" id="femail" name="email" placeholder="your@email.com" autocomplete="email">
+                    <span class="form-error" id="femail-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fsubject">Subject</label>
+                    <select id="fsubject" name="subject">
+                        <option value="">Select a subject</option>
+                        <option value="internship">Internship Opportunity</option>
+                        <option value="collaboration">Project Collaboration</option>
+                        <option value="research">Research Inquiry</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <span class="form-error" id="fsubject-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fmessage">Message</label>
+                    <textarea id="fmessage" name="message" rows="5" placeholder="Tell me what you are working on..."></textarea>
+                    <span class="form-error" id="fmessage-error"></span>
+                </div>
+
+                <button type="submit" class="form-submit">Send Message</button>
+                <div class="form-success" id="form-success">
+                    Thanks! I will get back to you within 24 hours.
+                </div>
+            </form>
+        </div>
+
+        <div class="contact-info-section">
+            <p class="title">Direct Links</p>
+            <div class="contact-links contact-links-col">
+                <a class="contact-link email-link" href="mailto:henry.htetmyataung@gmail.com">henry.htetmyataung@gmail.com</a>
+                <a class="contact-link linkedin-link" href="https://www.linkedin.com/in/htet-myat-aung-4a370932a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a class="contact-link github-link" href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+            <div class="contact-availability">
+                <p class="contact-tagline contact-tagline-left">Availability</p>
+                <p class="availability-detail">
+                    Summer 2026 internship - AI/ML Engineering<br>
+                    Based in Egham, Surrey<br>
+                    Open to remote &amp; on-site London<br>
+                    Typical response time: &lt;24 hours
+                </p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
