@@ -951,3 +951,119 @@ body{
     font-family: monospace;
     color: rgba(255,255,255,0.2);
 }
+
+/* ── About page ── */
+.about-page-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 3em;
+    padding: 2em 0 4em;
+    align-items: start;
+}
+
+.about-photo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+}
+
+.about-photo {
+    width: 100%;
+    max-width: 220px;
+    height: 220px;
+    border-radius: 1em;
+    object-fit: cover;
+    border: 2px solid #867bff;
+    float: none;
+    padding: 0;
+}
+
+.about-quick-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75em;
+    width: 100%;
+}
+
+.quick-fact {
+    background: #13121f;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 0.6em;
+    padding: 0.75em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.quick-fact-value {
+    color: #867bff;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.quick-fact-label {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.68em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.about-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    width: 100%;
+}
+
+.about-links .contact-link {
+    text-align: center;
+}
+
+.about-para {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9em;
+    line-height: 1.75;
+    margin: 0 0 1em;
+    padding: 0;
+}
+
+.about-edu-card {
+    background: #13121f;
+    border: 1px solid rgba(134,123,255,0.2);
+    border-radius: 0.75em;
+    padding: 1.2em 1.4em;
+    margin: 0.75em 0 0;
+}
+
+.about-edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1em;
+    margin-bottom: 0.75em;
+}
+
+.about-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75em;
+    margin-top: 1.5em;
+}
+
+@media (max-width: 700px) {
+    .about-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-photo-col {
+        align-items: flex-start;
+    }
+
+    .about-photo {
+        max-width: 140px;
+        height: 140px;
+        border-radius: 50%;
+    }
+}
