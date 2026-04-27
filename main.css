@@ -392,13 +392,12 @@ body{
     cursor: pointer;
 }
 
-/* ── Page hero (projects / contact pages) ── */
 .page-hero {
     padding-top: 2em;
     padding-bottom: 1em;
 }
 
-/* ── Projects teaser on index ── */
+
 .projects-teaser { padding-top: 2em; }
 .teaser-grid {
     display: grid;
