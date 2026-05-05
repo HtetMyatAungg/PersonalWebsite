@@ -614,10 +614,6 @@ body{
   animation: marquee 22s linear infinite;
 }
 
-.skills-marquee-wrapper:hover .skills-marquee-track {
-  animation-play-state: paused;
-}
-
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
