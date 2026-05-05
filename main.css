@@ -133,7 +133,6 @@ body{
     margin-top: 0.4em;
 }
 
-/* ── Filter buttons ── */
 .project-filters {
     display: flex;
     gap: 0.6em;
@@ -163,7 +162,6 @@ body{
     color: white;
 }
 
-/* ── Project grid ── */
 .project-grid-new {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -171,7 +169,6 @@ body{
     padding-bottom: 2em;
 }
 
-/* ── Project card ── */
 .pcard {
     background: #13121f;
     border: 1px solid rgba(255,255,255,0.07);
@@ -194,7 +191,6 @@ body{
     background: linear-gradient(135deg, #13121f 0%, #1a1630 100%);
 }
 
-/* ── Card header ── */
 .pcard-header {
     display: flex;
     justify-content: space-between;
@@ -240,7 +236,6 @@ body{
     color: rgba(255,255,255,0.3);
 }
 
-/* ── Card content ── */
 .pcard-title {
     font-size: 1.1em;
     font-weight: 700;
@@ -270,7 +265,6 @@ body{
     margin-top: 0.4em;
 }
 
-/* ── Card actions ── */
 .pcard-actions {
     display: flex;
     gap: 0.6em;
@@ -309,7 +303,6 @@ body{
     font-style: italic;
 }
 
-/* ── Hidden by filter ── */
 .pcard.hidden {
     display: none;
 }
@@ -356,13 +349,11 @@ body{
     font-size: 0.8em;
 }
 
-/* Legacy single-class nav selectors (kept for safety) */
 .About, .Projects, .Experience, .Skills, .Contact {
     color: gray;
     text-decoration: none;
 }
 
-/* ── Shared nav link style (multi-page) ── */
 .nav-link {
     color: gray;
     text-decoration: none;
@@ -372,7 +363,6 @@ body{
 .nav-link:hover { color: white; }
 .nav-link.active-page { color: white; }
 
-/* ── Logo image in header ── */
 .nav-logo {
     width: 2em;
     height: 2em;
@@ -385,7 +375,6 @@ body{
     flex-shrink: 0;
 }
 
-/* ── Anchor <a> styled as button ── */
 .btn-link {
     display: inline-block;
     text-decoration: none;
@@ -417,7 +406,6 @@ body{
     transform: translateY(-2px);
 }
 
-/* ── MyanPay video feature section ── */
 .video-feature {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -501,7 +489,6 @@ body{
     align-items: start;
 }
 
-/* ── Contact form ── */
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -582,7 +569,6 @@ body{
     border-radius: 0.5em;
 }
 
-/* ── Contact info column ── */
 .contact-links-col {
     flex-direction: column !important;
     align-items: flex-start !important;
@@ -899,7 +885,6 @@ body{
     color: rgba(99,102,241,0.6);
 }
 
-/* ── Screenshot block ── */
 .exp-screenshot-block {
     margin-top: 1.5em;
 }

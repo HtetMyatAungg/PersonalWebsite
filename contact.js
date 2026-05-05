@@ -8,7 +8,6 @@ hire.addEventListener("click", function() {
     window.open("https://www.linkedin.com/in/htet-myat-aung-4a370932a/", "_blank", "noopener,noreferrer")
 })
 
-// ── Form validation ──
 const form = document.getElementById("contact-form")
 const successMsg = document.getElementById("form-success")
 
@@ -61,7 +60,6 @@ form.addEventListener("submit", function(e) {
     }
 })
 
-// Clear error on input
 document.querySelectorAll("input, textarea, select").forEach(el => {
     el.addEventListener("input", function() {
         const errEl = document.getElementById(el.id + "-error")

@@ -15,7 +15,6 @@ if (cvButton) {
     })
 }
 
-// Smooth scroll for anchor links on index.html
 document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener("click", function(e) {
         const target = document.querySelector(this.getAttribute("href"))

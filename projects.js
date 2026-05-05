@@ -8,7 +8,6 @@ hire.addEventListener("click", function() {
     window.open("https://www.linkedin.com/in/htet-myat-aung-4a370932a/", "_blank", "noopener,noreferrer")
 })
 
-// ── Project filter tabs ──
 document.querySelectorAll(".filter-btn").forEach(btn => {
     btn.addEventListener("click", function() {
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"))
@@ -26,7 +25,6 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     })
 })
 
-// ── Video placeholder: hide if video loads successfully ──
 const video = document.getElementById("myanpay-video")
 const placeholder = document.getElementById("video-placeholder")
 
@@ -39,7 +37,6 @@ if (video && placeholder) {
         video.style.display = "none"
         placeholder.style.display = "flex"
     })
-    // Start hidden; show placeholder by default until video proves it loaded
     video.style.display = "none"
     placeholder.style.display = "flex"
 }
