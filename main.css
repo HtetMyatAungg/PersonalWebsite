@@ -14,7 +14,6 @@ img, video, iframe {
 .title {
   display: flex;
   align-items: center;
-  gap: 8px; 
 }
 
 .title-banner {
@@ -996,7 +995,7 @@ body{
 }
 
 .about-para {
-    color: rgba(255,255,255,0.7);
+    color: rgba(201, 177, 233, 0.774);
     font-size: 0.9em;
     line-height: 1.75;
     margin: 0 0 1em;
