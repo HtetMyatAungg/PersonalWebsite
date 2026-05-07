@@ -8,6 +8,8 @@ hire.addEventListener("click", function() {
     window.open("https://www.linkedin.com/in/htet-myat-aung-4a370932a/", "_blank", "noopener,noreferrer")
 })
 
+document.querySelector('video').playbackRate = 1.5;
+
 document.querySelectorAll(".filter-btn").forEach(btn => {
     btn.addEventListener("click", function() {
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"))
