@@ -1,6 +1,12 @@
 import { initScrollAnimations } from './animations.js'
 initScrollAnimations()
 
+const EMAILJS_PUBLIC_KEY  = "nsIpqmNQ9xP_cO3Tr"
+const EMAILJS_SERVICE_ID  = "service_jybbfn6"
+const EMAILJS_TEMPLATE_ID = "template_xp24e3c"
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY })
+
 const hire = document.getElementById("hire-me")
 hire.style.backgroundColor = "#534AB7"
 hire.style.borderRadius = "5px"
@@ -10,6 +16,7 @@ hire.addEventListener("click", function() {
 
 const form = document.getElementById("contact-form")
 const successMsg = document.getElementById("form-success")
+const submitBtn = form.querySelector(".form-submit")
 
 function showError(fieldId, message) {
     const el = document.getElementById(fieldId + "-error")
@@ -22,6 +29,7 @@ function clearErrors() {
     document.querySelectorAll(".form-error").forEach(el => el.textContent = "")
     document.querySelectorAll(".input-error").forEach(el => el.classList.remove("input-error"))
     successMsg.style.display = "none"
+    successMsg.style.color = ""
 }
 
 form.addEventListener("submit", function(e) {
@@ -54,10 +62,33 @@ form.addEventListener("submit", function(e) {
         valid = false
     }
 
-    if (valid) {
-        successMsg.style.display = "block"
-        form.reset()
+    if (!valid) return
+
+    submitBtn.disabled = true
+    submitBtn.textContent = "Sending..."
+
+    const templateParams = {
+        from_name:  name,
+        from_email: email,
+        subject:    subject,
+        message:    message,
     }
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+        .then(() => {
+            successMsg.textContent = "Thanks! I will get back to you within 24 hours."
+            successMsg.style.display = "block"
+            form.reset()
+        })
+        .catch(() => {
+            successMsg.textContent = "Something went wrong. Please email me directly."
+            successMsg.style.color = "#e05252"
+            successMsg.style.display = "block"
+        })
+        .finally(() => {
+            submitBtn.disabled = false
+            submitBtn.textContent = "Send Message"
+        })
 })
 
 document.querySelectorAll("input, textarea, select").forEach(el => {
