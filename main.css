@@ -600,8 +600,17 @@ body{
     z-index: 1000;
     border-bottom: 1px solid #131e7c;}
 
-.Skills{
-    padding-right: 1em;
+
+
+.skills {
+  overflow: hidden;
+  width: 100%;
+}
+
+.skills-content {
+  display: block;
+  overflow: hidden;
+  width: 100%;
 }
 
 .skills-animation-track {
@@ -610,6 +619,12 @@ body{
   gap: 20px;
   white-space: nowrap;
   animation: marquee 22s linear infinite;
+}
+
+.skill-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
 }
 
 @keyframes marquee {
