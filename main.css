@@ -16,6 +16,12 @@ img, video, iframe {
   align-items: center;
 }
 
+.candidate-num {
+    font-size: 0.72em;
+    color: rgb(255, 255, 255);
+    font-family: 'DM Mono', monospace;
+}
+
 .title-banner {
     width: 100%;
     max-width: 600px;
@@ -112,7 +118,8 @@ img {
 body{
     display: flex;
     flex-direction: column;
-    
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(134, 123, 255, 0.1) 0%, transparent 65%);
+    background-attachment: fixed;
 }
 
 
