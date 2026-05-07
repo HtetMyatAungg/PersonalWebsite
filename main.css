@@ -605,10 +605,6 @@ body{
   animation: marquee 22s linear infinite;
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
 
 .skill-tag {
   font-family: 'DM Mono', monospace;
