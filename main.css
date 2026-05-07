@@ -597,15 +597,7 @@ body{
     padding-right: 1em;
 }
 
-.skills-marquee-wrapper {
-  overflow: hidden;
-  width: 100%;
-  padding: 12px 0 32px;
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.skills-marquee-track {
+.skills-animation-track {
   display: inline-flex;
   align-items: center;
   gap: 20px;
