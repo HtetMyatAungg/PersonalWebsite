@@ -2,8 +2,12 @@
     color: white;
     background-color: #0d0d14;
     font-family: Arial, Helvetica, sans-serif;
-    padding-right: 1em;
+    box-sizing: border-box;
+}
+
+body {
     padding-left: 1em;
+    padding-right: 1em;
 }
 
 img, video, iframe {
@@ -731,7 +735,7 @@ body{
     color: white;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .header {
         gap: 0.25em;
         flex-wrap: wrap;
@@ -977,7 +981,6 @@ body{
 }
 
 .quick-fact {
-    background: #13121f;
     border: 1px solid rgba(255,255,255,0.07);
     border-radius: 0.6em;
     padding: 0.75em;
@@ -1020,11 +1023,14 @@ body{
 }
 
 .about-edu-card {
-    background: #13121f;
     border: 1px solid rgba(134,123,255,0.2);
     border-radius: 0.75em;
     padding: 1.2em 1.4em;
     margin: 0.75em 0 0;
+}
+
+.about-edu-card:hover {
+    border-color: rgba(162, 155, 240, 0.397);
 }
 
 .about-edu-header {
