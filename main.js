@@ -11,7 +11,7 @@ hire.addEventListener("click", function() {
 const cvButton = document.getElementsByClassName("CVButton")[0]
 if (cvButton) {
     cvButton.addEventListener("click", function() {
-        window.open("https://drive.google.com/file/d/1vX0FUemX7igfGN29Lf-QfLNFq5MMTZrH/view?usp=drive_link", "_blank", "noopener,noreferrer")
+        window.open("https://drive.google.com/file/d/1tNIIzy2EEJLrQmY5vVeA6g-D5DPx3gwR/view?usp=drive_link", "_blank", "noopener,noreferrer")
     })
 }
 
