@@ -1,3 +1,4 @@
+// 2968149
 export function initScrollAnimations() {
     const targets = document.querySelectorAll('.animate-on-scroll')
     if (!targets.length) return
