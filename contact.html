@@ -1,103 +1,186 @@
-﻿<!-- 2968149 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <title>Contact - Htet Myat Aung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact — Htet Myat Aung</title>
+    <meta name="description" content="Get in touch with Htet Myat Aung about research collaborations, Summer 2027 internships, or anything on this site.">
+    <meta name="author" content="Htet Myat Aung">
+    <link rel="canonical" href="https://htetmyataung.uk/contact.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Contact — Htet Myat Aung">
+    <meta property="og:description" content="Research collaborations and Summer 2027 internships.">
+    <meta property="og:url" content="https://htetmyataung.uk/contact.html">
+    <meta property="og:image" content="https://htetmyataung.uk/assets/media/portrait.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="assets/media/icon.png">
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.remove("no-js");
+            try {
+                var stored = localStorage.getItem("hma-theme");
+                root.dataset.theme = stored
+                    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { root.dataset.theme = "dark"; }
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300..600;1,400&display=swap">
+
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
 </head>
-<body>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="module" src="contact.js"></script>
-    <div class="header">
-        <span class="candidate-num">2968149</span>
-        <a href="index.html"><img src="profile.jpg" alt="HMA Logo" class="nav-logo"></a>
-        <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link" href="projects.html">Projects</a>
-        <a class="nav-link" href="experience.html">Experience</a>
-        <a class="nav-link active-page" href="contact.html">Contact</a>
-        <div class="nav-dropdown">
-            <button class="nav-dropdown-toggle">More &#9662;</button>
-            <div class="dropdown-menu">
-                <a href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://drive.google.com/file/d/1vX0FUemX7igfGN29Lf-QfLNFq5MMTZrH/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Download CV</a>
-                <a href="mailto:henry.htetmyataung@gmail.com">Email Me</a>
+
+<body data-page="contact">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-site-header></header>
+
+    <main id="main">
+
+        <section class="hero hero--compact">
+            <div class="container hero__inner">
+                <div class="hero__content">
+                    <p class="pill"><span class="pill__dot"></span>Usually replies within 24 hours</p>
+                    <h1 class="hero__name">Get in touch</h1>
+                    <p class="lede">
+                        Research collaborations, Summer 2027 internships, or a question about
+                        something on this site — all equally welcome.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="container section--tight">
+            <div class="contact-layout">
+
+                <!-- ===== Form ================================================ -->
+                <section class="stack">
+                    <h2>Send a message</h2>
+
+                    <form class="form" id="contact-form" novalidate>
+                        <div class="field">
+                            <label class="field__label" for="field-name">Name</label>
+                            <input class="field__control" id="field-name" name="name" type="text"
+                                   placeholder="Your name" autocomplete="name">
+                            <span class="field__error" data-error-for="name" role="alert"></span>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" for="field-email">Email</label>
+                            <input class="field__control" id="field-email" name="email" type="email"
+                                   placeholder="you@example.com" autocomplete="email">
+                            <span class="field__error" data-error-for="email" role="alert"></span>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" for="field-subject">Subject</label>
+                            <select class="field__control" id="field-subject" name="subject">
+                                <option value="">Choose a subject</option>
+                                <option value="Research collaboration">Research collaboration</option>
+                                <option value="Internship or research opportunity">Internship or research opportunity</option>
+                                <option value="Question about a post">Question about a post</option>
+                                <option value="Something else">Something else</option>
+                            </select>
+                            <span class="field__error" data-error-for="subject" role="alert"></span>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" for="field-message">Message</label>
+                            <textarea class="field__control" id="field-message" name="message" rows="6"
+                                      placeholder="What are you working on?"></textarea>
+                            <span class="field__error" data-error-for="message" role="alert"></span>
+                        </div>
+
+                        <button class="btn btn--primary" type="submit">Send message</button>
+
+                        <p class="form-status" id="form-status" role="status" hidden></p>
+                    </form>
+                </section>
+
+                <!-- ===== Direct details ====================================== -->
+                <aside class="contact-aside">
+                    <section class="stack">
+                        <h2>Direct</h2>
+                        <div class="detail-list">
+                            <div class="detail">
+                                <span class="detail__label">Email</span>
+                                <span class="detail__value">
+                                    <a class="link" data-link="email">henry.htetmyataung@gmail.com</a>
+                                    <button class="btn btn--ghost btn--sm copy-btn" type="button"
+                                            data-copy="henry.htetmyataung@gmail.com">
+                                        <span class="copy-btn__idle">Copy</span>
+                                        <span class="copy-btn__done">Copied</span>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <div class="detail">
+                                <span class="detail__label">Profiles</span>
+                                <span class="detail__value">
+                                    <a class="link" data-link="github">GitHub</a>
+                                    <a class="link" data-link="linkedin">LinkedIn</a>
+                                    <a class="link" data-link="cv">CV</a>
+                                </span>
+                            </div>
+
+                            <div class="detail">
+                                <span class="detail__label">Based in</span>
+                                <span class="detail__value">Egham, Surrey — 40 minutes from central London</span>
+                            </div>
+
+                            <div class="detail">
+                                <span class="detail__label">Response time</span>
+                                <span class="detail__value">Usually within 24 hours</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="stack">
+                        <h2>Currently</h2>
+                        <ul class="findings">
+                            <li class="finding">
+                                <span class="finding__label">Looking for</span>
+                                <span class="finding__text">
+                                    Summer 2027 research internships in interpretability, neurosymbolic
+                                    reasoning, or evaluation.
+                                </span>
+                            </li>
+                            <li class="finding">
+                                <span class="finding__label">Open to</span>
+                                <span class="finding__text">
+                                    Research collaborations, reading groups, and reviewing evaluation
+                                    designs.
+                                </span>
+                            </li>
+                            <li class="finding">
+                                <span class="finding__label">Not looking for</span>
+                                <span class="finding__text">
+                                    Unpaid full-time work, or anything that would conflict with the
+                                    independence of my university research.
+                                </span>
+                            </li>
+                        </ul>
+                    </section>
+                </aside>
+
             </div>
         </div>
-        <button id="hire-me">LinkedIn</button>
-    </div>
 
-    <div class="page-hero">
-        <p class="intro-text">Available for Summer 2027 internships</p>
-        <h1 class="name">Get in Touch</h1>
-        <p class="ex-title">Remote or on-site - London - Egham, Surrey</p>
-    </div>
+    </main>
 
-    <div class="contact-page-grid">
+    <footer class="site-footer" data-site-footer></footer>
 
-        <div class="contact-form-section animate-on-scroll">
-            <p class="title">Send a Message</p>
-            <form id="contact-form" class="contact-form" novalidate>
-
-                <div class="form-group">
-                    <label for="fname">Name</label>
-                    <input type="text" id="fname" name="name" placeholder="Your name" autocomplete="name">
-                    <span class="form-error" id="fname-error"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="femail">Email</label>
-                    <input type="email" id="femail" name="email" placeholder="your@gmail.com" autocomplete="gmail">
-                    <span class="form-error" id="femail-error"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="fsubject">Subject</label>
-                    <select id="fsubject" name="subject">
-                        <option value="">Select a subject</option>
-                        <option value="internship">Internship Opportunity</option>
-                        <option value="collaboration">Project Collaboration</option>
-                        <option value="research">Research Inquiry</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <span class="form-error" id="fsubject-error"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="fmessage">Message</label>
-                    <textarea id="fmessage" name="message" rows="5" placeholder="Tell me what you are working on..."></textarea>
-                    <span class="form-error" id="fmessage-error"></span>
-                </div>
-
-                <button type="submit" class="form-submit">Send Message</button>
-                <div class="form-success" id="form-success">
-                    Thanks! I will get back to you within 24 hours.
-                </div>
-            </form>
-        </div>
-
-        <div class="contact-info-section animate-on-scroll" data-delay="0.15s">
-            <p class="title">Direct Links</p>
-            <div class="contact-links contact-links-col">
-                <a class="contact-link email-link" href="mailto:henry.htetmyataung@gmail.com">henry.htetmyataung@gmail.com</a>
-                <a class="contact-link linkedin-link" href="https://www.linkedin.com/in/henry-htet-myat-aung" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a class="contact-link github-link" href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </div>
-            <div class="contact-availability">
-                <p class="contact-tagline contact-tagline-left">Availability</p>
-                <p class="availability-detail">
-                    Summer 2027 internship - AI/ML Engineering<br>
-                    Based in Egham, Surrey<br>
-                    Open to remote &amp; on-site London<br>
-                    Typical response time: &lt;24 hours
-                </p>
-            </div>
-        </div>
-
-    </div>
+    <!-- EmailJS lets a static page send mail without a backend. Loaded before
+         the module so window.emailjs exists by the time the form submits. -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="module" src="assets/js/pages/contact.js"></script>
 </body>
 </html>

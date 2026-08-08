@@ -1,149 +1,355 @@
-﻿<!-- 2968149 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <title>Projects - Htet Myat Aung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Projects — Htet Myat Aung</title>
+    <meta name="description" content="Research tooling and applied AI projects: autoformalization harnesses, MyanLearn on Cloudflare Workers AI, MyanPay, a NASA near-Earth-object hazard classifier, and interpretability groundwork.">
+    <meta name="author" content="Htet Myat Aung">
+    <link rel="canonical" href="https://htetmyataung.uk/projects.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Projects — Htet Myat Aung">
+    <meta property="og:description" content="Research tooling and applied AI projects.">
+    <meta property="og:url" content="https://htetmyataung.uk/projects.html">
+    <meta property="og:image" content="https://htetmyataung.uk/assets/media/portrait.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="assets/media/icon.png">
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.remove("no-js");
+            try {
+                var stored = localStorage.getItem("hma-theme");
+                root.dataset.theme = stored
+                    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { root.dataset.theme = "dark"; }
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300..600;1,400&display=swap">
+
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
 </head>
-<body>
-    <script type="module" src="projects.js"></script>
-    <div class="header">
-        <span class="candidate-num">2968149</span>
-        <a href="index.html"><img src="profile.jpg" alt="HMA Logo" class="nav-logo"></a>
-        <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link active-page" href="projects.html">Projects</a>
-        <a class="nav-link" href="experience.html">Experience</a>
-        <a class="nav-link" href="contact.html">Contact</a>
-        <div class="nav-dropdown">
-            <button class="nav-dropdown-toggle">More &#9662;</button>
-            <div class="dropdown-menu">
-                <a href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://drive.google.com/file/d/1vX0FUemX7igfGN29Lf-QfLNFq5MMTZrH/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Download CV</a>
-                <a href="mailto:henry.htetmyataung@gmail.com">Email Me</a>
-            </div>
-        </div>
-        <button id="hire-me">LinkedIn</button>
-    </div>
 
-    <div class="page-hero">
-        <p class="intro-text">7 projects shipped</p>
-        <h1 class="name">Projects</h1>
-        <p class="ex-title">Production AI . Edge Computing . ML Research</p>
-    </div>
+<body data-page="projects">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-site-header></header>
 
-    <div class="video-feature animate-on-scroll">
-        <div class="video-feature-text">
-            <div class="video-feature-header">
-                <span class="pcard-badge hackathon">Hedera Hackathon - LSE</span>
-                <span class="pcard-status">Apr 2026</span>
-            </div>
-            <h2 class="video-feature-title">MyanPay</h2>
-            <p class="video-feature-metric">Settles HBAR in &lt;5 seconds - $0.001/tx - Myanmar&apos;s $3.5B remittance corridor</p>
-            <p class="video-feature-desc">Voice-driven cross-border payment agent. Natural language input parsed by Claude AI, settled on-chain via Hedera, with NFT receipts via HTS and immutable audit trails via HCS.</p>
-            <div class="pcard-stack">
-                <span class="stack-item">TypeScript</span>
-                <span class="stack-item">Node.js</span>
-                <span class="stack-item">Hedera HTS/HCS</span>
-                <span class="stack-item">Claude AI</span>
-                <span class="stack-item">Groq Whisper</span>
-            </div>
-            <div class="pcard-actions" style="margin-top:1em;">
-                <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/myanpay" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-            </div>
-        </div>
-        <div class="video-feature-player">
-            <video id="myanpay-video" controls poster="myanpay-thumb.jpg" width="100%">
-                <source src="myanpay-demo.mp4" type="video/mp4">
-            </video>
-            <div class="video-placeholder" id="video-placeholder">
-                <span class="video-placeholder-icon">Video Coming Soon</span>
-                <p>Demo video coming soon</p>
-            </div>
-        </div>
-    </div>
+    <main id="main">
 
-    <div class="projects" id="projects">
-        <p class="title">All Projects</p>
-        <div class="project-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="web">Web &amp; Edge</button>
-            <button class="filter-btn" data-filter="ml">AI / ML</button>
-            <button class="filter-btn" data-filter="wip">In Progress</button>
-        </div>
-        <div class="project-grid-new">
-            <div class="pcard featured animate-on-scroll" data-category="web" data-delay="0s">
-                <div class="pcard-header"><span class="pcard-badge hackathon">Hedera Hackathon - LSE</span><span class="pcard-status">Apr 2026</span></div>
-                <h3 class="pcard-title">MyanPay</h3>
-                <p class="pcard-metric">Settles HBAR in &lt;5 seconds - $0.001/tx</p>
-                <p class="pcard-desc">Voice-driven cross-border payment agent targeting Myanmar&apos;s $3.5B remittance corridor. Natural language input parsed by Claude AI, executed on-chain with NFT receipts via HTS and immutable audit trails via HCS.</p>
-                <div class="pcard-stack"><span class="stack-item">TypeScript</span><span class="stack-item">Node.js</span><span class="stack-item">Hedera</span><span class="stack-item">Claude AI</span><span class="stack-item">Groq Whisper</span></div>
-                <div class="pcard-actions"><a class="pcard-btn github" href="https://github.com/HtetMyatAungg/myanpay" target="_blank" rel="noopener noreferrer">GitHub</a></div>
-            </div>
-            <div class="pcard featured animate-on-scroll" data-category="web" data-delay="0.1s">
-                <div class="pcard-header"><span class="pcard-badge live">Live</span><span class="pcard-status">Mar 2026</span></div>
-                <h3 class="pcard-title">MyanLearn</h3>
-                <p class="pcard-metric">1,750+ sessions - 18 countries - sub-50ms globally</p>
-                <p class="pcard-desc">Full-stack LLM app with multilingual NLP pipeline for Burmese literacy. Cloudflare edge delivers sub-50ms responses worldwide; Workers AI powers a personalised content recommendation engine.</p>
-                <div class="pcard-stack"><span class="stack-item">TypeScript</span><span class="stack-item">React</span><span class="stack-item">Cloudflare Workers</span><span class="stack-item">Workers AI</span><span class="stack-item">Docker</span></div>
-                <div class="pcard-actions">
-                    <a class="pcard-btn demo" href="https://myanlearn.pages.dev/" target="_blank" rel="noopener noreferrer">Live Demo</a>
-                    <a class="pcard-btn github" href="https://github.com/HtetMyatAungg/MyanLearn" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <section class="hero hero--compact">
+            <div class="container hero__inner">
+                <div class="hero__content">
+                    <p class="eyebrow">Projects</p>
+                    <h1 class="hero__name">Built, shipped, measured</h1>
+                    <p class="lede">
+                        Research tooling, applied machine learning, and a few things built in a weekend.
+                        Numbers below are measured, not estimated.
+                    </p>
                 </div>
             </div>
-            <div class="pcard animate-on-scroll" data-category="ml" data-delay="0.2s">
-                <div class="pcard-header"><span class="pcard-badge ml-badge">AI / ML</span><span class="pcard-status">Mar - Apr 2026</span></div>
-                <h3 class="pcard-title">NASA NEO Classifier</h3>
-                <p class="pcard-metric">Hazardous recall 1.00 - AUC-ROC 0.958</p>
-                <p class="pcard-desc">Hazardous asteroid classifier on 6,136 NASA records. Handled 5% class imbalance with stratified splits and class weighting. End-to-end ETL pipeline with MLflow experiment tracking.</p>
-                <div class="pcard-stack"><span class="stack-item">Python</span><span class="stack-item">Keras</span><span class="stack-item">scikit-learn</span><span class="stack-item">NumPy</span><span class="stack-item">MLflow</span></div>
-                <div class="pcard-actions"><a class="pcard-btn github" href="https://github.com/HtetMyatAungg/NASA_NEO_Classifier" target="_blank" rel="noopener noreferrer">GitHub</a></div>
-            </div>
-            <div class="pcard animate-on-scroll" data-category="ml wip" data-delay="0.05s">
-                <div class="pcard-header"><span class="pcard-badge wip-badge">In Progress</span><span class="pcard-status">Apr 2026 - Present</span></div>
-                <h3 class="pcard-title">LLM from Scratch</h3>
-                <p class="pcard-metric">Target: GPT-2-scale architecture - Aug 2026</p>
-                <p class="pcard-desc">Transformer-based language model built from first principles using only NumPy - tokenization, multi-head attention, positional encoding, and backpropagation by hand.</p>
-                <div class="pcard-stack"><span class="stack-item">Python</span><span class="stack-item">NumPy</span><span class="stack-item">Transformers</span></div>
-                <div class="pcard-actions"><span class="pcard-wip-note">Repo coming soon</span></div>
-            </div>
-            <div class="pcard animate-on-scroll" data-category="ml" data-delay="0.1s">
-                <div class="pcard-header"><span class="pcard-badge ml-badge">AI / ML</span><span class="pcard-status">Jan 2026</span></div>
-                <h3 class="pcard-title">Face Classifier</h3>
-                <p class="pcard-metric">99%+ validation accuracy - 30 FPS - &lt;10ms/frame</p>
-                <p class="pcard-desc">Real-time human vs. non-human face classifier for webcam-based access control. Fine-tuned MobileNetV2 with custom augmentation; streamlined OpenCV preprocessing stack to hit 30 FPS at under 10ms per frame.</p>
-                <div class="pcard-stack"><span class="stack-item">Python</span><span class="stack-item">TensorFlow</span><span class="stack-item">Keras</span><span class="stack-item">OpenCV</span><span class="stack-item">scikit-learn</span></div>
-                <div class="pcard-actions"><a class="pcard-btn github" href="https://github.com/HtetMyatAungg/HFC" target="_blank" rel="noopener noreferrer">GitHub</a></div>
-            </div>
-            <div class="pcard animate-on-scroll" data-category="web" data-delay="0.15s">
-                <div class="pcard-header"><span class="pcard-badge live">Live</span><span class="pcard-status">Feb 2026</span></div>
-                <h3 class="pcard-title">CF Code Reviewer</h3>
-                <p class="pcard-metric">Zero cold-start - Edge-native - Structured feedback</p>
-                <p class="pcard-desc">Serverless REST API for AI code review on Cloudflare Workers. Prompt-tuned Llama 3.1 via Workers AI to reduce hallucination rate in structured output covering bugs, style, and security.</p>
-                <div class="pcard-stack"><span class="stack-item">TypeScript</span><span class="stack-item">Cloudflare Workers</span><span class="stack-item">Llama 3.1</span><span class="stack-item">Workers AI</span></div>
-                <div class="pcard-actions"><a class="pcard-btn github" href="https://github.com/HtetMyatAungg/cf_ai_Htet" target="_blank" rel="noopener noreferrer">GitHub</a></div>
-            </div>
-            <div class="pcard animate-on-scroll" data-category="ml" data-delay="0.2s">
-                <div class="pcard-header"><span class="pcard-badge ml-badge">AI / ML</span><span class="pcard-status">2025 - 2026</span></div>
-                <h3 class="pcard-title">Minesweeper AI</h3>
-                <p class="pcard-metric">3 solver architectures benchmarked</p>
-                <p class="pcard-desc">Constraint-based Minesweeper agent comparing CSP, probabilistic inference, and heuristic search strategies. Built entirely from scratch for RHUL coursework.</p>
-                <div class="pcard-stack"><span class="stack-item">Python</span><span class="stack-item">CSP</span><span class="stack-item">Search Algorithms</span></div>
-                <div class="pcard-actions"><a class="pcard-btn github" href="https://github.com/HtetMyatAungg/Minesweeper-Efficiency" target="_blank" rel="noopener noreferrer">GitHub</a></div>
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="contact-section">
-        <p class="contact-tagline">Liked what you saw?</p>
-        <div class="contact-links">
-            <a class="contact-link email-link" href="contact.html">Get in Touch</a>
-            <a class="contact-link github-link" href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">All GitHub Repos</a>
-        </div>
-    </div>
+        <!-- ===== Featured project with demo video ============================ -->
+        <section class="section--tight">
+            <div class="container">
+                <div class="feature reveal">
+                    <div class="feature__body">
+                        <div class="row">
+                            <span class="badge badge--award">LSE Agentic Society Hackathon</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h2 class="feature__title">MyanPay</h2>
+                        <p class="card__result">Voice in, settled payment out — targeting Myanmar's remittance corridor</p>
+                        <p class="card__body">
+                            A voice-driven cross-border payments prototype. Speech is transcribed with
+                            Groq Whisper, intent is parsed by the Claude API, and the transfer settles
+                            on Hedera with an on-chain record. Built end to end during the hackathon.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Claude API</span>
+                            <span class="tag">Groq Whisper</span>
+                            <span class="tag">Hedera</span>
+                            <span class="tag">Node.js</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://github.com/HtetMyatAungg/myanpay" target="_blank" rel="noopener noreferrer">View source</a>
+                        </div>
+                    </div>
+
+                    <div class="feature__media">
+                        <video data-demo-video controls preload="metadata" playsinline
+                               aria-label="MyanPay demo recording">
+                            <source src="assets/media/myanpay-demo.mp4" type="video/mp4">
+                        </video>
+                        <div class="media-fallback" data-demo-fallback hidden>
+                            <p>The demo video could not be played here.</p>
+                            <a class="btn btn--ghost btn--sm" href="assets/media/myanpay-demo.mp4">Open the file directly</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Filterable grid ============================================= -->
+        <section class="section--tight" data-filter-root>
+            <div class="container">
+                <div class="section-head">
+                    <div class="stack stack--sm">
+                        <p class="eyebrow">All projects</p>
+                        <h2>Everything else</h2>
+                    </div>
+                    <span class="result-count" data-filter-count></span>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-chips" role="group" aria-label="Filter projects by category">
+                        <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">All<span class="filter-chip__count"></span></button>
+                        <button class="filter-chip" type="button" data-filter="research" aria-pressed="false">Research<span class="filter-chip__count"></span></button>
+                        <button class="filter-chip" type="button" data-filter="ml" aria-pressed="false">Machine learning<span class="filter-chip__count"></span></button>
+                        <button class="filter-chip" type="button" data-filter="applied" aria-pressed="false">Applied<span class="filter-chip__count"></span></button>
+                        <button class="filter-chip" type="button" data-filter="infra" aria-pressed="false">Infrastructure<span class="filter-chip__count"></span></button>
+                    </div>
+
+                    <label class="search-field">
+                        <span class="visually-hidden">Search projects</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                        <input type="search" placeholder="Search projects…" data-filter-search>
+                    </label>
+                </div>
+
+                <div class="card-grid" data-filter-list>
+
+                    <article class="card card--featured reveal" data-tags="research ml" data-search="prolog autoformalization interpretability evaluation harness">
+                        <div class="card__head">
+                            <span class="badge">Research</span>
+                            <span class="card__meta">2026 —</span>
+                        </div>
+                        <h3 class="card__title">Autoformalization evaluation harness</h3>
+                        <p class="card__result">Nine-constraint symbolic evaluator · F1-vs-N sweep</p>
+                        <p class="card__body">
+                            The tooling behind my UROP fellowship: prompt-condition sweeps across nine
+                            models, symbolic scoring of generated Prolog, and a grid-size stress test
+                            that catches enumeration masquerading as rule induction.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">Prolog (SWI)</span>
+                            <span class="tag">LLM APIs</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="research.html">Read the method</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="applied infra" data-search="cloudflare workers ai burmese literacy edge myanmar">
+                        <div class="card__head">
+                            <span class="badge badge--live">Live</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h3 class="card__title">MyanLearn</h3>
+                        <p class="card__result">Users across 18+ countries</p>
+                        <p class="card__body">
+                            A Burmese literacy platform running on Cloudflare Workers AI. Multilingual
+                            NLP pipeline served from the edge, with content recommendation driven by
+                            Workers AI models.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">React</span>
+                            <span class="tag">Workers AI</span>
+                            <span class="tag">Docker</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://myanlearn.pages.dev/" target="_blank" rel="noopener noreferrer">Live demo</a>
+                            <a class="btn btn--ghost btn--sm" href="https://github.com/HtetMyatAungg/MyanLearn" target="_blank" rel="noopener noreferrer">Source</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="applied" data-search="hedera claude groq whisper payments hackathon blockchain">
+                        <div class="card__head">
+                            <span class="badge badge--award">Hackathon</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h3 class="card__title">MyanPay</h3>
+                        <p class="card__result">Voice-driven cross-border settlement</p>
+                        <p class="card__body">
+                            Speech to on-chain payment: Groq Whisper for transcription, Claude for
+                            intent parsing, Hedera for settlement and audit trail.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Claude API</span>
+                            <span class="tag">Hedera</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://github.com/HtetMyatAungg/myanpay" target="_blank" rel="noopener noreferrer">Source</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="research ml" data-search="micrograd karpathy backpropagation autograd transformer internals">
+                        <div class="card__head">
+                            <span class="badge badge--progress">In progress</span>
+                            <span class="card__meta">2026 —</span>
+                        </div>
+                        <h3 class="card__title">Interpretability groundwork</h3>
+                        <p class="card__result">micrograd, reimplemented from scratch</p>
+                        <p class="card__body">
+                            Rebuilding Karpathy's micrograd line by line — autograd, backpropagation,
+                            the lot — as preparation for working on transformer internals rather than
+                            around them.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">NumPy</span>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="ml" data-search="nasa asteroid neo hazard classifier imbalance mlflow keras">
+                        <div class="card__head">
+                            <span class="badge">Machine learning</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h3 class="card__title">NASA NEO hazard classifier</h3>
+                        <p class="card__result">Hazardous recall 1.00 · AUC-ROC 0.958</p>
+                        <p class="card__body">
+                            Near-Earth-object hazard classification over 6,136 NASA records. Five per
+                            cent positive class handled with stratified splits and class weighting;
+                            full ETL pipeline with MLflow tracking.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">scikit-learn</span>
+                            <span class="tag">Keras</span>
+                            <span class="tag">MLflow</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://github.com/HtetMyatAungg/NASA_NEO_Classifier" target="_blank" rel="noopener noreferrer">Source</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="ml" data-search="mobilenetv2 transfer learning opencv webcam real time vision">
+                        <div class="card__head">
+                            <span class="badge">Machine learning</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h3 class="card__title">Real-time face classifier</h3>
+                        <p class="card__result">99%+ validation accuracy · 30 FPS · under 10 ms/frame</p>
+                        <p class="card__body">
+                            MobileNetV2 fine-tuned for human vs. non-human face detection on a webcam
+                            stream, with the OpenCV preprocessing path trimmed until it held frame rate.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">TensorFlow</span>
+                            <span class="tag">OpenCV</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://github.com/HtetMyatAungg/HFC" target="_blank" rel="noopener noreferrer">Source</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="applied infra" data-search="cloudflare workers llama serverless code review edge api">
+                        <div class="card__head">
+                            <span class="badge badge--live">Live</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h3 class="card__title">Edge code reviewer</h3>
+                        <p class="card__result">Serverless · zero cold start</p>
+                        <p class="card__body">
+                            A REST API for automated code review on Cloudflare Workers, with Llama 3.1
+                            prompt-tuned to return structured findings on bugs, style, and security
+                            instead of free-form prose.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Workers AI</span>
+                            <span class="tag">Llama 3.1</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://github.com/HtetMyatAungg/cf_ai_Htet" target="_blank" rel="noopener noreferrer">Source</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="ml research" data-search="minesweeper csp constraint satisfaction probabilistic search solver">
+                        <div class="card__head">
+                            <span class="badge">Machine learning</span>
+                            <span class="card__meta">2025 – 26</span>
+                        </div>
+                        <h3 class="card__title">Minesweeper solver study</h3>
+                        <p class="card__result">Three solver architectures benchmarked</p>
+                        <p class="card__body">
+                            Constraint-satisfaction, probabilistic inference, and heuristic search
+                            compared on the same boards. Written from scratch — a small taste of the
+                            symbolic side of neurosymbolic work.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">CSP</span>
+                            <span class="tag">Search</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" href="https://github.com/HtetMyatAungg/Minesweeper-Efficiency" target="_blank" rel="noopener noreferrer">Source</a>
+                        </div>
+                    </article>
+
+                    <article class="card reveal" data-tags="infra" data-search="typescript github actions ci cd bibtex dataset filters catalogue">
+                        <div class="card__head">
+                            <span class="badge">Research software</span>
+                            <span class="card__meta">2026</span>
+                        </div>
+                        <h3 class="card__title">Autoformalization paper catalogue</h3>
+                        <p class="card__result">Dataset filters &amp; CI/CD for a public research index</p>
+                        <p class="card__body">
+                            Filtering and continuous-integration work on the DICE Lab's public
+                            catalogue of autoformalization literature, used to triage papers for
+                            ongoing survey work.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">GitHub Actions</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" data-link="lab">Visit the catalogue</a>
+                        </div>
+                    </article>
+
+                </div>
+
+                <p class="empty-state" data-filter-empty hidden>
+                    Nothing matches that combination. Try clearing the search box.
+                </p>
+            </div>
+        </section>
+
+        <section class="section--tight">
+            <div class="container">
+                <div class="cta reveal">
+                    <p class="eyebrow">More</p>
+                    <h2>Everything else is on GitHub</h2>
+                    <p class="cta__body">
+                        Coursework, experiments, and half-finished ideas included.
+                    </p>
+                    <div class="row">
+                        <a class="btn btn--primary" data-link="github">Browse repositories</a>
+                        <a class="btn btn--ghost" href="contact.html">Ask about one</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer" data-site-footer></footer>
+    <script type="module" src="assets/js/pages/projects.js"></script>
 </body>
 </html>

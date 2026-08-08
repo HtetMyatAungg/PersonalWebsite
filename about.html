@@ -1,116 +1,246 @@
-﻿<!-- 2968149 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <title>About - Htet Myat Aung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About — Htet Myat Aung</title>
+    <meta name="description" content="Htet Myat Aung — BSc Computer Science (AI) at Royal Holloway, undergraduate research fellow at the DICE Lab, working on mechanistic interpretability and neurosymbolic AI.">
+    <meta name="author" content="Htet Myat Aung">
+    <link rel="canonical" href="https://htetmyataung.uk/about.html">
+
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="About — Htet Myat Aung">
+    <meta property="og:description" content="Mechanistic interpretability and neurosymbolic AI at Royal Holloway's DICE Lab.">
+    <meta property="og:url" content="https://htetmyataung.uk/about.html">
+    <meta property="og:image" content="https://htetmyataung.uk/assets/media/portrait.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="assets/media/icon.png">
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.remove("no-js");
+            try {
+                var stored = localStorage.getItem("hma-theme");
+                root.dataset.theme = stored
+                    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { root.dataset.theme = "dark"; }
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300..600;1,400&display=swap">
+
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
 </head>
-<body>
-    <script type="module" src="about.js"></script>
-    <div class="header">
-        <span class="candidate-num">2968149</span>
-        <a href="index.html"><img src="profile.jpg" alt="HMA Logo" class="nav-logo"></a>
-        <a class="nav-link active-page" href="about.html">About</a>
-        <a class="nav-link" href="projects.html">Projects</a>
-        <a class="nav-link" href="experience.html">Experience</a>
-        <a class="nav-link" href="contact.html">Contact</a>
-        <div class="nav-dropdown">
-            <button class="nav-dropdown-toggle">More &#9662;</button>
-            <div class="dropdown-menu">
-                <a href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://drive.google.com/file/d/1vX0FUemX7igfGN29Lf-QfLNFq5MMTZrH/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Download CV</a>
-                <a href="mailto:henry.htetmyataung@gmail.com">Email Me</a>
-            </div>
-        </div>
-        <button id="hire-me">LinkedIn</button>
-    </div>
 
-    <div class="page-hero">
-        <p class="intro-text">Open to Summer 2027 internships</p>
-        <h1 class="name">Htet Myat Aung</h1>
-        <p class="ex-title">AI Engineer . Builder . RHUL Computer Science</p>
-    </div>
+<body data-page="about">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-site-header></header>
 
-    <div class="about-page-grid">
-        <div class="about-photo-col">
-            <img class="about-photo animate-on-scroll" src="profile.png" alt="HMA">
-            <div class="about-quick-facts animate-on-scroll" data-delay="0.15s">
-                <div class="quick-fact">
-                    <span class="quick-fact-value">2</span>
-                    <span class="quick-fact-label">Live products</span>
-                </div>
-                <div class="quick-fact">
-                    <span class="quick-fact-value">18</span>
-                    <span class="quick-fact-label">Countries reached</span>
-                </div>
-                <div class="quick-fact">
-                    <span class="quick-fact-value">First</span>
-                    <span class="quick-fact-label">Class average</span>
-                </div>
-                <div class="quick-fact">
-                    <span class="quick-fact-value">DICE</span>
-                    <span class="quick-fact-label">Lab researcher</span>
+    <main id="main">
+
+        <section class="hero hero--compact">
+            <div class="container hero__inner">
+                <div class="hero__content">
+                    <p class="eyebrow">About</p>
+                    <h1 class="hero__name">Careful experiments, honest harnesses</h1>
+                    <p class="lede">
+                        I am an undergraduate researcher interested in what language models actually
+                        represent — and in building evaluation that can tell the difference between
+                        understanding and a convincing imitation of it.
+                    </p>
                 </div>
             </div>
-            <div class="about-links">
-                <a class="contact-link email-link" href="mailto:henry.htetmyataung@gmail.com">Email</a>
-                <a class="contact-link linkedin-link" href="https://www.linkedin.com/in/htet-myat-aung-4a370932a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a class="contact-link github-link" href="https://github.com/HtetMyatAungg" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </div>
-        </div>
+        </section>
 
-        <div class="about-bio-col">
-            <p class="title">Who I am</p>
+        <div class="container section--tight">
+            <div class="about-layout">
 
-            <p class="about-para">
-                I am a first-year BSc Computer Science (AI) student at Royal Holloway, University of London, currently holding a First Class Average. I build and ship real AI products - from a Burmese literacy tool that reached 1,750+ users across 18 countries to a voice-driven cross-border payments agent I built at the Hedera Hackathon at LSE.
-            </p>
+                <!-- ===== Sidebar ============================================ -->
+                <aside class="about-aside">
+                    <img class="about-aside__photo" src="assets/media/portrait.png" alt="Htet Myat Aung" width="272" height="272">
 
-            <p class="about-para">
-                I volunteer as a Research Assistant at RHUL's DICE Lab under Dr. Agnieszka Mensfelt, where I contribute to neurosymbolic AI research (GAMA/LELMA), rewrite research infrastructure in TypeScript, and maintain an autoformalization paper catalogue tracking 200+ papers. I delivered 4 production-ready PRs in my first 2 weeks as the sole student contributor.
-            </p>
-
-            <p class="about-para">
-                My long-term mission is to bring AI and digital infrastructure to Myanmar - a country with enormous untapped potential and limited access to modern technology. MyanLearn and MyanPay are the first steps toward that goal.
-            </p>
-
-            <p class="about-para">
-                I am a Mensa member (2024).
-            </p>
-
-            <p class="title" style="margin-top: 2em;">Education</p>
-            <div class="about-edu-card animate-on-scroll">
-                <div class="about-edu-header">
-                    <div>
-                        <p class="position">BSc Computer Science (Artificial Intelligence)</p>
-                        <p class="company">Royal Holloway, University of London</p>
-                        <p class="year">Sep 2025 - Jun 2028 &nbsp;·&nbsp; Egham, Surrey</p>
+                    <div class="fact-grid">
+                        <div class="fact">
+                            <span class="fact__value">74%</span>
+                            <span class="fact__label">Year 1 average</span>
+                        </div>
+                        <div class="fact">
+                            <span class="fact__value">94%</span>
+                            <span class="fact__label">Maths methods</span>
+                        </div>
+                        <div class="fact">
+                            <span class="fact__value">8 / 30+</span>
+                            <span class="fact__label">UROP selection</span>
+                        </div>
+                        <div class="fact">
+                            <span class="fact__value">Mensa</span>
+                            <span class="fact__label">Member</span>
+                        </div>
                     </div>
-                    <span class="exp-tag research">First Class</span>
+
+                    <!-- hrefs come from config.js via links.js -->
+                    <div class="stack stack--sm">
+                        <a class="btn btn--primary btn--block" href="contact.html">Get in touch</a>
+                        <a class="btn btn--ghost btn--block" data-link="cv">Download CV</a>
+                        <a class="btn btn--ghost btn--block" data-link="github">GitHub</a>
+                        <a class="btn btn--ghost btn--block" data-link="linkedin">LinkedIn</a>
+                    </div>
+                </aside>
+
+                <!-- ===== Biography ========================================== -->
+                <div class="about-body">
+
+                    <section class="stack">
+                        <h2>Who I am</h2>
+                        <p class="lede">
+                            I read BSc Computer Science (Artificial Intelligence) at Royal Holloway,
+                            University of London, where I finished my first year on a 74% First Class
+                            average with 94% in Mathematical Methods, and hold the ISC Excellence
+                            Scholarship.
+                        </p>
+                        <p class="lede">
+                            Since June 2026 I have been a funded Undergraduate Research Fellow at
+                            RHUL's DICE Lab — one of eight selected from a field of thirty-plus —
+                            working with Prof. Kostas Stathis and Dr. Agnieszka Mensfelt on LLM
+                            autoformalization. The work asks a narrow question with wide implications:
+                            when a model produces a correct formal specification, has it induced a
+                            general rule, or has it enumerated the facts it was shown? Answering that
+                            honestly turned out to be mostly a problem of evaluation design, which is
+                            where most of my time goes.
+                        </p>
+                        <p class="lede">
+                            Alongside research I am an early engineer at Sharper Future Ltd, shipping
+                            production features across the stack with LLM APIs and evaluation tooling.
+                            My contract carries an IP carve-out that keeps my university research
+                            independent — a detail I insisted on, because the two should not be
+                            entangled.
+                        </p>
+                        <p class="lede">
+                            I am from Myanmar, and some of my work points home: MyanLearn is a Burmese
+                            literacy platform on Cloudflare Workers AI now used in more than eighteen
+                            countries. Separately, I am reimplementing Karpathy's micrograd from scratch
+                            as groundwork for getting inside transformer internals properly rather than
+                            treating them as a black box.
+                        </p>
+                    </section>
+
+                    <!-- ===== Education ====================================== -->
+                    <section class="stack">
+                        <h2>Education</h2>
+                        <article class="card card--featured reveal">
+                            <div class="card__head">
+                                <div>
+                                    <h3 class="card__title">BSc (Hons) Computer Science (Artificial Intelligence)</h3>
+                                    <p class="entry__org">Royal Holloway, University of London</p>
+                                </div>
+                                <span class="badge">First Class</span>
+                            </div>
+                            <p class="card__meta">Sep 2025 – Jun 2028 · Egham, Surrey</p>
+                            <ul class="entry__points">
+                                <li>Year 1 average 74% (First Class); Mathematical Methods 94%.</li>
+                                <li>ISC Excellence Scholarship holder, Royal Holloway International Study Centre.</li>
+                                <li>Coursework: Mathematical Methods, Algorithms &amp; Complexity, Machine
+                                    Fundamentals, Logic &amp; Reasoning.</li>
+                            </ul>
+                        </article>
+                    </section>
+
+                    <!-- ===== Research interests ============================= -->
+                    <section class="stack">
+                        <h2>Research interests</h2>
+                        <p class="lede">
+                            Mechanistic interpretability and neurosymbolic AI: evaluating whether
+                            language models form genuine abstractions or memorise surface patterns, and
+                            how capability interacts with scaffolding to determine that. Adjacent
+                            interests in knowledge representation, formal methods, multi-agent systems,
+                            and the design of evaluation harnesses that resist flattering their subject.
+                        </p>
+                    </section>
+
+                    <!-- ===== Skills (filled by about.js) =================== -->
+                    <section class="stack">
+                        <h2>Tools &amp; methods</h2>
+                        <div data-skill-groups></div>
+                    </section>
+
+                    <!-- ===== Service and awards ============================ -->
+                    <section class="stack">
+                        <h2>Service &amp; awards</h2>
+                        <ul class="timeline">
+                            <li class="entry entry--current">
+                                <div class="entry__head">
+                                    <div>
+                                        <p class="entry__role">Secretary</p>
+                                        <p class="entry__org">RHUL AI &amp; Robotics Society</p>
+                                    </div>
+                                    <span class="entry__when">2025 – 26</span>
+                                </div>
+                            </li>
+                            <li class="entry entry--current">
+                                <div class="entry__head">
+                                    <div>
+                                        <p class="entry__role">Technology Officer</p>
+                                        <p class="entry__org">RHUL Neuroscience Society</p>
+                                    </div>
+                                    <span class="entry__when">2025 – 26</span>
+                                </div>
+                            </li>
+                            <li class="entry">
+                                <div class="entry__head">
+                                    <div>
+                                        <p class="entry__role">Student Representative</p>
+                                        <p class="entry__org">BSc Computer Science (AI) — elected for a cohort of 27</p>
+                                    </div>
+                                    <span class="entry__when">2026</span>
+                                </div>
+                            </li>
+                            <li class="entry">
+                                <div class="entry__head">
+                                    <div>
+                                        <p class="entry__role">ISC Excellence Scholarship</p>
+                                        <p class="entry__org">Royal Holloway International Study Centre</p>
+                                    </div>
+                                    <span class="entry__when">2025</span>
+                                </div>
+                            </li>
+                            <li class="entry">
+                                <div class="entry__head">
+                                    <div>
+                                        <p class="entry__role">Member of Mensa</p>
+                                        <p class="entry__org">Admitted 2024</p>
+                                    </div>
+                                    <span class="entry__when">2024</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <div class="cta reveal">
+                        <p class="eyebrow">Next</p>
+                        <h2>Read the research</h2>
+                        <p class="cta__body">
+                            Method, findings, and the two bugs that changed the headline result.
+                        </p>
+                        <div class="row">
+                            <a class="btn btn--primary" href="research.html">Research &amp; experience</a>
+                            <a class="btn btn--ghost" href="projects.html">Projects</a>
+                        </div>
+                    </div>
+
                 </div>
-                <ul class="exp-bullets">
-                    <li>Relevant coursework: Object Oriented Programming I &amp; II, Machine Learning Fundamentals, Software Design, Mathematical Structures, Mathematical Methods for Computer Science, Programming Labs</li>
-                    <li>Mensa Member (2024)</li>
-                </ul>
-            </div>
-
-            <p class="title" style="margin-top: 2em;">What I am looking for</p>
-            <p class="about-para">
-                AI/ML engineering internships for Summer 2027. I am comfortable working remotely or on-site in London. I am most energised by roles where I can ship real systems - production model deployment, agentic pipelines, LLM infrastructure, or edge AI.
-            </p>
-
-            <div class="about-cta">
-                <a class="ProjectButton btn-link" href="projects.html">View Projects</a>
-                <button class="CVButton">Download CV</button>
-                <a class="ContactButton btn-link" href="contact.html">Get in Touch</a>
             </div>
         </div>
-    </div>
 
+    </main>
+
+    <footer class="site-footer" data-site-footer></footer>
+    <script type="module" src="assets/js/pages/about.js"></script>
 </body>
 </html>

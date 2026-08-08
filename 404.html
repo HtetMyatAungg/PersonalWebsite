@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found — Htet Myat Aung</title>
+    <meta name="robots" content="noindex">
+
+    <link rel="icon" type="image/png" href="assets/media/icon.png">
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.remove("no-js");
+            try {
+                var stored = localStorage.getItem("hma-theme");
+                root.dataset.theme = stored
+                    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { root.dataset.theme = "dark"; }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300..600;1,400&display=swap">
+
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+
+<body data-page="404">
+    <header class="site-header" data-site-header></header>
+
+    <main id="main">
+        <div class="container notfound">
+            <p class="notfound__code">404</p>
+            <h1>This page does not exist</h1>
+            <p class="lede">
+                The link may be out of date. Everything worth reading is one of these.
+            </p>
+            <div class="row">
+                <a class="btn btn--primary" href="index.html">Home</a>
+                <a class="btn btn--outline" href="research.html">Research</a>
+                <a class="btn btn--ghost" href="blog.html">Writing</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer" data-site-footer></footer>
+    <script type="module" src="assets/js/site.js"></script>
+</body>
+</html>
