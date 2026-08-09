@@ -1,10 +1,14 @@
 /**
  * about.js — entry module for about.html.
- * Renders the grouped skills table from config so the list lives in one place.
+ *
+ * The about page carries two pieces of behaviour: the grouped skills table,
+ * rendered from config so the list lives in one place, and the contact form at
+ * the foot of the page (contact is a section here, not a page of its own).
  */
 
 import "../site.js";
 import { skillGroups } from "../config.js";
+import { initContactForm } from "../modules/contact-form.js";
 
 const mount = document.querySelector("[data-skill-groups]");
 
@@ -21,3 +25,5 @@ if (mount) {
         )
         .join("");
 }
+
+initContactForm();

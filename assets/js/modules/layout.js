@@ -13,6 +13,14 @@
  * The active nav item comes from <body data-page="...">, which matches the
  * basename of the nav href (e.g. data-page="blog" for blog.html). post.html
  * also uses "blog" so a post keeps Writing highlighted.
+ *
+ * Home has no nav item — the brand is the way home, as it is on most sites — so
+ * on index.html the brand itself carries aria-current instead.
+ *
+ * The brand links to "/" rather than "index.html": both serve the same file, but
+ * only "/" leaves a clean htetmyataung.uk in the address bar. This is the one
+ * link that drops its filename — every other internal link keeps the .html, so
+ * that VS Code Live Server can serve the site as well as `npm run dev` can.
  */
 
 import { site, links, nav, footerColumns } from "../config.js";
@@ -39,9 +47,11 @@ function navMarkup(activePage) {
 }
 
 function headerMarkup(activePage) {
+    const atHome = activePage === "index" ? ' aria-current="page"' : "";
+
     return `
     <div class="container site-header__inner">
-        <a class="brand" href="index.html">
+        <a class="brand" href="/"${atHome}>
             <img class="brand__avatar" src="assets/media/avatar.jpg" alt="" width="34" height="34">
             <span class="brand__text">
                 <span class="brand__name">${site.name}</span>

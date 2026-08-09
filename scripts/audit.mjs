@@ -68,6 +68,7 @@ for (const page of pages) {
     for (const [, ref] of read(page).matchAll(/(?:href|src)="([^"]+)"/g)) {
         if (/^(https?:|mailto:|#|data:)/.test(ref)) continue;
         const target = ref.split(/[?#]/)[0];
+        /* The brand's href="/" passes here: join(ROOT, "/") is ROOT itself. */
         if (!existsSync(join(ROOT, target))) {
             fail(`${page} -> "${target}" does not exist`);
             brokenRefs += 1;

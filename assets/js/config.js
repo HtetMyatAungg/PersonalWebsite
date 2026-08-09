@@ -28,27 +28,29 @@ export const links = {
     repo: "https://github.com/HtetMyatAungg/PersonalWebsite",
 };
 
-/** Primary navigation. Order here is the order rendered. */
+/**
+ * Primary navigation. Order here is the order rendered.
+ *
+ * Four destinations, deliberately. Home is reached by the brand in the header
+ * (the universal convention, so a "Home" item only adds noise), and contact
+ * lives at the foot of the about page rather than on a page of its own — a
+ * visitor who wants to reach you is already reading about you.
+ */
 export const nav = [
-    { label: "Home", href: "index.html" },
-    { label: "About", href: "about.html" },
     { label: "Research", href: "research.html" },
     { label: "Projects", href: "projects.html" },
     { label: "Writing", href: "blog.html" },
-    { label: "Contact", href: "contact.html" },
+    { label: "About", href: "about.html" },
 ];
 
-/** Footer link columns. */
+/**
+ * Footer link columns.
+ *
+ * The footer deliberately does NOT repeat the nav: with four destinations in a
+ * sticky header, a second copy down here is just more to read. What belongs at
+ * the bottom of a page is the way out of the site — profiles and the CV.
+ */
 export const footerColumns = [
-    {
-        title: "Site",
-        links: [
-            { label: "About", href: "about.html" },
-            { label: "Research", href: "research.html" },
-            { label: "Projects", href: "projects.html" },
-            { label: "Writing", href: "blog.html" },
-        ],
-    },
     {
         title: "Elsewhere",
         links: [
@@ -62,7 +64,6 @@ export const footerColumns = [
         links: [
             { label: links.email, href: `mailto:${links.email}` },
             { label: "Download CV", href: links.cv, newTab: true },
-            { label: "Contact form", href: "contact.html" },
         ],
     },
 ];

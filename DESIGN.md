@@ -62,14 +62,14 @@ The design goals, in priority order:
 ```
 /
 ├── index.html            Home
-├── about.html            Biography, education, skills, service
-├── research.html         Research + experience (the flagship page)
+├── research.html         Research + positions (the flagship page)
 ├── projects.html         Filterable project grid + MyanPay demo video
 ├── blog.html             Post index with tag filter and search
+├── about.html            Biography, education, skills, service, CONTACT FORM
 ├── post.html             Renders ANY single post: post.html?p=<slug>
-├── contact.html          Form + direct details
 ├── 404.html              Not-found page
-├── experience.html       Redirect stub -> research.html (keeps old links alive)
+├── contact.html          Redirect stub -> about.html#contact
+├── experience.html       Redirect stub -> research.html
 ├── HtetMyatAung-CV.pdf   The CV every "Download CV" link points at
 ├── CNAME                 Custom domain for GitHub Pages
 ├── DESIGN.md             This file
@@ -95,14 +95,14 @@ The design goals, in priority order:
 │   │   │   ├── post-card.js  The one post-summary markup
 │   │   │   ├── markdown.js   Markdown -> HTML renderer
 │   │   │   ├── frontmatter.js Reads the metadata block atop each post
+│   │   │   ├── contact-form.js Validation + EmailJS delivery
 │   │   │   └── comments/     Comment providers (see its README)
 │   │   └── pages/
 │   │       ├── home.js       Marquee + latest posts
-│   │       ├── about.js      Skill groups
+│   │       ├── about.js      Skill groups + contact form
 │   │       ├── projects.js   Filter bar + demo video
 │   │       ├── blog.js       Post list + tag chips
-│   │       ├── post.js       Single post, TOC, pager, comments
-│   │       └── contact.js    Validation + EmailJS
+│   │       └── post.js       Single post, TOC, pager, comments
 │   │
 │   └── media/            Images and the demo video
 │
@@ -128,6 +128,64 @@ The design goals, in priority order:
 looks → `components.css`; where something sits → `pages.css`; words a human
 reads → the `.html` file or a `.md` post.
 
+### Information architecture
+
+**Four destinations, and that is the budget.**
+
+```
+[avatar] Htet Myat Aung        Research   Projects   Writing   About   [theme] [CV]
+   └── home                                                      └── contact form at the foot
+```
+
+Home is the brand in the header, as it is on most sites, so there is no "Home"
+nav item. Contact is the closing section of the about page rather than a page of
+its own: someone who wants to reach you has just finished reading who you are.
+Both retired URLs (`contact.html`, `experience.html`) survive as redirect stubs,
+because they are on CVs that have already been sent.
+
+This replaced a six-item nav (Home · About · Research · Projects · Writing ·
+Contact). The problem was never the page count on its own — it was that no page
+had one obvious next step, so every page offered five.
+
+**Three rules that keep it that way.** Break them and the site starts feeling
+"everywhere" again, which is exactly what this structure was undone from:
+
+1. **One fact, one home.** If something appears on two pages, one of them is
+   wrong. The home page *teases* the research (two findings, one link);
+   `research.html` *delivers* it (four findings, the method, the corrections).
+   Positions live on `research.html`; societies and awards live on `about.html`.
+   MyanPay is the featured block on `projects.html` and is not also a card in the
+   grid below it.
+2. **One primary action per section.** A `.cta` panel or `hero__actions` row gets
+   one `.btn--primary`, optionally one `.btn--ghost` beside it. Three buttons
+   means the section has not decided what it wants the reader to do.
+3. **The footer does not repeat the nav.** With four destinations in a sticky
+   header, a second copy at the bottom is noise. The footer is the way *out* of
+   the site: profiles, email, CV.
+
+The CV button sits in the header on every page, so no page body needs a
+"Download CV" button. Removing those was most of the cleanup.
+
+### URLs keep the `.html`
+
+Internal links are written as `research.html`, not `/research` — the one
+exception being the brand, which links to `/` so the home page reads as a bare
+`htetmyataung.uk` rather than `htetmyataung.uk/index.html`.
+
+Extensionless URLs were tried and reverted. They do work in production — GitHub
+Pages resolves `/research` to `research.html` on its own, with no folder-per-page
+restructure needed — but **VS Code Live Server does not, and cannot be configured
+to**, so every link 404s with `Cannot GET /research` while previewing. Being able
+to open the site in whichever server is to hand was worth more than the shorter
+URL.
+
+If you ever revisit this, the full change is: the `nav` hrefs here, `keyOf()` in
+`layout.js` (it must strip the leading slash or the active-nav underline breaks
+silently), every in-body cross-link, **the `canonical` and `og:url` tags on all
+five pages** — those must move in the same commit as the links, since both URL
+forms serve identical bytes — the generated links in `post-card.js` and
+`post.js`, and a `<path>.html` fallback in `serve.mjs`'s `resolve()`.
+
 ---
 
 ## 3. Local development
@@ -147,7 +205,11 @@ is just a shorter way to type `node scripts/…`.
 Why a server is needed at all: `fetch()` refuses to read files over `file://`,
 and the blog loads posts with `fetch()`. **Opening `index.html` by
 double-clicking will leave the blog empty.** Every other page works fine either
-way; only the blog needs `npm run dev`.
+way; only the blog needs a server.
+
+Any static server will do — `npm run dev` on `:8000` or VS Code Live Server on
+`:5500`. Keeping both usable is why internal links keep their `.html` (see
+*Information architecture* in §2).
 
 ---
 
@@ -239,7 +301,7 @@ Naming is `block__element--modifier`.
 | Button | `.btn` + `--primary` / `--outline` / `--ghost` / `--sm` / `--block` | Works on `<a>` and `<button>` alike. |
 | Text link | `.link` | Underline grows on hover. |
 | Header | `.site-header` | Rendered by `layout.js`, not written in HTML. |
-| Nav item | `.nav__link` | Active state via `aria-current="page"`. |
+| Nav item | `.nav__link` | Active state via `aria-current="page"`. On home no nav item is active, so `.brand` carries `aria-current` and its avatar gets an accent ring. |
 | Status pill | `.pill` + `.pill__dot` | The "open to opportunities" chip. |
 | Tech chip | `.tag`, in a `.tag-list` | Monospace, low emphasis. |
 | Label | `.badge` + `--live` / `--award` / `--progress` / `--quiet` | Categorical, uppercase. |
@@ -280,7 +342,7 @@ In `pages.css`:
 | `.about-layout` | about | Sticky 17rem sidebar + biography column. |
 | `.feature` | projects | Text beside the demo video. |
 | `.post-layout` | post | Prose column + sticky TOC, TOC dropped below 64rem. |
-| `.contact-layout` | contact | Form + details. |
+| `.contact-layout` | about (`#contact`) | Form + details. Sits outside `.about-layout` so the form gets the full width. |
 | `.notfound` | 404 | Centred. |
 
 **Breakpoints** (only five in the whole site, all `max-width`): `40rem`,
@@ -335,7 +397,7 @@ special key `email` (wrapped into a `mailto:`).
 
 **Trade-off, stated plainly:** these links, the header, and the footer are all
 JavaScript-rendered, so they do not exist with JS disabled. That was accepted
-deliberately — it is what buys single-source-of-truth chrome across eight pages
+deliberately — it is what buys single-source-of-truth chrome across every page
 — and search engines execute JavaScript, so it does not cost you indexing. The
 page *content* is all in the HTML.
 
@@ -524,10 +586,16 @@ broken widget.
 
 ## 11. The contact form
 
-`contact.js` validates on the client, then sends through **EmailJS**, which is
-how a static page sends mail without a backend. The public key, service ID, and
-template ID are in `config.js` under `emailService`. The public key is designed
-to be public; the other two are not secrets either.
+It lives at the foot of `about.html`, under `#contact` — not on a page of its
+own. `modules/contact-form.js` validates on the client, then sends through
+**EmailJS**, which is how a static page sends mail without a backend. The public
+key, service ID, and template ID are in `config.js` under `emailService`. The
+public key is designed to be public; the other two are not secrets either.
+
+`initContactForm()` no-ops when `#contact-form` is absent, so it is safe to call
+from any entry module. The page that mounts it must load the EmailJS browser SDK
+in a plain `<script>` *before* its own module, so `window.emailjs` exists by the
+time anyone can submit.
 
 The template expects these variables: `from_name`, `from_email`, `subject`,
 `message`.
@@ -537,8 +605,8 @@ swallowing the error.
 
 **Your phone number is deliberately not on the site.** It is on your CV, which
 is a document you hand to specific people; a website publishes it to scrapers.
-If you want it anyway, add a `.detail` block to `contact.html` alongside the
-others.
+If you want it anyway, add a `.detail` block to the `#contact` section alongside
+the others.
 
 ---
 
@@ -554,7 +622,9 @@ one string `links.cv` points at. Nothing in the code needs to change.
 
 **Add a nav item**
 → `assets/js/config.js`, the `nav` array. Then create the page and set
-`<body data-page="yourfile">` so the item highlights.
+`<body data-page="yourfile">` so the item highlights. Before you do: the nav is
+capped at four on purpose (see *Information architecture* in §2). If a fifth
+genuinely belongs, something else should stop being a destination.
 
 **Add a project**
 → Copy an `<article class="card">` in `projects.html`. Set `data-tags` to one or
@@ -621,7 +691,7 @@ Built in, and worth not regressing:
   gives *every* page a scrollbar. The hero wash is deliberately flush with the
   hero's edges for this reason.
 - Zero runtime dependencies. The only third-party requests are Google Fonts,
-  EmailJS on the contact page, and giscus on post pages.
+  EmailJS on the about page (for the contact form), and giscus on post pages.
 
 ### The one heavy asset
 
@@ -661,7 +731,7 @@ anywhere else. `npm run audit` checks for it.
 ### Before pushing, worth a quick pass
 
 - `npm run audit` — catches the whole class of "works locally, breaks live".
-- Serve locally and click through all six pages.
+- Serve locally and click through all five pages, plus the two redirect stubs.
 - Open one blog post and check the TOC, the pager, and the comment panel.
 - Toggle light/dark on at least one page.
 - Narrow the window to phone width and open the menu.

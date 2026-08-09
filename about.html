@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>About — Htet Myat Aung</title>
-    <meta name="description" content="Htet Myat Aung — BSc Computer Science (AI) at Royal Holloway, undergraduate research fellow at the DICE Lab, working on mechanistic interpretability and neurosymbolic AI.">
+    <title>About &amp; contact — Htet Myat Aung</title>
+    <meta name="description" content="Htet Myat Aung — BSc Computer Science (AI) at Royal Holloway, undergraduate research fellow at the DICE Lab, working on mechanistic interpretability and neurosymbolic AI. Contact details and a message form.">
     <meta name="author" content="Htet Myat Aung">
     <link rel="canonical" href="https://htetmyataung.uk/about.html">
 
     <meta property="og:type" content="profile">
-    <meta property="og:title" content="About — Htet Myat Aung">
+    <meta property="og:title" content="About &amp; contact — Htet Myat Aung">
     <meta property="og:description" content="Mechanistic interpretability and neurosymbolic AI at Royal Holloway's DICE Lab.">
     <meta property="og:url" content="https://htetmyataung.uk/about.html">
     <meta property="og:image" content="https://htetmyataung.uk/assets/media/portrait.png">
@@ -48,7 +48,7 @@
         <section class="hero hero--compact">
             <div class="container hero__inner">
                 <div class="hero__content">
-                    <p class="eyebrow">About</p>
+                    <p class="eyebrow">About &amp; contact</p>
                     <h1 class="hero__name">Careful experiments, honest harnesses</h1>
                     <p class="lede">
                         I am an undergraduate researcher interested in what language models actually
@@ -62,32 +62,15 @@
         <div class="container section--tight">
             <div class="about-layout">
 
-                <!-- ===== Sidebar ============================================ -->
+                <!-- ===== Sidebar ============================================
+                     No stat grid here: the same numbers lead the home page, and
+                     the ones worth repeating are already in the prose below.
+                     hrefs come from config.js via links.js. -->
                 <aside class="about-aside">
                     <img class="about-aside__photo" src="assets/media/portrait.png" alt="Htet Myat Aung" width="272" height="272">
 
-                    <div class="fact-grid">
-                        <div class="fact">
-                            <span class="fact__value">74%</span>
-                            <span class="fact__label">Year 1 average</span>
-                        </div>
-                        <div class="fact">
-                            <span class="fact__value">94%</span>
-                            <span class="fact__label">Maths methods</span>
-                        </div>
-                        <div class="fact">
-                            <span class="fact__value">8 / 30+</span>
-                            <span class="fact__label">UROP selection</span>
-                        </div>
-                        <div class="fact">
-                            <span class="fact__value">Mensa</span>
-                            <span class="fact__label">Member</span>
-                        </div>
-                    </div>
-
-                    <!-- hrefs come from config.js via links.js -->
                     <div class="stack stack--sm">
-                        <a class="btn btn--primary btn--block" href="contact.html">Get in touch</a>
+                        <a class="btn btn--primary btn--block" href="#contact">Get in touch</a>
                         <a class="btn btn--ghost btn--block" data-link="cv">Download CV</a>
                         <a class="btn btn--ghost btn--block" data-link="github">GitHub</a>
                         <a class="btn btn--ghost btn--block" data-link="linkedin">LinkedIn</a>
@@ -222,25 +205,117 @@
                         </ul>
                     </section>
 
-                    <div class="cta reveal">
-                        <p class="eyebrow">Next</p>
-                        <h2>Read the research</h2>
-                        <p class="cta__body">
-                            Method, findings, and the two bugs that changed the headline result.
-                        </p>
-                        <div class="row">
-                            <a class="btn btn--primary" href="research.html">Research &amp; experience</a>
-                            <a class="btn btn--ghost" href="projects.html">Projects</a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
 
+        <!-- ===== Contact =====================================================
+             Contact used to be a page of its own. It is a section here instead:
+             anyone who wants to get in touch has just read who you are, and the
+             sidebar's "Get in touch" scrolls them straight to it. Old links to
+             contact.html redirect to this anchor. -->
+        <section class="section--tight" id="contact">
+            <div class="container">
+                <div class="section-head">
+                    <div class="stack stack--sm">
+                        <p class="eyebrow">Contact</p>
+                        <h2>Get in touch</h2>
+                    </div>
+                    <p class="section-head__lede">
+                        Research collaborations, Summer 2027 internships, or a question about
+                        something on this site — all equally welcome. Usually a reply within 24 hours.
+                    </p>
+                </div>
+
+                <div class="contact-layout">
+
+                    <form class="form" id="contact-form" novalidate>
+                        <div class="field">
+                            <label class="field__label" for="field-name">Name</label>
+                            <input class="field__control" id="field-name" name="name" type="text"
+                                   placeholder="Your name" autocomplete="name">
+                            <span class="field__error" data-error-for="name" role="alert"></span>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" for="field-email">Email</label>
+                            <input class="field__control" id="field-email" name="email" type="email"
+                                   placeholder="you@example.com" autocomplete="email">
+                            <span class="field__error" data-error-for="email" role="alert"></span>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" for="field-subject">Subject</label>
+                            <select class="field__control" id="field-subject" name="subject">
+                                <option value="">Choose a subject</option>
+                                <option value="Research collaboration">Research collaboration</option>
+                                <option value="Internship or research opportunity">Internship or research opportunity</option>
+                                <option value="Question about a post">Question about a post</option>
+                                <option value="Something else">Something else</option>
+                            </select>
+                            <span class="field__error" data-error-for="subject" role="alert"></span>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label" for="field-message">Message</label>
+                            <textarea class="field__control" id="field-message" name="message" rows="6"
+                                      placeholder="What are you working on?"></textarea>
+                            <span class="field__error" data-error-for="message" role="alert"></span>
+                        </div>
+
+                        <button class="btn btn--primary" type="submit">Send message</button>
+
+                        <p class="form-status" id="form-status" role="status" hidden></p>
+                    </form>
+
+                    <aside class="contact-aside">
+                        <div class="detail-list">
+                            <div class="detail">
+                                <span class="detail__label">Email</span>
+                                <span class="detail__value">
+                                    <a class="link" data-link="email">henry.htetmyataung@gmail.com</a>
+                                    <button class="btn btn--ghost btn--sm copy-btn" type="button"
+                                            data-copy="henry.htetmyataung@gmail.com">
+                                        <span class="copy-btn__idle">Copy</span>
+                                        <span class="copy-btn__done">Copied</span>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <div class="detail">
+                                <span class="detail__label">Based in</span>
+                                <span class="detail__value">Egham, Surrey — 40 minutes from central London</span>
+                            </div>
+
+                            <div class="detail">
+                                <span class="detail__label">Looking for</span>
+                                <span class="detail__value">
+                                    Summer 2027 research internships in interpretability, neurosymbolic
+                                    reasoning, or evaluation.
+                                </span>
+                            </div>
+
+                            <div class="detail">
+                                <span class="detail__label">Not looking for</span>
+                                <span class="detail__value">
+                                    Unpaid full-time work, or anything that would conflict with the
+                                    independence of my university research.
+                                </span>
+                            </div>
+                        </div>
+                    </aside>
+
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="site-footer" data-site-footer></footer>
+
+    <!-- EmailJS lets a static page send mail without a backend. Loaded before
+         the module so window.emailjs exists by the time the form submits. -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="module" src="assets/js/pages/about.js"></script>
 </body>
 </html>

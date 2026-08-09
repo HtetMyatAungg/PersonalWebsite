@@ -203,6 +203,13 @@
     color: var(--text-subtle);
 }
 
+/* The brand is the home link, so on the home page it is the current page.
+   Marked with the accent ring rather than an underline: it reads as "you are
+   here" without competing with the active nav item's underline elsewhere. */
+.brand[aria-current="page"] .brand__avatar {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--accent);
+}
+
 .site-nav {
     display: flex;
     align-items: center;
