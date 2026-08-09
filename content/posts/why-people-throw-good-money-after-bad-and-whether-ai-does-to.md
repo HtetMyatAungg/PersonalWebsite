@@ -2,7 +2,7 @@
 title: Why people throw good money after bad (and whether AI does too)
 date: 2026-08-09
 tags: [Interpretability]
-summary: One or two sentences. This is what shows on the index and in link previews.
+summary: LLMs shows escalation of commitment under social multiagent peer settings.
 draft: false
 ---
 
