@@ -8,6 +8,7 @@
         "dev": "node scripts/build-posts.mjs && node scripts/serve.mjs",
         "new": "node scripts/new-post.mjs",
         "posts": "node scripts/build-posts.mjs",
+        "audit": "node scripts/audit.mjs",
         "check:comments": "node scripts/check-comments.mjs"
     },
     "engines": {

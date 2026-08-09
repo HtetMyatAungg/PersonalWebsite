@@ -110,10 +110,13 @@ The design goals, in priority order:
 │   ├── posts.json        GENERATED index — rebuilt by `npm run posts`
 │   └── posts/*.md        One file per post: frontmatter + body
 │
+├── .nojekyll             LOAD-BEARING. Stops Pages mangling content/posts/*.md
+│
 ├── scripts/              Authoring tools. Plain Node, zero dependencies.
 │   ├── new-post.mjs      `npm run new "Title"`
 │   ├── build-posts.mjs   `npm run posts`   regenerates the manifest
 │   ├── serve.mjs         `npm run dev`     local preview server
+│   ├── audit.mjs         `npm run audit`   pre-push checks
 │   └── check-comments.mjs `npm run check:comments`
 │
 ├── package.json          Script shortcuts only. No dependencies.
@@ -133,7 +136,8 @@ reads → the `.html` file or a `.md` post.
 npm run dev              # rebuild the post manifest, then serve on :8000
 npm run new "A title"    # scaffold a new post
 npm run posts            # rebuild the post manifest only
-npm run check:comments   # what is left to switch comments on
+npm run audit            # pre-push check: broken links, missing .nojekyll, stale manifest
+npm run check:comments   # whether comments are switched on
 ```
 
 **There is nothing to install.** `package.json` has no dependencies — the
@@ -630,12 +634,33 @@ unlisted and swap the `<video>` in `projects.html` for an iframe.
 
 ## 15. Deployment
 
-GitHub Pages serves the `main` branch of `HtetMyatAungg/PersonalWebsite`.
-`CNAME` points it at `htetmyataung.uk`. Push to `main` and it is live in about a
-minute. There is nothing to build.
+GitHub Pages serves the branch that `htetmyataung.uk` is pointed at via `CNAME`.
+Push and it is live in about a minute. There is nothing to build.
 
-Before pushing, worth a quick pass:
+### `.nojekyll` is load-bearing — do not delete it
 
+The empty `.nojekyll` file in the repository root is what keeps the blog
+working. Without it, GitHub Pages runs Jekyll over the repo, and Jekyll treats
+every `.md` file as a page to *convert*: it publishes
+`content/posts/my-post.html` and does **not** publish the raw
+`content/posts/my-post.md`.
+
+`post.js` fetches the `.md`, so the symptom is a blog that works perfectly on
+`npm run dev` and then, live, shows:
+
+```
+Could not load this post
+Could not load content/posts/my-post.md (404)
+```
+
+Confusingly, `content/posts.json` keeps working — Jekyll leaves `.json` alone —
+so the index lists every post correctly and only the post pages break. If you
+ever see that error, check `.nojekyll` exists at the root before looking
+anywhere else. `npm run audit` checks for it.
+
+### Before pushing, worth a quick pass
+
+- `npm run audit` — catches the whole class of "works locally, breaks live".
 - Serve locally and click through all six pages.
 - Open one blog post and check the TOC, the pager, and the comment panel.
 - Toggle light/dark on at least one page.
