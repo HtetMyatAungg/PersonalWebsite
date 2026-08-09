@@ -9,8 +9,9 @@
 import "../site.js";
 import { site } from "../config.js";
 import { loadPosts, loadPostBody, formatDate } from "../modules/posts.js";
+import { parseFrontmatter } from "../modules/frontmatter.js";
 import { renderMarkdown, extractHeadings, readingMinutes } from "../modules/markdown.js";
-import { initComments } from "../modules/comments.js";
+import { initComments } from "../modules/comments/index.js";
 
 const dom = {
     header: document.querySelector("[data-post-header]"),
@@ -155,14 +156,17 @@ async function render() {
         }
 
         const post = posts[index];
-        const markdown = await loadPostBody(slug);
+
+        /* The file carries its own frontmatter; the manifest was generated from
+           it. Strip the block so it is not rendered as body text. */
+        const { body: markdown } = parseFrontmatter(await loadPostBody(slug));
 
         renderHeader(post, post.minutes || readingMinutes(markdown));
         dom.body.innerHTML = renderMarkdown(markdown);
         renderToc(markdown);
         renderPager(posts, index);
         initReadingProgress();
-        initComments(dom.comments, post.title);
+        initComments(dom.comments, post);
 
         /* Jump to a #hash target now that the content it points at exists. */
         if (location.hash) {

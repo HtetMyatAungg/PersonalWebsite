@@ -1,0 +1,54 @@
+name: Rebuild post manifest
+
+# Keeps content/posts.json in sync with the Markdown files.
+#
+# This exists so you can add a post from anywhere — including GitHub's web
+# editor on a phone — without running anything locally. Commit a .md file and
+# the manifest updates itself a few seconds later.
+#
+# The manifest stays committed to the repo: GitHub Pages serves the repository
+# as-is, so the site itself never depends on this workflow having run.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/posts/**.md"
+      - "scripts/build-posts.mjs"
+      - "assets/js/modules/frontmatter.js"
+      - "assets/js/modules/markdown.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: post-manifest
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Fails the run if a post is missing required frontmatter, so a broken
+      # post is caught here rather than showing up empty on the live site.
+      - name: Rebuild manifest
+        run: node scripts/build-posts.mjs
+
+      - name: Commit if it changed
+        run: |
+          if git diff --quiet -- content/posts.json; then
+            echo "Manifest already up to date."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/posts.json
+          git commit -m "Rebuild post manifest [skip ci]"
+          git push

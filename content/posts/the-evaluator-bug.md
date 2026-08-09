@@ -1,3 +1,11 @@
+---
+title: The bug that was quietly zeroing my best results
+date: 2026-07-14
+tags: [Evaluation, Engineering]
+summary: An evaluator that failed asymmetrically, in the direction of the hypothesis. What it cost, and the fixtures that would have caught it on day one.
+draft: false
+---
+
 The result I was about to write up was wrong, and it was wrong in the most
 flattering direction possible: my evaluator was giving zero to precisely the
 outputs the study was designed to reward.

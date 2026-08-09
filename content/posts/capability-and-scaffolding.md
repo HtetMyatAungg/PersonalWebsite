@@ -1,3 +1,11 @@
+---
+title: Capability sets the ceiling; scaffolding decides whether you reach it
+date: 2026-08-02
+tags: [Interpretability, LLMs, Evaluation]
+summary: Nine models across four prompt conditions, and why the interaction between the two is the finding rather than the league table.
+draft: false
+---
+
 Run nine models across four prompt conditions and the tempting summary is a
 league table: these models are good at autoformalization, those are not. The
 data does not support that summary, and the reason is more interesting than the

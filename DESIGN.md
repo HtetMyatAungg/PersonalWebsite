@@ -25,10 +25,14 @@ blog post.
 
 ## 1. What this site is
 
-A static personal research site. **No framework, no build step, no npm
-install.** Every file that exists in the repository is a file the browser
-downloads. You edit HTML/CSS/JS, commit, and GitHub Pages serves it at
-`htetmyataung.uk`.
+A static personal research site. **No framework, no bundler, no dependencies to
+install.** Every file in the repository is a file the browser downloads. You
+edit HTML/CSS/JS, commit, and GitHub Pages serves it at `htetmyataung.uk`.
+
+There are a few Node scripts in `scripts/`, but they are authoring conveniences,
+not a build step: they generate the blog index from your post files and commit
+it. Delete them and the site still works exactly as it does now — you would just
+be maintaining `content/posts.json` by hand again.
 
 The design goals, in priority order:
 
@@ -90,7 +94,8 @@ The design goals, in priority order:
 │   │   │   ├── posts.js      Reads content/, formats dates
 │   │   │   ├── post-card.js  The one post-summary markup
 │   │   │   ├── markdown.js   Markdown -> HTML renderer
-│   │   │   └── comments.js   giscus mounting + fallback
+│   │   │   ├── frontmatter.js Reads the metadata block atop each post
+│   │   │   └── comments/     Comment providers (see its README)
 │   │   └── pages/
 │   │       ├── home.js       Marquee + latest posts
 │   │       ├── about.js      Skill groups
@@ -101,9 +106,19 @@ The design goals, in priority order:
 │   │
 │   └── media/            Images and the demo video
 │
-└── content/
-    ├── posts.json        The post manifest (index metadata)
-    └── posts/*.md        One Markdown file per post
+├── content/
+│   ├── posts.json        GENERATED index — rebuilt by `npm run posts`
+│   └── posts/*.md        One file per post: frontmatter + body
+│
+├── scripts/              Authoring tools. Plain Node, zero dependencies.
+│   ├── new-post.mjs      `npm run new "Title"`
+│   ├── build-posts.mjs   `npm run posts`   regenerates the manifest
+│   ├── serve.mjs         `npm run dev`     local preview server
+│   └── check-comments.mjs `npm run check:comments`
+│
+├── package.json          Script shortcuts only. No dependencies.
+└── .github/workflows/
+    └── posts.yml         Rebuilds the manifest when a post is pushed
 ```
 
 **Rule of thumb for "where does this go?":** data → `config.js`; how something
@@ -114,18 +129,21 @@ reads → the `.html` file or a `.md` post.
 
 ## 3. Local development
 
-`fetch()` refuses to read files over `file://`, and the blog uses `fetch()` to
-load posts. **Opening `index.html` by double-clicking will leave the blog
-empty.** Serve the folder over HTTP instead:
-
 ```bash
-# From the repository root — pick whichever you have
-python -m http.server 8000
-npx serve .
+npm run dev              # rebuild the post manifest, then serve on :8000
+npm run new "A title"    # scaffold a new post
+npm run posts            # rebuild the post manifest only
+npm run check:comments   # what is left to switch comments on
 ```
 
-Then open <http://localhost:8000>. Every other page works fine either way; only
-the blog needs the server.
+**There is nothing to install.** `package.json` has no dependencies — the
+scripts are plain Node (18+) and the site itself has no build step. `npm run`
+is just a shorter way to type `node scripts/…`.
+
+Why a server is needed at all: `fetch()` refuses to read files over `file://`,
+and the blog loads posts with `fetch()`. **Opening `index.html` by
+double-clicking will leave the blog empty.** Every other page works fine either
+way; only the blog needs `npm run dev`.
 
 ---
 
@@ -324,43 +342,81 @@ page *content* is all in the HTML.
 ### Content model
 
 ```
-content/posts.json         array of metadata, one object per post
-content/posts/<slug>.md    the body of that post
+content/posts/<slug>.md    a post: frontmatter block + body
+content/posts.json         GENERATED index — do not hand-edit
 ```
 
-`blog.html` reads only the manifest, so listing all posts costs one request.
-`post.html?p=<slug>` reads the manifest plus that one `.md` file.
+Each post carries its own metadata at the top of the file, and
+`content/posts.json` is derived from those files by `npm run posts`. **Writing a
+post means creating one file.**
 
-### Adding a post
+The manifest is still committed to the repository, because `blog.html` needs to
+list every post in one request rather than fetching each `.md`. It is generated,
+not authored — if you edit it by hand, the next build will overwrite you.
 
-1. Create `content/posts/my-new-post.md`. Write the body **without** a title
-   heading — the title comes from the manifest and is rendered as the `<h1>`.
-   Start section headings at `##`.
-2. Add an entry to the **top** of `content/posts.json`:
+### Writing a post
 
-```json
-{
-    "slug": "my-new-post",
-    "title": "The title, in sentence case",
-    "date": "2026-09-01",
-    "minutes": 4,
-    "summary": "One or two sentences. This is what shows on the index and in link previews.",
-    "tags": ["Interpretability", "Evaluation"]
-}
+```bash
+npm run new "A rule and a lookup table look identical"
+npm run dev
 ```
 
-3. That is the whole process. The tag chips, the search index, the home-page
-   "Research notes" block, and the prev/next pager all update themselves.
+The first command creates `content/posts/a-rule-and-a-lookup-table-look-identical.md`
+with the frontmatter filled in and today's date, and rebuilds the manifest. The
+second serves the site so you can watch it as you write — save, refresh.
 
-Field notes:
+Then commit. The tag chips, the search index, the home-page "Research notes"
+block, the prev/next pager, and the reading time all follow automatically.
 
-- `slug` **must** match the filename without `.md`.
-- `date` is ISO `YYYY-MM-DD`; posts sort newest-first automatically.
-- `minutes` is shown on the index. If you omit it, the post page computes the
-  real figure from the body at 220 words per minute.
-- `tags` are display strings. They are lower-cased and hyphenated for the URL,
-  so `"Interpretability"` becomes `?tag=interpretability`.
-- Add `"draft": true` to keep a post in the repository but off the site.
+Add `-- --draft` to start it hidden:
+
+```bash
+npm run new "Half-formed thought" -- --draft
+```
+
+### The frontmatter block
+
+```markdown
+---
+title: The bug that was quietly zeroing my best results
+date: 2026-07-14
+tags: [Evaluation, Engineering]
+summary: One or two sentences. This is what shows on the index and in previews.
+draft: false
+---
+
+The body starts here.
+```
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| `title` | yes | Rendered as the page `<h1>`. Do **not** repeat it as a `#` heading in the body — the build rejects that. |
+| `date` | yes | `YYYY-MM-DD`. Posts sort newest-first automatically. |
+| `summary` | yes | Shown on the index and used as the meta description. |
+| `tags` | no | `[A, B]`. Display strings; lower-cased and hyphenated for the URL, so `Interpretability` becomes `?tag=interpretability`. New tags create their own chip. |
+| `draft` | no | `true` keeps the post in the repository but off the site entirely — it does not appear on the index and its URL returns "Post not found". |
+
+The `slug` is the filename, and reading time is computed from the body at 220
+words per minute. Neither is something you write.
+
+Section headings start at `##`. Anything at `##` or `###` is picked up into the
+table of contents.
+
+### Writing a post from a phone or a borrowed laptop
+
+Add a `.md` file through GitHub's web editor, frontmatter included, and commit
+it. `.github/workflows/posts.yml` rebuilds `content/posts.json` and commits it a
+few seconds later. Nothing to install, nothing to run.
+
+That workflow also fails loudly if a post is missing required frontmatter, so a
+broken post is caught in Actions rather than appearing blank on the live site.
+
+### Validation
+
+`npm run posts` refuses to write a manifest and explains itself if a post is
+missing `title`, `date`, or `summary`; has a malformed date; has an empty body;
+or starts a heading with a single `#`. It writes nothing when it fails, so a bad
+post can never half-publish.
 
 ### Filtering
 
@@ -399,36 +455,66 @@ Comments are **GitHub Discussions**, surfaced through
 sign in with GitHub, you moderate from the repository, and every thread is
 portable data you own.
 
-### Turning them on (four steps, about five minutes)
+### Architecture
 
-1. In `HtetMyatAungg/PersonalWebsite` → **Settings → General → Features**, tick
-   **Discussions**.
-2. In **Discussions → Categories**, create a category called
-   **`Blog comments`**. Choose the **Announcement** format so only you can open
-   new threads — giscus creates them on demand.
-3. Install the [giscus GitHub App](https://github.com/apps/giscus) and grant it
-   access to this repository.
-4. Go to <https://giscus.app>, enter the repository, and it prints a
-   `data-repo-id` and a `data-category-id`. Paste both into
-   `assets/js/config.js`:
+The backend sits behind a provider interface, so it can be replaced without
+touching a single page or stylesheet:
 
-```js
-export const comments = {
-    repo: "HtetMyatAungg/PersonalWebsite",
-    repoId: "R_kgDO...",          // <- from giscus.app
-    category: "Blog comments",
-    categoryId: "DIC_kwDO...",    // <- from giscus.app
-    mapping: "pathname",
-    lang: "en",
-};
+```
+assets/js/modules/comments/
+├── index.js     resolves comments.provider from config, falls back if it declines
+├── giscus.js    GitHub Discussions            (active)
+├── fallback.js  the panel shown when nothing mounts
+└── README.md    the provider contract, and how to add one
 ```
 
-Until those two IDs are filled in, every post shows a tidy fallback panel
-pointing at Discussions and your email, rather than a broken widget. That is
-intentional — the site is presentable in either state.
+`post.js` only ever calls `initComments(mount, post)`. It does not know which
+backend is in use. Swapping to a self-hosted API later means adding one file and
+changing one string — see that README.
 
-The widget follows your light/dark toggle: `comments.js` listens for the
-`themechange` event and posts a `setConfig` message into the giscus iframe.
+### Turning them on
+
+Run this first; it tells you exactly what is outstanding and stops you guessing:
+
+```bash
+npm run check:comments
+```
+
+The remaining steps, all of which need a browser:
+
+1. **Enable Discussions** — repo **Settings → General → Features → Discussions**.
+2. **Install the [giscus app](https://github.com/apps/giscus)** on this repository.
+3. **Get the category ID** — go to <https://giscus.app>, enter
+   `HtetMyatAungg/PersonalWebsite`, pick the **Announcements** category, and copy
+   the `data-category-id` it prints into `comments.categoryId` in
+   `assets/js/config.js`.
+
+`repoId` is already filled in (`R_kgDOR5KqEw`, the repository's GraphQL node ID,
+which `check:comments` re-verifies against the live repo in case you ever fork or
+rename).
+
+**Announcements** is the right category because only you can start threads in
+it; giscus opens one per post on demand. If you would rather have a dedicated
+category, create it under **Discussions → Categories**, use the Announcement
+format, and update both `category` and `categoryId`.
+
+Until `categoryId` is set, every post shows a tidy fallback panel naming the
+missing key and pointing readers at Discussions and your email. That is
+deliberate — the site is presentable in either state, and you will never ship a
+broken widget.
+
+### Notes
+
+- The widget follows the site's light/dark toggle: `giscus.js` listens for the
+  `themechange` event and posts a `setConfig` message into the iframe.
+- Threads are matched by URL path (`mapping: "pathname"`), so a post keeps its
+  comments as long as its slug does not change. **Renaming a post's file orphans
+  its thread** — the old discussion survives on GitHub but no longer appears on
+  the page.
+- Moderation is just GitHub: edit, delete, lock, or block from the discussion.
+- The honest limitation: **commenters need a GitHub account.** That suits
+  researchers and is a real barrier for everyone else. If reach matters more
+  than zero maintenance later, the provider seam is there for exactly that.
 
 ---
 
@@ -565,16 +651,15 @@ Honest list, roughly in order of value:
    accurate to what your CV states and contain no invented results, but they are
    in a voice someone else chose. Read them and rewrite anything that does not
    sound like you before you send this link to anyone.
-2. **Comments are not switched on yet** — see §10. Four steps.
-3. **There is no RSS feed.** Researchers do still use them. It would be a small
+2. **There is no RSS feed.** Researchers do still use them. It would be a small
    script that turns `posts.json` into `feed.xml`.
-4. **`post.html?p=slug` is not the prettiest URL,** and link previews for
+3. **`post.html?p=slug` is not the prettiest URL,** and link previews for
    individual posts fall back to the generic description because the meta tags
    are set by JavaScript. Real per-post URLs and previews would need either one
    HTML file per post or a small generator script.
-5. **No sitemap.xml or robots.txt.** Both are two-minute additions and help
+4. **No sitemap.xml or robots.txt.** Both are two-minute additions and help
    indexing.
-6. **The CV is now committed to the repository** as `HtetMyatAung-CV.pdf`,
+5. **The CV is now committed to the repository** as `HtetMyatAung-CV.pdf`,
    replacing the two inconsistent Google Drive links the old site used. It
    serves from `htetmyataung.uk/HtetMyatAung-CV.pdf`, so remember it is a
    *public* file — anything you would not want indexed should not be in it.

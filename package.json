@@ -1,0 +1,16 @@
+{
+    "name": "htetmyataung-site",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "Personal research site for Htet Myat Aung. Static, no framework, no build step — these scripts are authoring conveniences only.",
+    "scripts": {
+        "dev": "node scripts/build-posts.mjs && node scripts/serve.mjs",
+        "new": "node scripts/new-post.mjs",
+        "posts": "node scripts/build-posts.mjs",
+        "check:comments": "node scripts/check-comments.mjs"
+    },
+    "engines": {
+        "node": ">=18"
+    }
+}

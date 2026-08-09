@@ -5,7 +5,11 @@
         "date": "2026-08-02",
         "minutes": 3,
         "summary": "Nine models across four prompt conditions, and why the interaction between the two is the finding rather than the league table.",
-        "tags": ["Interpretability", "LLMs", "Evaluation"]
+        "tags": [
+            "Interpretability",
+            "LLMs",
+            "Evaluation"
+        ]
     },
     {
         "slug": "rule-or-lookup-table",
@@ -13,7 +17,11 @@
         "date": "2026-07-28",
         "minutes": 3,
         "summary": "Why symbolic scoring is not enough on its own, and how sweeping grid size turns an unanswerable question into a measurable one.",
-        "tags": ["Autoformalization", "Evaluation", "Interpretability"]
+        "tags": [
+            "Autoformalization",
+            "Evaluation",
+            "Interpretability"
+        ]
     },
     {
         "slug": "the-evaluator-bug",
@@ -21,7 +29,10 @@
         "date": "2026-07-14",
         "minutes": 3,
         "summary": "An evaluator that failed asymmetrically, in the direction of the hypothesis. What it cost, and the fixtures that would have caught it on day one.",
-        "tags": ["Evaluation", "Engineering"]
+        "tags": [
+            "Evaluation",
+            "Engineering"
+        ]
     },
     {
         "slug": "single-variable-prompt-conditions",
@@ -29,7 +40,11 @@
         "date": "2026-06-30",
         "minutes": 3,
         "summary": "Four conditions are only four data points if each differs from its neighbour in exactly one respect. A composition table, and the confound it caught.",
-        "tags": ["Methodology", "Evaluation", "LLMs"]
+        "tags": [
+            "Methodology",
+            "Evaluation",
+            "LLMs"
+        ]
     },
     {
         "slug": "micrograd-from-scratch",
@@ -37,6 +52,9 @@
         "date": "2026-06-12",
         "minutes": 3,
         "summary": "Behavioural evaluation can say what a model does but never why. Building back up from scalar autograd toward transformer internals.",
-        "tags": ["Interpretability", "Learning"]
+        "tags": [
+            "Interpretability",
+            "Learning"
+        ]
     }
 ]

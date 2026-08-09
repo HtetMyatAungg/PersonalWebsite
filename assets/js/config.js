@@ -75,18 +75,26 @@ export const emailService = {
 };
 
 /**
- * Blog comments, backed by GitHub Discussions through giscus.
+ * Blog comments.
  *
- * repoId and categoryId are issued by https://giscus.app — paste them in and
- * comments go live. Until then the post page shows a graceful fallback that
- * points readers at GitHub Discussions and email. See DESIGN.md → Comments.
+ * `provider` selects the backend; the available names are the keys registered
+ * in assets/js/modules/comments/index.js. Everything below it is that
+ * provider's own configuration.
+ *
+ * giscus stores each thread as a GitHub Discussion on this repository.
+ * `repoId` is the repository's GraphQL node ID (already filled in).
+ * `categoryId` comes from https://giscus.app once Discussions is enabled and
+ * the giscus app is installed — run `npm run check:comments` for the current
+ * status and the exact remaining steps.
  */
 export const comments = {
+    provider: "giscus",
+
     repo: "HtetMyatAungg/PersonalWebsite",
-    repoId: "",
-    category: "Blog comments",
-    categoryId: "",
-    /** "pathname" maps one discussion thread per post URL. */
+    repoId: "R_kgDOR5KqEw",
+    category: "Announcements",
+    categoryId: "DIC_kwDOR5KqE84DC96l",
+    /** "pathname" gives one discussion thread per post URL. */
     mapping: "pathname",
     lang: "en",
 };

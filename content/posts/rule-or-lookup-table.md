@@ -1,3 +1,11 @@
+---
+title: A rule and a lookup table look identical on a small grid
+date: 2026-07-28
+tags: [Autoformalization, Evaluation, Interpretability]
+summary: Why symbolic scoring is not enough on its own, and how sweeping grid size turns an unanswerable question into a measurable one.
+draft: false
+---
+
 A boundary wall in a grid world can be described two ways, and for a long time
 my evaluation could not tell them apart.
 

@@ -1,3 +1,11 @@
+---
+title: Reimplementing micrograd, and what it is groundwork for
+date: 2026-06-12
+tags: [Interpretability, Learning]
+summary: Behavioural evaluation can say what a model does but never why. Building back up from scalar autograd toward transformer internals.
+draft: false
+---
+
 I spend most of my research time treating language models as black boxes:
 prompt in, artefact out, symbolic evaluator in between. That is a legitimate way
 to work, and it has a ceiling I keep bumping into.
