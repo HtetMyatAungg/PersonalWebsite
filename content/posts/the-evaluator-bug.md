@@ -12,8 +12,8 @@ outputs the study was designed to reward.
 
 ## How it surfaced
 
-I was reading through raw model outputs — not scores, the actual generated
-Prolog — because the aggregate numbers had settled into a story I liked. That
+I was reading through raw model outputs--not scores, the actual generated
+Prolog--because the aggregate numbers had settled into a story I liked. That
 should have been the first warning.
 
 One output was a clean, general, obviously correct boundary rule. Exactly the
@@ -58,7 +58,7 @@ hand-written fixtures before it is allowed near model output:
   marks. This is the one that would have caught the bug on day one.
 - A hand-written **pure enumeration**, which must score correctly at small N and
   must decay as N grows.
-- A **deliberately broken** knowledge base — inconsistent, incomplete — which
+- A **deliberately broken** knowledge base, inconsistent, incomplete, which
   must fail, and fail on the specific constraints it violates rather than
   generically.
 
@@ -82,6 +82,6 @@ Three things, in order of how much time they would have saved.
    pre-patch results understated abstraction across every condition" is
    something a reader can actually evaluate.
 
-The second bug in this project was a prompt confound — one condition varying two
+The second bug in this project was a prompt confound; one condition varying two
 things at once, so any effect could not be attributed to either. Different
 failure, same root cause: I checked the results before I checked the instrument.
