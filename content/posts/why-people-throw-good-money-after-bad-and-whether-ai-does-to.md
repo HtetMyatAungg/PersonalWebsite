@@ -1,7 +1,7 @@
 ---
 title: Why people throw good money after bad (and whether AI does too)
 date: 2026-08-09
-tags: [Interpretability]
+tags: [AI safety] [Behavioral AI]
 summary: LLMs shows escalation of commitment under social multiagent peer settings.
 draft: false
 ---
