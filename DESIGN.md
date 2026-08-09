@@ -61,15 +61,19 @@ The design goals, in priority order:
 
 ```
 /
-├── index.html            Home
-├── research.html         Research + positions (the flagship page)
-├── projects.html         Filterable project grid + MyanPay demo video
-├── blog.html             Post index with tag filter and search
-├── about.html            Biography, education, skills, service, CONTACT FORM
-├── post.html             Renders ANY single post: post.html?p=<slug>
-├── 404.html              Not-found page
-├── contact.html          Redirect stub -> about.html#contact
-├── experience.html       Redirect stub -> research.html
+├── index.html            Home, served at /
+├── research/index.html   Research + positions (the flagship page)  ->  /research/
+├── projects/index.html   Filterable project grid + MyanPay demo    ->  /projects/
+├── writing/index.html    Post index with tag filter and search     ->  /writing/
+├── writing/<slug>/       GENERATED, one folder per post             ->  /writing/<slug>/
+├── about/index.html      Bio, education, skills, service, CONTACT   ->  /about/
+├── post.html             Template the generator copies + a ?p= redirect stub
+├── 404.html              Not-found page (GitHub Pages finds it by name)
+│
+│   Redirect stubs — old URLs that are on CVs already sent out:
+├── research.html  projects.html  about.html  blog.html
+├── contact.html          -> /about/#contact
+├── experience.html       -> /research/
 ├── HtetMyatAung-CV.pdf   The CV every "Download CV" link points at
 ├── CNAME                 Custom domain for GitHub Pages
 ├── DESIGN.md             This file
@@ -101,7 +105,7 @@ The design goals, in priority order:
 │   │       ├── home.js       Marquee + latest posts
 │   │       ├── about.js      Skill groups + contact form
 │   │       ├── projects.js   Filter bar + demo video
-│   │       ├── blog.js       Post list + tag chips
+│   │       ├── writing.js    Post list + tag chips
 │   │       └── post.js       Single post, TOC, pager, comments
 │   │
 │   └── media/            Images and the demo video
@@ -114,14 +118,14 @@ The design goals, in priority order:
 │
 ├── scripts/              Authoring tools. Plain Node, zero dependencies.
 │   ├── new-post.mjs      `npm run new "Title"`
-│   ├── build-posts.mjs   `npm run posts`   regenerates the manifest
+│   ├── build-posts.mjs   `npm run posts`   manifest + writing/<slug>/ pages
 │   ├── serve.mjs         `npm run dev`     local preview server
 │   ├── audit.mjs         `npm run audit`   pre-push checks
 │   └── check-comments.mjs `npm run check:comments`
 │
 ├── package.json          Script shortcuts only. No dependencies.
 └── .github/workflows/
-    └── posts.yml         Rebuilds the manifest when a post is pushed
+    └── posts.yml         Rebuilds the manifest and pages when a post is pushed
 ```
 
 **Rule of thumb for "where does this go?":** data → `config.js`; how something
@@ -152,9 +156,9 @@ had one obvious next step, so every page offered five.
 
 1. **One fact, one home.** If something appears on two pages, one of them is
    wrong. The home page *teases* the research (two findings, one link);
-   `research.html` *delivers* it (four findings, the method, the corrections).
-   Positions live on `research.html`; societies and awards live on `about.html`.
-   MyanPay is the featured block on `projects.html` and is not also a card in the
+   `/research/` *delivers* it (four findings, the method, the corrections).
+   Positions live on `/research/`; societies and awards live on `/about/`.
+   MyanPay is the featured block on `/projects/` and is not also a card in the
    grid below it.
 2. **One primary action per section.** A `.cta` panel or `hero__actions` row gets
    one `.btn--primary`, optionally one `.btn--ghost` beside it. Three buttons
@@ -166,50 +170,90 @@ had one obvious next step, so every page offered five.
 The CV button sits in the header on every page, so no page body needs a
 "Download CV" button. Removing those was most of the cleanup.
 
-### URLs keep the `.html`
+### URLs are folders
 
-Internal links are written as `research.html`, not `/research` — the one
-exception being the brand, which links to `/` so the home page reads as a bare
-`htetmyataung.uk` rather than `htetmyataung.uk/index.html`.
+```
+/                              index.html
+/research/                     research/index.html
+/projects/                     projects/index.html
+/writing/                      writing/index.html
+/writing/the-evaluator-bug/    writing/the-evaluator-bug/index.html   GENERATED
+/about/                        about/index.html
+```
 
-Extensionless URLs were tried and reverted. They do work in production — GitHub
-Pages resolves `/research` to `research.html` on its own, with no folder-per-page
-restructure needed — but **VS Code Live Server does not, and cannot be configured
-to**, so every link 404s with `Cannot GET /research` while previewing. Being able
-to open the site in whichever server is to hand was worth more than the shorter
-URL.
+**Every page is a folder with an `index.html` inside.** That is a plain directory
+index, which every static server resolves — GitHub Pages, `npm run dev`, and
+VS Code Live Server alike. The trailing slash is the price.
 
-If you ever revisit this, the full change is: the `nav` hrefs here, `keyOf()` in
-`layout.js` (it must strip the leading slash or the active-nav underline breaks
-silently), every in-body cross-link, **the `canonical` and `og:url` tags on all
-five pages** — those must move in the same commit as the links, since both URL
-forms serve identical bytes — the generated links in `post-card.js` and
-`post.js`, and a `<path>.html` fallback in `serve.mjs`'s `resolve()`.
+An earlier attempt served `/research` straight from `research.html`, relying on
+GitHub Pages resolving the extension. It does, but **Live Server does not and has
+no setting to add it**, so previewing gave `Cannot GET /research`. Folders were
+the fix: the URL scheme cannot depend on a particular server's cleverness.
+
+Two rules follow from this, and `npm run audit` enforces both:
+
+1. **Every internal reference is root-absolute** — `/assets/css/base.css`,
+   `/content/posts.json`, `/research/`. Not relative. A page now sits at depth 0
+   (`index.html`), 1 (`research/index.html`) or 2
+   (`writing/<slug>/index.html`), and `layout.js`, `post-card.js` and `posts.js`
+   all emit URLs without knowing which — root-absolute is the only shape that
+   means the same thing everywhere.
+
+   `<base href="/">` looks like a cheaper fix and is a trap: a fragment-only URL
+   resolves against the base too, so `href="#main"` (the skip link) and every
+   generated table-of-contents link would navigate to the home page. Worse,
+   `highlightActiveHeading` matches on the literal attribute, so the TOC would
+   still *look* right while every click left the page.
+
+2. **Link the folder, never the file.** `/research/`, not `/research.html`. The
+   `.html` files still exist as redirect stubs, so a `.html` link works — which
+   is exactly why nothing but the audit would ever complain about one.
+
+Two consequences worth knowing:
+
+- **Live Server's root must be `d:\PersonalWebsite` itself.** Root-absolute paths
+  resolve against whatever folder the server is serving.
+- **Double-clicking `index.html` now loses the CSS too**, not just the blog: a
+  `file://` page has no root for `/assets/...` to resolve against. Use
+  `npm run dev`.
+- If this site ever moves off the apex domain to `username.github.io/repo`, every
+  root-absolute path breaks. `CNAME` is what makes them safe.
+
+Old URLs all still work. `research.html`, `projects.html`, `about.html`,
+`blog.html`, `post.html`, `contact.html` and `experience.html` are redirect stubs
+— they are on CVs already sent out and in search results. Each carries a script
+that forwards `?query` and `#hash` (a bare meta refresh drops them), with the
+refresh as the no-JS fallback at `1s` so it cannot win the race and lose the
+query string. A renamed post keeps its old URL through the `aliases:` frontmatter
+field, which generates the same kind of stub under `writing/`.
 
 ---
 
 ## 3. Local development
 
 ```bash
-npm run dev              # rebuild the post manifest, then serve on :8000
+npm run dev              # rebuild manifest + post pages, then serve on :8000
 npm run new "A title"    # scaffold a new post
-npm run posts            # rebuild the post manifest only
-npm run audit            # pre-push check: broken links, missing .nojekyll, stale manifest
+npm run posts            # rebuild manifest + post pages only
+npm run audit            # pre-push check: broken links, URL convention, stale pages
 npm run check:comments   # whether comments are switched on
 ```
 
 **There is nothing to install.** `package.json` has no dependencies — the
-scripts are plain Node (18+) and the site itself has no build step. `npm run`
-is just a shorter way to type `node scripts/…`.
+scripts are plain Node (18+) and the site itself has no build step for the pages
+you author. `npm run` is just a shorter way to type `node scripts/…`.
 
-Why a server is needed at all: `fetch()` refuses to read files over `file://`,
-and the blog loads posts with `fetch()`. **Opening `index.html` by
-double-clicking will leave the blog empty.** Every other page works fine either
-way; only the blog needs a server.
+**A server is required, and `file://` will not do.** Two reasons now: `fetch()`
+refuses to read files over `file://` so post bodies never load, and every
+reference is root-absolute (`/assets/css/base.css`), which has no root to resolve
+against on a bare filesystem — so double-clicking `index.html` loses the CSS as
+well.
 
-Any static server will do — `npm run dev` on `:8000` or VS Code Live Server on
-`:5500`. Keeping both usable is why internal links keep their `.html` (see
-*Information architecture* in §2).
+Any static server works, because the URL scheme is just folders and index files:
+`npm run dev` on `:8000` or VS Code Live Server on `:5500`. If you use Live
+Server, **open `d:\PersonalWebsite` itself as the VS Code folder** — root-absolute
+paths resolve against whatever the server treats as root. See
+*URLs are folders* in §2.
 
 ---
 
@@ -363,7 +407,7 @@ page.html
         └── page-specific work
 ```
 
-Pages with no extra behaviour (`research.html`, `404.html`) load
+Pages with no extra behaviour (`research/`, `projects/`, `404.html`) load
 `assets/js/site.js` directly.
 
 ### The rules this follows
@@ -408,17 +452,25 @@ page *content* is all in the HTML.
 ### Content model
 
 ```
-content/posts/<slug>.md    a post: frontmatter block + body
-content/posts.json         GENERATED index — do not hand-edit
+content/posts/<slug>.md      a post: frontmatter block + body   <- the only file you author
+content/posts.json           GENERATED index — do not hand-edit
+writing/<slug>/index.html    GENERATED page  — do not hand-edit
 ```
 
-Each post carries its own metadata at the top of the file, and
-`content/posts.json` is derived from those files by `npm run posts`. **Writing a
-post means creating one file.**
+Each post carries its own metadata at the top of the file, and **both** generated
+outputs are derived from it by `npm run posts`. **Writing a post still means
+creating one file.**
 
-The manifest is still committed to the repository, because `blog.html` needs to
-list every post in one request rather than fetching each `.md`. It is generated,
-not authored — if you edit it by hand, the next build will overwrite you.
+Both are committed to the repository. The manifest is committed because
+`/writing/` needs to list every post in one request rather than fetching each
+`.md`. The pages are committed because a URL needs a file behind it: there is no
+server to rewrite `/writing/foo/` onto a single template, and Pages serves the
+repo as-is. They are generated, not authored — edit either by hand and the next
+`npm run posts` overwrites you. `npm run audit` fails if they are stale.
+
+Generating the pages is also what makes link previews work. The `<title>`,
+description and Open Graph tags are real HTML in each page; they used to be set
+by `post.js`, so every crawler saw the same generic fallback.
 
 ### Writing a post
 
@@ -460,7 +512,13 @@ The body starts here.
 | `date` | yes | `YYYY-MM-DD`. Posts sort newest-first automatically. |
 | `summary` | yes | Shown on the index and used as the meta description. |
 | `tags` | no | `[A, B]`. Display strings; lower-cased and hyphenated for the URL, so `Interpretability` becomes `?tag=interpretability`. New tags create their own chip. |
-| `draft` | no | `true` keeps the post in the repository but off the site entirely — it does not appear on the index and its URL returns "Post not found". |
+| `draft` | no | `true` keeps the post in the repository but off the site entirely — no page is generated, so its URL 404s. |
+| `aliases` | no | `[old-slug]`. Former slugs this post used to live at. Each generates a redirect stub at `writing/<old-slug>/`, so renaming a post never kills a link someone already shared. |
+
+**Renaming a post** means renaming its `.md` file — the filename *is* the slug and
+the URL. Add the old slug to `aliases` in the same commit and the old URL keeps
+working. Comment threads are keyed on the slug, so an alias is also what stops a
+rename orphaning a thread.
 
 The `slug` is the filename, and reading time is computed from the body at 220
 words per minute. Neither is something you write.
@@ -471,18 +529,29 @@ table of contents.
 ### Writing a post from a phone or a borrowed laptop
 
 Add a `.md` file through GitHub's web editor, frontmatter included, and commit
-it. `.github/workflows/posts.yml` rebuilds `content/posts.json` and commits it a
-few seconds later. Nothing to install, nothing to run.
+it. `.github/workflows/posts.yml` rebuilds `content/posts.json` **and the post's
+page under `writing/`**, then commits both a few seconds later. Nothing to
+install, nothing to run.
 
 That workflow also fails loudly if a post is missing required frontmatter, so a
 broken post is caught in Actions rather than appearing blank on the live site.
 
+Note its commit step stages with `git add -A` *before* testing for changes. A
+brand-new generated page is untracked, and `git diff` cannot see untracked files
+— checking first would silently skip the commit for exactly this case.
+
 ### Validation
 
-`npm run posts` refuses to write a manifest and explains itself if a post is
+`npm run posts` refuses to write anything and explains itself if a post is
 missing `title`, `date`, or `summary`; has a malformed date; has an empty body;
-or starts a heading with a single `#`. It writes nothing when it fails, so a bad
-post can never half-publish.
+starts a heading with a single `#`; or declares an `aliases` entry that collides
+with another post's URL. It writes nothing when it fails, so a bad post can never
+half-publish.
+
+It also **prunes**: a folder under `writing/` whose post was deleted, renamed, or
+turned back into a draft is removed, so a stale URL cannot stay live. Pruning only
+ever deletes a directory whose sole child is `index.html` — anything else is
+assumed hand-made, left alone, and reported.
 
 ### Filtering
 
@@ -573,10 +642,16 @@ broken widget.
 
 - The widget follows the site's light/dark toggle: `giscus.js` listens for the
   `themechange` event and posts a `setConfig` message into the iframe.
-- Threads are matched by URL path (`mapping: "pathname"`), so a post keeps its
-  comments as long as its slug does not change. **Renaming a post's file orphans
-  its thread** — the old discussion survives on GitHub but no longer appears on
-  the page.
+- Threads are keyed on the post's **slug**: `mapping: "specific"` in `config.js`,
+  paired with `data-term: post.slug` in `giscus.js`. So a thread survives a URL
+  change, a trailing slash, and a reworded title. **Renaming a post's file does
+  orphan its thread** — the old discussion survives on GitHub but no longer
+  appears on the page. Adding the old slug to `aliases` keeps the URL alive but
+  not the thread, so rename deliberately.
+- This was `mapping: "pathname"` until the post URLs moved, and it was a bug worth
+  remembering: every post was served from `/post.html`, and a query string is not
+  part of a pathname, so **all posts shared one thread**. Anything that keys off
+  the URL is only safe when each page actually has its own URL.
 - Moderation is just GitHub: edit, delete, lock, or block from the discussion.
 - The honest limitation: **commenters need a GitHub account.** That suits
   researchers and is a real barrier for everyone else. If reach matters more
@@ -586,7 +661,7 @@ broken widget.
 
 ## 11. The contact form
 
-It lives at the foot of `about.html`, under `#contact` — not on a page of its
+It lives at the foot of `about/index.html`, under `#contact` — not on a page of its
 own. `modules/contact-form.js` validates on the client, then sends through
 **EmailJS**, which is how a static page sends mail without a backend. The public
 key, service ID, and template ID are in `config.js` under `emailService`. The
@@ -627,7 +702,7 @@ capped at four on purpose (see *Information architecture* in §2). If a fifth
 genuinely belongs, something else should stop being a destination.
 
 **Add a project**
-→ Copy an `<article class="card">` in `projects.html`. Set `data-tags` to one or
+→ Copy an `<article class="card">` in `projects/index.html`. Set `data-tags` to one or
 more of `research ml applied infra`, and put searchable keywords that are not in
 the visible text into `data-search`. Chip counts update automatically.
 
@@ -698,7 +773,7 @@ Built in, and worth not regressing:
 `assets/media/myanpay-demo.mp4` is about 40 MB and lives in the repository. It
 is `preload="metadata"`, so visitors do not download it unless they press play,
 but it does make clones slow. If it ever becomes annoying, upload it to YouTube
-unlisted and swap the `<video>` in `projects.html` for an iframe.
+unlisted and swap the `<video>` in `projects/index.html` for an iframe.
 
 ---
 
@@ -731,8 +806,15 @@ anywhere else. `npm run audit` checks for it.
 ### Before pushing, worth a quick pass
 
 - `npm run audit` — catches the whole class of "works locally, breaks live".
-- Serve locally and click through all five pages, plus the two redirect stubs.
-- Open one blog post and check the TOC, the pager, and the comment panel.
+- `npm run posts` — if it prints any `+` or `-` lines, commit those too.
+- Serve locally and click through `/`, `/research/`, `/projects/`, `/writing/`,
+  `/about/`.
+- **Click the header CV button from a page that is not the home page.** It is
+  rendered by JS into every header, so a relative path there 404s everywhere
+  except `/` — and it opens in a new tab, which makes the failure easy to miss.
+- Open one post and check the TOC, the pager, and the comment panel.
+- Hit one redirect stub — `/blog.html?tag=llms` is the good one, because it proves
+  the query string survives the forward.
 - Toggle light/dark on at least one page.
 - Narrow the window to phone width and open the menu.
 
@@ -748,12 +830,14 @@ Honest list, roughly in order of value:
    sound like you before you send this link to anyone.
 2. **There is no RSS feed.** Researchers do still use them. It would be a small
    script that turns `posts.json` into `feed.xml`.
-3. **`post.html?p=slug` is not the prettiest URL,** and link previews for
-   individual posts fall back to the generic description because the meta tags
-   are set by JavaScript. Real per-post URLs and previews would need either one
-   HTML file per post or a small generator script.
-4. **No sitemap.xml or robots.txt.** Both are two-minute additions and help
-   indexing.
+3. **No sitemap.xml or robots.txt.** Both are two-minute additions and help
+   indexing — and now cheap to do properly, since `build-posts.mjs` already knows
+   every URL. Emitting `sitemap.xml` from it is about fifteen lines.
+4. **The post body is still fetched and rendered client-side.** The page, title
+   and meta tags are real HTML, so previews and search are fine, but the prose
+   itself needs JavaScript. Rendering the Markdown into the page at generation
+   time would fix that; it means moving `markdown.js` into the generator's output
+   path rather than the browser's.
 5. **The CV is now committed to the repository** as `HtetMyatAung-CV.pdf`,
    replacing the two inconsistent Google Drive links the old site used. It
    serves from `htetmyataung.uk/HtetMyatAung-CV.pdf`, so remember it is a

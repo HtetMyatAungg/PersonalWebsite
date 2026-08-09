@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Research &amp; experience — Htet Myat Aung</title>
+    <meta name="description" content="LLM autoformalization research at Royal Holloway's DICE Lab: a nine-model, four-condition sweep measuring whether language models induce general rules or hardcode enumerated facts.">
+    <meta name="author" content="Htet Myat Aung">
+    <link rel="canonical" href="https://htetmyataung.uk/research/">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Research &amp; experience — Htet Myat Aung">
+    <meta property="og:description" content="Autoformalization, symbolic evaluation, and a capability × scaffolding interaction.">
+    <meta property="og:url" content="https://htetmyataung.uk/research/">
+    <meta property="og:image" content="https://htetmyataung.uk/assets/media/portrait.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="/assets/media/icon.png">
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.remove("no-js");
+            try {
+                var stored = localStorage.getItem("hma-theme");
+                root.dataset.theme = stored
+                    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { root.dataset.theme = "dark"; }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300..600;1,400&display=swap">
+
+    <link rel="stylesheet" href="/assets/css/tokens.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/pages.css">
+</head>
+
+<body data-page="research">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-site-header></header>
+
+    <main id="main">
+
+        <section class="hero hero--compact">
+            <div class="container hero__inner">
+                <div class="hero__content">
+                    <p class="eyebrow">Research &amp; experience</p>
+                    <h1 class="hero__name">Measuring what a model actually learned</h1>
+                    <p class="lede">
+                        Autoformalization, symbolic evaluation, and the engineering that keeps an
+                        experiment honest. Jun 2026 – present, DICE Lab, Royal Holloway.
+                    </p>
+                    <div class="hero__actions">
+                        <a class="btn btn--primary" href="/writing/">Read the research notes</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Flagship project ============================================ -->
+        <section class="section--tight">
+            <div class="container">
+                <div class="section-head">
+                    <div class="stack stack--sm">
+                        <p class="eyebrow">Current project</p>
+                        <h2>LLM autoformalization in VacuumWorld</h2>
+                    </div>
+                    <p class="section-head__lede">
+                        Funded UROP fellowship · Prof. Kostas Stathis &amp; Dr. Agnieszka Mensfelt ·
+                        selected from 30+ applicants.
+                    </p>
+                </div>
+
+                <div class="question reveal">
+                    <div>
+                        <p class="question__statement">
+                            The task is to turn what an agent can see into a Prolog knowledge base. The
+                            research question is whether the model wrote a rule or a lookup table.
+                        </p>
+                        <p class="question__body">
+                            A boundary wall in a grid world can be described two ways. One is a general
+                            rule — a wall exists wherever a coordinate sits on the edge. The other is a
+                            list of every wall cell the model happened to be shown. Both score
+                            identically on a small grid, and only one of them is knowledge. Separating
+                            the two is the whole problem, and it is an evaluation problem before it is a
+                            modelling one.
+                        </p>
+                        <p class="question__body">
+                            Nine models were run across four prompt conditions — zero-shot, instruction,
+                            schema, and one-shot — with a composition table designed so that every
+                            scaffolding factor appears as a single-variable contrast rather than a
+                            bundle of changes. Outputs are scored by a nine-constraint symbolic
+                            evaluator, and an F1-vs-<em>N</em> grid-size sweep exposes enumeration that
+                            only looks correct while <em>N</em> stays small.
+                        </p>
+                    </div>
+
+                    <ul class="findings">
+                        <li class="finding">
+                            <span class="finding__label">Finding · capability × scaffolding</span>
+                            <span class="finding__text">
+                                The two interact rather than add. Model tier sets the ceiling on
+                                abstraction; scaffolding decides whether a model climbs to it. Better
+                                prompting cannot lift a weak model past its ceiling, and a strong model
+                                left unscaffolded will sit well below its own.
+                            </span>
+                        </li>
+                        <li class="finding">
+                            <span class="finding__label">Finding · frontier outlier</span>
+                            <span class="finding__text">
+                                DeepSeek-V3 does not fit the pattern its tier predicts: partial
+                                hardcoding persists across all four conditions instead of clearing up
+                                under stronger scaffolding.
+                            </span>
+                        </li>
+                        <li class="finding">
+                            <span class="finding__label">Correction · evaluator bug</span>
+                            <span class="finding__text">
+                                A bug in the evaluator was silently zeroing scores on exactly the
+                                rule-based outputs the study was designed to reward. Diagnosing and
+                                patching it changed the headline result.
+                            </span>
+                        </li>
+                        <li class="finding">
+                            <span class="finding__label">Correction · prompt confound</span>
+                            <span class="finding__text">
+                                One condition varied two things at once, which would have credited the
+                                wrong factor. Documented and corrected in the condition design.
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Method ====================================================== -->
+        <section class="section--tight">
+            <div class="container">
+                <div class="section-head">
+                    <div class="stack stack--sm">
+                        <p class="eyebrow">Method</p>
+                        <h2>How the harness works</h2>
+                    </div>
+                </div>
+
+                <div class="card-grid card-grid--compact">
+                    <article class="card reveal">
+                        <span class="card__meta">01 — Percepts</span>
+                        <h3 class="card__title">Observation to prompt</h3>
+                        <p class="card__body">
+                            VacuumWorld agent percepts are serialised into a prompt under one of four
+                            scaffolding conditions, holding everything else fixed.
+                        </p>
+                    </article>
+                    <article class="card reveal" data-reveal-delay="70">
+                        <span class="card__meta">02 — Formalisation</span>
+                        <h3 class="card__title">Prolog knowledge base</h3>
+                        <p class="card__body">
+                            The model returns a knowledge base. Nothing about its phrasing is trusted:
+                            the artefact is what gets judged, not the explanation around it.
+                        </p>
+                    </article>
+                    <article class="card reveal" data-reveal-delay="140">
+                        <span class="card__meta">03 — Scoring</span>
+                        <h3 class="card__title">Nine-constraint evaluator</h3>
+                        <p class="card__body">
+                            A symbolic evaluator checks nine constraints on the output. Symbolic, not
+                            textual, so a correct rule written unusually still scores as correct.
+                        </p>
+                    </article>
+                    <article class="card reveal" data-reveal-delay="210">
+                        <span class="card__meta">04 — Stress test</span>
+                        <h3 class="card__title">F1 against grid size</h3>
+                        <p class="card__body">
+                            Sweeping <em>N</em> upward is what separates induction from enumeration.
+                            A real rule holds its F1; a lookup table decays as the grid grows.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Timeline ==================================================== -->
+        <section class="section--tight">
+            <div class="container">
+                <!-- Research and paid roles only. Societies, the student-rep
+                     seat, and awards are service, and live on the about page —
+                     they were previously listed in both places. -->
+                <div class="section-head">
+                    <div class="stack stack--sm">
+                        <p class="eyebrow">Positions</p>
+                        <h2>Where I have worked</h2>
+                    </div>
+                    <p class="section-head__lede">
+                        Society roles and awards are on the <a class="link" href="/about/">about page</a>.
+                    </p>
+                </div>
+
+                <ul class="timeline">
+
+                    <li class="entry entry--current reveal">
+                        <div class="entry__head">
+                            <div>
+                                <p class="entry__role">Undergraduate Research Fellow <span class="badge">UROP · funded</span></p>
+                                <p class="entry__org">DICE Lab, Royal Holloway — Prof. Kostas Stathis &amp; Dr. Agnieszka Mensfelt</p>
+                            </div>
+                            <span class="entry__when">Jun 2026 – present</span>
+                        </div>
+                        <ul class="entry__points">
+                            <li>Selected as one of eight fellows from a field of more than thirty applicants.</li>
+                            <li>Investigating LLM autoformalization: translating VacuumWorld agent percepts
+                                into Prolog knowledge bases, and measuring whether models induce general
+                                boundary-wall rules or hardcode enumerated facts.</li>
+                            <li>Designed and ran a nine-model × four-prompt-condition sweep with a
+                                composition table isolating each scaffolding factor as a single-variable
+                                contrast.</li>
+                            <li>Built a nine-constraint symbolic evaluator and an F1-vs-<em>N</em> grid-size
+                                sweep to separate true rule induction from enumeration that only appears
+                                correct at small <em>N</em>.</li>
+                            <li>Diagnosed and patched an evaluator bug silently zeroing scores on
+                                rule-based outputs, and documented a prompt confound in the condition
+                                design — both corrected the headline results.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">Prolog (SWI)</span>
+                            <span class="tag">Anthropic</span>
+                            <span class="tag">OpenAI</span>
+                            <span class="tag">DeepSeek</span>
+                            <span class="tag">Open-weight models</span>
+                        </div>
+                    </li>
+
+                    <li class="entry reveal" data-reveal-delay="80">
+                        <div class="entry__head">
+                            <div>
+                                <p class="entry__role">Research Software Contributor</p>
+                                <p class="entry__org">DICE Lab Autoformalization Paper Catalogue, Royal Holloway</p>
+                            </div>
+                            <span class="entry__when">2026</span>
+                        </div>
+                        <ul class="entry__points">
+                            <li>Built dataset filters and CI/CD pipelines in TypeScript for the lab's public
+                                catalogue of autoformalization literature.</li>
+                            <li>The filters are used to triage papers for ongoing survey work.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">GitHub Actions</span>
+                            <span class="tag">BibTeX</span>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn btn--outline btn--sm" data-link="lab">View the catalogue</a>
+                        </div>
+
+                        <figure class="figure reveal">
+                            <img src="/assets/media/autoformalisation-catalogue.png" alt="Screenshot of the DICE Lab autoformalization paper catalogue" loading="lazy">
+                            <figcaption>DICE Lab autoformalization paper catalogue</figcaption>
+                        </figure>
+                    </li>
+
+                    <li class="entry entry--current reveal" data-reveal-delay="160">
+                        <div class="entry__head">
+                            <div>
+                                <p class="entry__role">Early Engineer</p>
+                                <p class="entry__org">Sharper Future Ltd — remote, UK</p>
+                            </div>
+                            <span class="entry__when">2026 – present</span>
+                        </div>
+                        <ul class="entry__points">
+                            <li>Early technical hire shipping production features across the stack with LLM
+                                APIs and evaluation tooling.</li>
+                            <li>Contract includes an IP carve-out preserving independent university
+                                research.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">LLM APIs</span>
+                            <span class="tag">Evaluation tooling</span>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== Outputs ===================================================== -->
+        <section class="section--tight">
+            <div class="container">
+                <div class="section-head">
+                    <div class="stack stack--sm">
+                        <p class="eyebrow">Outputs</p>
+                        <h2>Writing it up</h2>
+                    </div>
+                    <p class="section-head__lede">
+                        Status is stated plainly: targeted means submission intended, not accepted.
+                    </p>
+                </div>
+
+                <div class="card-grid">
+                    <article class="card reveal">
+                        <div class="card__head">
+                            <span class="badge badge--progress">In preparation</span>
+                            <span class="card__meta">Sep 2026</span>
+                        </div>
+                        <h3 class="card__title">Full technical report</h3>
+                        <p class="card__body">
+                            Complete write-up of the sweep: method, composition table, evaluator design,
+                            and the F1-vs-<em>N</em> results.
+                        </p>
+                    </article>
+                    <article class="card reveal" data-reveal-delay="70">
+                        <div class="card__head">
+                            <span class="badge badge--quiet">Targeted</span>
+                            <span class="card__meta">NeurIPS</span>
+                        </div>
+                        <h3 class="card__title">Interpretability workshop</h3>
+                        <p class="card__body">
+                            Submission targeted at the NeurIPS interpretability workshop track.
+                        </p>
+                    </article>
+                    <article class="card reveal" data-reveal-delay="140">
+                        <div class="card__head">
+                            <span class="badge badge--quiet">Targeted</span>
+                            <span class="card__meta">AAAI</span>
+                        </div>
+                        <h3 class="card__title">Student Abstract track</h3>
+                        <p class="card__body">
+                            Short-form submission targeted at the AAAI Student Abstract track.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section--tight">
+            <div class="container">
+                <div class="cta reveal">
+                    <p class="eyebrow">Collaboration</p>
+                    <h2>Looking for Summer 2027 research internships</h2>
+                    <p class="cta__body">
+                        Interpretability, neurosymbolic reasoning, and evaluation design. Happy to talk
+                        through the method in detail, including the parts that went wrong first.
+                    </p>
+                    <div class="row">
+                        <a class="btn btn--primary" href="/about/#contact">Get in touch</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer" data-site-footer></footer>
+    <script type="module" src="/assets/js/site.js"></script>
+</body>
+</html>

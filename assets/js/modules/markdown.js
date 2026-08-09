@@ -13,7 +13,13 @@
  * Output is styled entirely by the .prose rules in components.css.
  */
 
-const ALLOWED_SCHEME = /^(https?:|mailto:|#|\/|\.\/|[^:]*$)/i;
+/* Page-relative URLs are deliberately NOT allowed. A post is rendered at
+   /writing/<slug>/, so "assets/media/x.png" in post source would resolve
+   against that folder rather than the site root and silently 404 — and the same
+   post text would mean different things if it were ever rendered elsewhere.
+   Post links must be absolute, root-absolute, a mailto:, or a #fragment;
+   anything else becomes "#" via safeUrl(). */
+const ALLOWED_SCHEME = /^(https?:|mailto:|#|\/)/i;
 /* A NUL byte cannot appear in post source, which makes it a safe stand-in for
    parked code spans. */
 const CODE_PLACEHOLDER = String.fromCharCode(0);

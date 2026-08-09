@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Writing — Htet Myat Aung</title>
+    <meta name="description" content="Research notes on interpretability, autoformalization, evaluation design, and the engineering around them.">
+    <meta name="author" content="Htet Myat Aung">
+    <link rel="canonical" href="https://htetmyataung.uk/writing/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Writing — Htet Myat Aung">
+    <meta property="og:description" content="Research notes on interpretability, autoformalization, and evaluation design.">
+    <meta property="og:url" content="https://htetmyataung.uk/writing/">
+    <meta property="og:image" content="https://htetmyataung.uk/assets/media/portrait.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="/assets/media/icon.png">
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.remove("no-js");
+            try {
+                var stored = localStorage.getItem("hma-theme");
+                root.dataset.theme = stored
+                    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { root.dataset.theme = "dark"; }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,300..600;1,400&display=swap">
+
+    <link rel="stylesheet" href="/assets/css/tokens.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/pages.css">
+</head>
+
+<body data-page="writing">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-site-header></header>
+
+    <main id="main">
+
+        <section class="hero hero--compact">
+            <div class="container hero__inner">
+                <div class="hero__content">
+                    <p class="eyebrow">Writing</p>
+                    <h1 class="hero__name">Research notes</h1>
+                    <p class="lede">
+                        Working notes on interpretability, autoformalization, and evaluation design —
+                        including the mistakes, because those are usually the useful part.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The chips and the post list are both rendered by blog.js from
+             content/posts.json. Adding a post never touches this file. -->
+        <section class="section--tight" data-filter-root>
+            <div class="container">
+
+                <div class="filter-bar">
+                    <div class="filter-chips" data-filter-chips role="group" aria-label="Filter posts by topic"></div>
+
+                    <label class="search-field">
+                        <span class="visually-hidden">Search posts</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                        <input type="search" placeholder="Search posts…" data-filter-search>
+                    </label>
+                </div>
+
+                <p class="result-count" data-filter-count></p>
+
+                <div class="post-list" data-filter-list></div>
+
+                <p class="empty-state" data-filter-empty hidden>
+                    No posts match that. Try a different topic or clear the search.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="section--tight">
+            <div class="container">
+                <div class="cta reveal">
+                    <p class="eyebrow">Discussion</p>
+                    <h2>Disagree with something here?</h2>
+                    <p class="cta__body">
+                        Every post takes comments through GitHub Discussions, and corrections are
+                        genuinely welcome — a few of these notes exist because someone pushed back.
+                    </p>
+                    <div class="row">
+                        <a class="btn btn--primary" href="/about/#contact">Get in touch</a>
+                        <a class="btn btn--ghost" data-link="github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer" data-site-footer></footer>
+    <script type="module" src="/assets/js/pages/writing.js"></script>
+</body>
+</html>

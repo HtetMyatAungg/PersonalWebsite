@@ -4,6 +4,7 @@ date: 2026-06-30
 tags: [Methodology, Evaluation, LLMs]
 summary: Four conditions are only four data points if each differs from its neighbour in exactly one respect. A composition table, and the confound it caught.
 draft: false
+aliases: [single-variable-prompt-conditions]
 ---
 
 Four prompt conditions sound like four clean data points. They are not, unless

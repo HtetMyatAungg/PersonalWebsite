@@ -1,12 +1,13 @@
-name: Rebuild post manifest
+name: Rebuild post manifest and pages
 
-# Keeps content/posts.json in sync with the Markdown files.
+# Keeps content/posts.json AND the writing/<slug>/ pages in sync with the
+# Markdown files.
 #
 # This exists so you can add a post from anywhere — including GitHub's web
 # editor on a phone — without running anything locally. Commit a .md file and
-# the manifest updates itself a few seconds later.
+# both the manifest and the post's page appear a few seconds later.
 #
-# The manifest stays committed to the repo: GitHub Pages serves the repository
+# Both outputs stay committed to the repo: GitHub Pages serves the repository
 # as-is, so the site itself never depends on this workflow having run.
 
 on:
@@ -17,6 +18,9 @@ on:
       - "scripts/build-posts.mjs"
       - "assets/js/modules/frontmatter.js"
       - "assets/js/modules/markdown.js"
+      # The page template reads site data from config.js, so a change there
+      # (the domain, the name in every <title>) makes every page stale.
+      - "assets/js/config.js"
   workflow_dispatch:
 
 permissions:
@@ -38,17 +42,22 @@ jobs:
 
       # Fails the run if a post is missing required frontmatter, so a broken
       # post is caught here rather than showing up empty on the live site.
-      - name: Rebuild manifest
+      - name: Rebuild manifest and post pages
         run: node scripts/build-posts.mjs
 
+      # `git add -A` first, then check the INDEX rather than the worktree.
+      # `git diff --quiet` cannot see a brand-new untracked file, so checking
+      # before staging would silently skip the commit for the first post added
+      # from the web editor — the page would be generated and never pushed.
+      # -A also stages the deletions that pruning produces.
       - name: Commit if it changed
         run: |
-          if git diff --quiet -- content/posts.json; then
-            echo "Manifest already up to date."
+          git add -A content/posts.json writing
+          if git diff --cached --quiet; then
+            echo "Manifest and post pages already up to date."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/posts.json
-          git commit -m "Rebuild post manifest [skip ci]"
+          git commit -m "Rebuild post manifest and pages [skip ci]"
           git push

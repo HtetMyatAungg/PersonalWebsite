@@ -1,8 +1,8 @@
 /**
  * comments/giscus.js — reader comments backed by GitHub Discussions.
  *
- * Each post gets one discussion thread, matched by URL path. Readers sign in
- * with GitHub to reply; you moderate from the repository. Nothing is stored
+ * Each post gets one discussion thread, keyed by the post's slug. Readers sign
+ * in with GitHub to reply; you moderate from the repository. Nothing is stored
  * here, so the site stays fully static.
  *
  * Requires comments.repoId and comments.categoryId in config.js. Run
@@ -53,8 +53,10 @@ export function mountGiscus(mount, post) {
         "data-category": config.category,
         "data-category-id": config.categoryId,
         "data-mapping": config.mapping,
-        /* Only consulted when mapping is "specific"; harmless otherwise. */
-        "data-term": post?.title || "",
+        /* The thread key when mapping is "specific" (which it is — see config).
+           The slug, not the title: a title can be reworded after publication and
+           that must not orphan the thread. */
+        "data-term": post?.slug || "",
         "data-strict": "1",
         "data-reactions-enabled": "1",
         "data-emit-metadata": "0",

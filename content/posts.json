@@ -1,12 +1,13 @@
 [
     {
-        "slug": "why-people-throw-good-money-after-bad-and-whether-ai-does-to",
+        "slug": "sunk-cost",
         "title": "Why people throw good money after bad (and whether AI does too)",
         "date": "2026-08-09",
         "minutes": 1,
         "summary": "LLMs shows escalation of commitment under social multiagent peer settings.",
         "tags": [
-            "Interpretability"
+            "AI safety",
+            "Behavioral AI"
         ]
     },
     {
@@ -45,7 +46,7 @@
         ]
     },
     {
-        "slug": "single-variable-prompt-conditions",
+        "slug": "prompt-conditions",
         "title": "Designing prompt conditions you can actually attribute",
         "date": "2026-06-30",
         "minutes": 3,

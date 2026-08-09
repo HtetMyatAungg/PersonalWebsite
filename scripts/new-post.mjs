@@ -81,9 +81,22 @@ console.log(`Created content/posts/${slug}.md`);
 
 execFileSync(process.execPath, [join(ROOT, "scripts", "build-posts.mjs")], { stdio: "inherit" });
 
-console.log(`
+/* A draft gets no generated page, so there is nothing to preview yet — say so
+   rather than handing over a URL that 404s. */
+console.log(
+    draft
+        ? `
+Next:
+  1. write the post, then remove \`draft: true\` from its frontmatter
+  2. npm run posts        generates writing/${slug}/
+  3. npm run dev, then open http://localhost:8000/writing/${slug}/
+
+  (Drafts deliberately get no page, so that URL 404s until step 1 is done.)
+`
+        : `
 Next:
   1. npm run dev
-  2. open http://localhost:8000/post.html?p=${slug}
-  3. write, save, refresh${draft ? "\n  4. remove `draft: true` when it is ready to publish" : ""}
-`);
+  2. open http://localhost:8000/writing/${slug}/
+  3. write, save, then \`npm run posts\` to refresh the page's title and summary
+`
+);

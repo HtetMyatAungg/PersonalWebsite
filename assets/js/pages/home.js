@@ -44,7 +44,7 @@ async function renderLatestPosts() {
         initReveal(list);
     } catch {
         /* The rest of the page is unaffected; just point at the blog index. */
-        list.innerHTML = `<p class="empty-state">Writing is over on the <a class="link" href="blog.html">Writing</a> page.</p>`;
+        list.innerHTML = `<p class="empty-state">Writing is over on the <a class="link" href="/writing/">Writing</a> page.</p>`;
     }
 }
 

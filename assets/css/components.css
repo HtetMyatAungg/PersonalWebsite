@@ -888,10 +888,12 @@
    Marquee (skills ticker)
    =========================================================================== */
 
+/* No gap between the two tracks: the loop translates by exactly one track
+   width, so any container gap would show up as a jump on every cycle. The
+   spacing at the join comes from the track's own padding-right. */
 .marquee {
     display: flex;
     overflow: hidden;
-    gap: var(--space-5);
     padding-block: var(--space-4);
     border-block: var(--border-width) solid var(--border);
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);

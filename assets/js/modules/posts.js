@@ -10,9 +10,14 @@
  *
  * Note: fetch() needs a real HTTP origin, so open the site through a local
  * server (see DESIGN.md → Local development), not with a file:// path.
+ *
+ * Both URLs below are root-absolute and must stay that way: these fetches run
+ * from the home page (depth 0), /writing/ (depth 1) and /writing/<slug>/
+ * (depth 2). Written relative, the deeper pages would ask for
+ * /writing/<slug>/content/posts.json and every post list would come up empty.
  */
 
-const MANIFEST_URL = "content/posts.json";
+const MANIFEST_URL = "/content/posts.json";
 
 /** Newest first. */
 function byNewest(a, b) {
@@ -33,7 +38,7 @@ export async function loadPosts() {
 
 /** Raw Markdown for one post. */
 export async function loadPostBody(slug) {
-    const url = `content/posts/${encodeURIComponent(slug)}.md`;
+    const url = `/content/posts/${encodeURIComponent(slug)}.md`;
     const response = await fetch(url, { cache: "no-cache" });
     if (!response.ok) throw new Error(`Could not load ${url} (${response.status})`);
     return response.text();

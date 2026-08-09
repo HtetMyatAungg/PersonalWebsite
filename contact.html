@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Contact is no longer a page of its own — it is the closing section of
-         the about page. Kept as a redirect so older links (CVs already sent out,
-         search results, the previous nav) land on the form rather than a 404. -->
-    <meta http-equiv="refresh" content="0; url=about.html#contact">
-    <link rel="canonical" href="https://htetmyataung.uk/about.html">
+    <!-- Redirect stub. Contact is no longer a page of its own — it is the
+         closing section of the about page. Kept so older links (CVs already sent
+         out, search results, the previous nav) land on the form rather than a
+         404. See research.html for the shape.
+
+         The #contact hash is hard-coded rather than forwarded: whatever fragment
+         someone arrives with, the thing they came for is the form. -->
+    <title>Moved to /about/#contact — Htet Myat Aung</title>
     <meta name="robots" content="noindex">
-    <title>Moved to About &amp; contact — Htet Myat Aung</title>
+    <link rel="canonical" href="https://htetmyataung.uk/about/">
+    <meta http-equiv="refresh" content="1; url=/about/#contact">
+    <script>location.replace("/about/" + location.search + "#contact");</script>
 </head>
 <body>
-    <p>The contact form is now at <a href="about.html#contact">about.html#contact</a>.</p>
+    <p>The contact form is now at <a href="/about/#contact">/about/#contact</a>.</p>
 </body>
 </html>

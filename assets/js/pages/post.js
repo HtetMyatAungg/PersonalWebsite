@@ -1,9 +1,14 @@
 /**
- * post.js — entry module for post.html, which renders any single post.
+ * post.js — the module every post page runs.
  *
- * There is one post *page*, not one page per post: post.html?p=<slug> loads
- * content/posts/<slug>.md, renders it, and builds the table of contents,
- * prev/next pager and comment thread around it.
+ * Post pages are generated: scripts/build-posts.mjs writes one
+ * writing/<slug>/index.html per post, each carrying its slug in
+ * <body data-post-slug>. This module reads that slug, loads
+ * content/posts/<slug>.md, and builds the body, table of contents, prev/next
+ * pager and comment thread around it.
+ *
+ * The generated page already holds the real <title>, description and Open Graph
+ * tags, so this module deliberately does NOT touch them — see renderHeader.
  */
 
 import "../site.js";
@@ -22,24 +27,42 @@ const dom = {
     progress: document.querySelector("[data-read-progress]"),
 };
 
-function slugFromUrl() {
-    return new URLSearchParams(location.search).get("p") || "";
+/**
+ * Which post this page is.
+ *
+ * The generator bakes the slug into <body data-post-slug>, which is the markup
+ * contract and is deterministic. The pathname fallback exists only so a
+ * hand-copied folder still renders; it is not the primary path because pathname
+ * parsing has to guess about trailing slashes and an explicit /index.html, and
+ * it fails silently with the wrong slug rather than loudly.
+ */
+function currentSlug() {
+    const baked = document.body.dataset.postSlug;
+    if (baked) return baked;
+
+    const parts = location.pathname.split("/").filter(Boolean);
+    const last = parts[parts.length - 1];
+    return (last === "index.html" ? parts[parts.length - 2] : last) || "";
 }
 
 function showMessage(heading, detail) {
     if (dom.header) dom.header.innerHTML = `<h1 class="post-header__title">${heading}</h1>`;
     if (dom.body) {
-        dom.body.innerHTML = `<p>${detail}</p><p><a class="link" href="blog.html">Back to all writing</a></p>`;
+        dom.body.innerHTML = `<p>${detail}</p><p><a class="link" href="/writing/">Back to all writing</a></p>`;
     }
     document.querySelectorAll("[data-hide-on-error]").forEach((el) => (el.hidden = true));
 }
 
+/**
+ * Fills in the header. Note what this does NOT do: set document.title or the
+ * description meta tag. The generated page already carries both as real HTML,
+ * which is what makes link previews work — a crawler never runs this module.
+ * Setting them here too would give the page two sources of truth for its title,
+ * one of them invisible in the Elements panel, which is exactly how a share
+ * preview ends up disagreeing with the browser tab. audit.mjs checks the
+ * generated tags are current instead.
+ */
 function renderHeader(post, minutes) {
-    document.title = `${post.title} — ${site.name}`;
-    document
-        .querySelector('meta[name="description"]')
-        ?.setAttribute("content", post.summary || "");
-
     const tags = (post.tags || []).map((tag) => `<span class="badge">${tag}</span>`).join("");
 
     dom.header.innerHTML = `
@@ -111,7 +134,7 @@ function renderPager(posts, index) {
     const link = (post, direction, label) =>
         post
             ? `<a class="pager__link${direction === "next" ? " pager__link--next" : ""}"
-                  href="post.html?p=${encodeURIComponent(post.slug)}">
+                  href="/writing/${encodeURIComponent(post.slug)}/">
                    <span class="pager__dir">${label}</span>
                    <span class="pager__title">${post.title}</span>
                </a>`
@@ -139,7 +162,7 @@ function initReadingProgress() {
 }
 
 async function render() {
-    const slug = slugFromUrl();
+    const slug = currentSlug();
 
     if (!slug) {
         showMessage("No post selected", "Pick something from the writing index.");

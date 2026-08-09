@@ -5,7 +5,7 @@
  * toggle, scroll reveals, and copy buttons. Pages with no extra behaviour load
  * it directly:
  *
- *   <script type="module" src="assets/js/site.js"></script>
+ *   <script type="module" src="/assets/js/site.js"></script>
  *
  * Pages with extra behaviour load their own entry module, which imports this
  * one first (see pages/*.js).

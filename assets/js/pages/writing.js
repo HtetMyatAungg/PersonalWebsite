@@ -1,9 +1,9 @@
 /**
- * blog.js — entry module for blog.html.
+ * writing.js — entry module for writing/index.html (the writing index).
  *
  * Renders the post list and its tag chips from content/posts.json, then hands
  * filtering over to the shared filter engine. Adding a post never requires
- * touching this file or blog.html.
+ * touching this file or writing/index.html.
  */
 
 import "../site.js";

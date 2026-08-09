@@ -32,9 +32,15 @@ const icon = {
     close: `<svg class="nav-toggle__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
 };
 
-/** "blog.html" -> "blog" */
+/**
+ * A nav href -> the <body data-page> key it should highlight.
+ *   "/writing/" -> "writing"      "/" -> "index"
+ * The .html strip is kept so a legacy "blog.html" href still matches, which is
+ * what let the pages move into folders one at a time without the underline
+ * blinking out halfway through.
+ */
 function keyOf(href) {
-    return href.replace(/\.html$/, "");
+    return href.replace(/\.html$/, "").replace(/^\/+|\/+$/g, "") || "index";
 }
 
 function navMarkup(activePage) {
@@ -52,7 +58,7 @@ function headerMarkup(activePage) {
     return `
     <div class="container site-header__inner">
         <a class="brand" href="/"${atHome}>
-            <img class="brand__avatar" src="assets/media/avatar.jpg" alt="" width="34" height="34">
+            <img class="brand__avatar" src="/assets/media/avatar.jpg" alt="" width="34" height="34">
             <span class="brand__text">
                 <span class="brand__name">${site.name}</span>
                 <span class="brand__role">${site.role}</span>

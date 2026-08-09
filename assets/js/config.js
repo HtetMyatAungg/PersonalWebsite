@@ -22,8 +22,13 @@ export const links = {
     /* Single canonical CV link, served from this repository rather than Google
        Drive: the URL cannot rot, the file is versioned alongside the site, and
        the download lands in someone's folder already named after you.
-       To publish a new CV, overwrite HtetMyatAung-CV.pdf and commit. */
-    cv: "HtetMyatAung-CV.pdf",
+       To publish a new CV, overwrite HtetMyatAung-CV.pdf and commit.
+
+       Root-absolute, and it MUST stay that way. layout.js renders this into the
+       header of every page, including pages that live in a subfolder — written
+       relative it would resolve to /research/HtetMyatAung-CV.pdf and 404 on
+       every page except the home page. audit.mjs asserts the leading slash. */
+    cv: "/HtetMyatAung-CV.pdf",
     lab: "https://dicelab-rhul.github.io/autoformalisation/",
     repo: "https://github.com/HtetMyatAungg/PersonalWebsite",
 };
@@ -37,10 +42,10 @@ export const links = {
  * visitor who wants to reach you is already reading about you.
  */
 export const nav = [
-    { label: "Research", href: "research.html" },
-    { label: "Projects", href: "projects.html" },
-    { label: "Writing", href: "blog.html" },
-    { label: "About", href: "about.html" },
+    { label: "Research", href: "/research/" },
+    { label: "Projects", href: "/projects/" },
+    { label: "Writing", href: "/writing/" },
+    { label: "About", href: "/about/" },
 ];
 
 /**
@@ -95,8 +100,17 @@ export const comments = {
     repoId: "R_kgDOR5KqEw",
     category: "Announcements",
     categoryId: "DIC_kwDOR5KqE84DC96l",
-    /** "pathname" gives one discussion thread per post URL. */
-    mapping: "pathname",
+    /**
+     * "specific" pairs with the data-term giscus.js sends, which is the post's
+     * slug. Thread identity is therefore the slug, not the URL.
+     *
+     * It used to be "pathname", which was a bug: every post was served from
+     * /post.html and a query string is not part of a pathname, so all posts
+     * shared one thread. Keying on the slug also means a trailing slash, an
+     * explicit /index.html, or a future URL change cannot split or orphan a
+     * thread — only renaming a post's file can, which is what `aliases:` is for.
+     */
+    mapping: "specific",
     lang: "en",
 };
 

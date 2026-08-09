@@ -23,7 +23,7 @@ export function postCardMarkup(post, index = 0) {
     /* data-tags drives the filter chips; data-search widens free-text search
        to include tag names that are not shown in the card body. */
     return `
-    <a class="post-card reveal" href="post.html?p=${encodeURIComponent(post.slug)}"
+    <a class="post-card reveal" href="/writing/${encodeURIComponent(post.slug)}/"
        data-tags="${tags.map(tagSlug).join(" ")}"
        data-search="${tags.join(" ")}"
        data-reveal-delay="${index * 60}">

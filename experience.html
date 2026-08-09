@@ -2,14 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- This page was renamed to research.html. Kept as a redirect so older
-         links (CVs already sent out, search results) do not break. -->
-    <meta http-equiv="refresh" content="0; url=research.html">
-    <link rel="canonical" href="https://htetmyataung.uk/research.html">
+    <!-- Redirect stub, same shape as the others (see research.html for why the
+         refresh waits 1s and why the script does the real work). This page was
+         renamed to Research long before the folder move; kept for older links.
+         Two hops via research.html would work, but pointing straight at
+         /research/ saves one. -->
+    <title>Moved to /research/ — Htet Myat Aung</title>
     <meta name="robots" content="noindex">
-    <title>Moved to Research — Htet Myat Aung</title>
+    <link rel="canonical" href="https://htetmyataung.uk/research/">
+    <meta http-equiv="refresh" content="1; url=/research/">
+    <script>location.replace("/research/" + location.search + location.hash);</script>
 </head>
 <body>
-    <p>This page is now at <a href="research.html">research.html</a>.</p>
+    <p>This page is now at <a href="/research/">/research/</a>.</p>
 </body>
 </html>

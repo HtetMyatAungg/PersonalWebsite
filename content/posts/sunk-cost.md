@@ -4,6 +4,7 @@ date: 2026-08-09
 tags: [AI safety, Behavioral AI]
 summary: LLMs shows escalation of commitment under social multiagent peer settings.
 draft: false
+aliases: [why-people-throw-good-money-after-bad-and-whether-ai-does-to]
 ---
 
 The bias of escalation of commitment (throwing good money after bad) is something every human (myself included) has experienced.
