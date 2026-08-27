@@ -1,5 +1,16 @@
 [
     {
+        "slug": "inferring-world-structure-from-bumps-event-calculus-reasonin",
+        "title": "Inferring World Structure from Bumps. Event Calculus Reasoning in VacuumWorld",
+        "date": "2026-08-27",
+        "minutes": 3,
+        "summary": "One or two sentences. This is what shows on the index and in link previews.",
+        "tags": [
+            "Neurosymbolic",
+            "World Model"
+        ]
+    },
+    {
         "slug": "sunk-cost",
         "title": "Why people throw good money after bad (and whether AI does too)",
         "date": "2026-08-09",
