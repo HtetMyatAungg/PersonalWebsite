@@ -1,0 +1,1399 @@
+/* ===========================================================================
+   site.css — the only stylesheet.
+
+   Look: white page, black ink, ONE accent — highlighter yellow (--mark).
+   No purple, no blue, no decorative gradients, no dark theme. On white, the
+   yellow is only ever a background behind black text, never a text colour.
+   (On the black footer it may be text: there it has the contrast.)
+
+   Four sections, in this order:
+     1. Tokens      custom properties only
+     2. Base        reset, bare elements, primitives, reveal + marker highlight
+     3. Components  every reusable piece, once
+     4. Layouts     hero, split, talk, footer
+
+   Rules:
+     - No raw colours or sizes below section 1. Need one? Add a token.
+     - A component never sets its own outer margin; the parent owns spacing.
+     - Naming is block__element--modifier.
+     - Type is fluid via clamp() tokens. No font-size media queries.
+     - Every animation must be off under prefers-reduced-motion (end of Base).
+   =========================================================================== */
+
+
+/* ===========================================================================
+   1. TOKENS
+   =========================================================================== */
+
+:root {
+    color-scheme: light;
+
+    /* Each display stack names a fallback that is shrunk to the web font's
+       width (see the @font-face rules in Base). -tight is the condensed cut
+       used for the hero name and the footer shout. */
+    --font-display: "Bricolage Grotesque", "Display Fallback", sans-serif;
+    --font-display-tight: "Bricolage Grotesque", "Display Fallback Tight", sans-serif;
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --text-2xs: 0.688rem;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: clamp(0.95rem, 0.92rem + 0.14vw, 1.0625rem);
+    --text-md: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    --text-lg: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+    --text-xl: clamp(1.5rem, 1.3rem + 0.9vw, 2.125rem);
+    --text-2xl: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+    --text-3xl: clamp(2.75rem, 1.9rem + 4vw, 5.25rem);
+    --text-stat: clamp(1.75rem, 1.2rem + 1.9vw, 2.75rem);
+    --text-hero: clamp(3.5rem, min(1.4rem + 10vw, 1rem + 17vh), 9.25rem);
+
+    --leading-tight: 0.95;
+    --leading-snug: 1.25;
+    --leading-normal: 1.6;
+
+    --tracking-tight: -0.02em;
+    --tracking-wide: 0.04em;
+    --tracking-caps: 0.1em;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+
+    /* Vertical rhythm between sections. Change this alone to tighten or loosen
+       the whole page. */
+    --section-gap: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
+
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-pill: 999px;
+
+    --container: 72rem;
+    --header-height: 4rem;
+    --rule: 2px;
+    --offset: 0.75rem;      /* how far the portrait's yellow block is shifted */
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --duration-fast: 150ms;
+    --duration-slow: 700ms;
+
+    --z-header: 100;
+
+    /* Colour. Semantic names only. */
+    --bg: #ffffff;
+    --surface: #f5f5f1;
+    --ink: #0b0b0b;
+    --text-muted: #4a4a4a;
+    --text-subtle: #6b6b6b;
+    --line: #e2e2dc;
+    --mark: #ffe600;
+    --on-ink-muted: #c8c8c2;
+    --positive: #17a34a;
+    --critical: #c62828;
+    --backdrop: rgb(0 0 0 / 0.75);      /* behind the demo dialog */
+
+    /* Colour of the hard drop shadow on hover. The footer flips it to white. */
+    --shadow-color: var(--ink);
+}
+
+
+/* ===========================================================================
+   2. BASE
+   =========================================================================== */
+
+/* Until the web font arrives (or if it never does), headings are drawn in a
+   system bold, which is wider: 7% wider than the regular display cut and 26%
+   wider than the condensed one (both measured). Unadjusted, that wraps the
+   hero onto extra lines and pushes "Hire me" off the first screen. These two
+   faces shrink the fallback to the web font's width, so nothing wraps and
+   nothing moves when the font swaps in. */
+@font-face {
+    font-family: "Display Fallback";
+    src: local("Arial Bold"), local("Arial"), local("Liberation Sans Bold"), local("Liberation Sans"), local("Helvetica Bold"), local("Helvetica");
+    font-weight: 700 800;
+    size-adjust: 93%;
+}
+
+@font-face {
+    font-family: "Display Fallback Tight";
+    src: local("Arial Bold"), local("Arial"), local("Liberation Sans Bold"), local("Liberation Sans"), local("Helvetica Bold"), local("Helvetica");
+    font-weight: 800;
+    size-adjust: 79%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + var(--space-4));
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+}
+
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-xl); font-weight: 700; line-height: 1.1; }
+
+p { text-wrap: pretty; }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img,
+video,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+ul,
+ol {
+    padding: 0;
+    list-style: none;
+}
+
+button,
+input {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* `hidden` must always win over a component's own `display`. */
+[hidden] { display: none !important; }
+
+::selection {
+    background: var(--mark);
+    color: var(--ink);
+}
+
+/* One visible focus treatment for the whole site. Never remove it. */
+:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+}
+
+/* --- Marker highlight ------------------------------------------------------
+   <mark> is the signature: a highlighter stroke behind the words that matter.
+   Inside a .reveal it sweeps in left-to-right when the block scrolls in. */
+mark {
+    color: inherit;
+    padding: 0.05em 0.2em;
+    margin-inline: -0.1em;
+    border-radius: 0.2em;
+    background: linear-gradient(var(--mark), var(--mark)) no-repeat 0 50% / 100% 100%;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+.js .reveal mark {
+    background-size: 0% 100%;
+    transition: background-size var(--duration-slow) var(--ease-out) 350ms;
+}
+
+.js .reveal.is-visible mark { background-size: 100% 100%; }
+
+/* --- Layout primitives ---------------------------------------------------- */
+
+.container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: clamp(1.125rem, 0.75rem + 2.5vw, 2.5rem);
+}
+
+.section { padding-block: var(--section-gap) 0; }
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.skip-link {
+    position: fixed;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: calc(var(--z-header) + 10);
+    padding: var(--space-2) var(--space-4);
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    transform: translateY(-200%);
+}
+
+.skip-link:focus-visible { transform: none; }
+
+/* --- Scroll reveal ---------------------------------------------------------
+   Hidden only when JS is known to be running (html.js is set by the inline
+   script in <head>), so content can never be stuck invisible. */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition: opacity var(--duration-slow) var(--ease-out),
+        transform var(--duration-slow) var(--ease-out);
+}
+
+.js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(1.5rem);
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    50% { opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .js .reveal {
+        opacity: 1;
+        transform: none;
+    }
+
+    .js .reveal mark { background-size: 100% 100%; }
+}
+
+
+/* ===========================================================================
+   3. COMPONENTS
+   =========================================================================== */
+
+/* --- Section heading: numbered chip + big title --------------------------- */
+
+.section-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.eyebrow {
+    flex: none;
+    padding: 0.3em 0.75em;
+    border-radius: var(--radius-pill);
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+}
+
+/* --- Buttons and links -----------------------------------------------------
+   Default is white with a black outline. On hover every button lifts off a
+   hard black shadow. Works on <a> and <button>. */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 0.8em 1.35em;
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        background-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
+}
+
+.btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+}
+
+.btn:active {
+    transform: none;
+    box-shadow: none;
+}
+
+.btn--primary {
+    background: var(--ink);
+    color: var(--bg);
+}
+
+.btn--primary:hover {
+    background: var(--mark);
+    color: var(--ink);
+}
+
+/* Yellow fill: the one button on the black footer. */
+.btn--mark {
+    background: var(--mark);
+    border-color: var(--mark);
+}
+
+/* Outline on black. */
+.btn--ghost {
+    background: transparent;
+    border-color: var(--bg);
+    color: var(--bg);
+}
+
+/* Borderless until hovered. */
+.btn--quiet { border-color: transparent; }
+.btn--quiet:hover { border-color: var(--ink); }
+
+.btn--lg {
+    padding: 0.95em 1.6em;
+    font-size: var(--text-md);
+}
+
+.btn--sm {
+    padding: 0.6em 1.05em;
+    font-size: var(--text-xs);
+}
+
+.btn[disabled] {
+    opacity: 0.5;
+    cursor: progress;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn__arrow { transition: transform var(--duration-fast) var(--ease-out); }
+.btn:hover .btn__arrow { transform: translateX(0.25em); }
+
+/* Inline text link; the underline turns into a marker stroke on hover. */
+.text-link {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: var(--rule);
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.text-link:hover {
+    background: var(--mark);
+    text-decoration-color: transparent;
+}
+
+/* --- Site header ---------------------------------------------------------- */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: var(--header-height);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-right: auto;
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+}
+
+.brand__avatar {
+    width: 2.125rem;
+    height: 2.125rem;
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+    border: var(--rule) solid var(--ink);
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.nav__link {
+    padding: 0.4em 0.85em;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color var(--duration-fast) var(--ease-out),
+        background-color var(--duration-fast) var(--ease-out);
+}
+
+.nav__link:hover { color: var(--ink); }
+
+/* site.js moves aria-current between the two links as you scroll. */
+.nav__link[aria-current="true"] {
+    background: var(--mark);
+    color: var(--ink);
+}
+
+/* Reading progress along the header's bottom edge. Pure CSS; browsers
+   without scroll-driven animations simply do not show it. */
+.scroll-progress {
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 3px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+}
+
+@supports (animation-timeline: scroll()) {
+    .scroll-progress {
+        animation: progress linear both;
+        animation-timeline: scroll(root);
+    }
+}
+
+@keyframes progress {
+    to { transform: scaleX(1); }
+}
+
+@media (max-width: 40rem) {
+    .brand__name { display: none; }
+    .site-header__inner { gap: var(--space-2); }
+}
+
+/* --- Status pill ---------------------------------------------------------- */
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5em 1em 0.5em 0.8em;
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+.pill__dot {
+    display: inline-block;
+    flex: none;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: var(--radius-pill);
+    background: var(--positive);
+    animation: pulse 2.2s ease-in-out infinite;
+}
+
+/* --- Rolling word (hero) ---------------------------------------------------
+   A one-line window over a column of words. The first word is repeated last
+   so the loop is seamless. Screen readers get the static sentence beside it. */
+
+.roller {
+    display: inline-block;
+    height: 1.2em;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.roller__track {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    animation: roll 7.5s var(--ease-out) infinite;
+}
+
+.roller__track span {
+    height: 1.2em;
+    padding-inline: 0.18em;
+    border-radius: 0.15em;
+    background: var(--mark);
+    line-height: 1.2;
+}
+
+@keyframes roll {
+    0%, 27% { transform: translateY(0); }
+    33%, 60% { transform: translateY(-1.2em); }
+    66%, 93% { transform: translateY(-2.4em); }
+    100% { transform: translateY(-3.6em); }
+}
+
+/* --- Spinning "hire me" stamp (hero) -------------------------------------- */
+
+.stamp {
+    display: block;
+    width: clamp(5.5rem, 4rem + 5vw, 8rem);
+    transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.stamp:hover { transform: scale(1.08) rotate(-6deg); }
+
+.stamp circle {
+    fill: var(--mark);
+    stroke: var(--ink);
+    stroke-width: 2;
+}
+
+.stamp__ring {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    transform-origin: 60px 60px;
+    animation: spin 16s linear infinite;
+}
+
+.stamp__arrow {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 800;
+    fill: var(--ink);
+}
+
+/* --- Proof strip ---------------------------------------------------------- */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-block: var(--rule) solid var(--ink);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-5) var(--space-5) 0;
+}
+
+.stat + .stat {
+    padding-left: var(--space-5);
+    border-left: 1px solid var(--line);
+}
+
+.stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-stat);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.stat__arrow { font-weight: 400; }
+
+.stat__label {
+    max-width: 24ch;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+}
+
+@media (max-width: 56rem) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .stat:nth-child(odd) {
+        padding-left: 0;
+        border-left: none;
+    }
+
+    .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+
+/* --- Ticker ----------------------------------------------------------------
+   Two identical tracks; each slides left by its own width, so the join never
+   shows. No gap on the container for the same reason. */
+
+.ticker {
+    display: flex;
+    overflow: hidden;
+    padding-block: var(--space-3);
+    background: var(--ink);
+    color: var(--bg);
+}
+
+.ticker__track {
+    display: flex;
+    flex: none;
+    align-items: center;
+    animation: ticker 36s linear infinite;
+}
+
+.ticker:hover .ticker__track { animation-play-state: paused; }
+
+.ticker__track span {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.ticker__track span::after {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    margin-inline: var(--space-5);
+    border-radius: var(--radius-pill);
+    background: var(--mark);
+}
+
+@keyframes ticker {
+    to { transform: translateX(-100%); }
+}
+
+/* --- Jobs (Work) -----------------------------------------------------------
+   Source order is role, org, dates, points (that is the order the "Talk to me"
+   model reads). Grid areas put the dates in the left column on wide screens. */
+
+.job {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    grid-template-areas:
+        "when role"
+        "when org"
+        "when points";
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-6);
+    border-top: var(--rule) solid var(--ink);
+}
+
+.job__role { grid-area: role; }
+
+.job__org {
+    grid-area: org;
+    font-size: var(--text-md);
+    font-weight: 600;
+}
+
+.job__when {
+    grid-area: when;
+    padding-top: 0.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+.job__when span {
+    display: block;
+    color: var(--text-subtle);
+}
+
+.job__points {
+    grid-area: points;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 68ch;
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+}
+
+.job__points li {
+    position: relative;
+    padding-left: 1.4em;
+}
+
+.job__points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.7em;
+    height: var(--rule);
+    background: var(--ink);
+}
+
+.job__points mark { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 48rem) {
+    .job {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "when" "role" "org" "points";
+    }
+
+    .job__when { padding-top: 0; }
+
+    .job__when span {
+        display: inline;
+        margin-left: 0.75em;
+    }
+}
+
+/* --- Project cards -------------------------------------------------------- */
+
+.projects {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.project {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+}
+
+/* First two are the headline pair. */
+.project:nth-child(-n + 2) { grid-column: span 3; }
+
+/* Hover lift. Declared after .reveal so it wins the transform. */
+.js .project.is-visible {
+    transition: transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.js .project.is-visible:hover,
+.no-js .project:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--shadow-color);
+}
+
+/* Comes after the title in the source; shown above it. */
+.project__kicker {
+    order: -1;
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+}
+
+.project__metric {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.project__body {
+    flex: 1;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+.project__stack {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-subtle);
+}
+
+.project__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+    font-size: var(--text-sm);
+}
+
+@media (max-width: 60rem) {
+    .project,
+    .project:nth-child(-n + 2) { grid-column: span 3; }
+}
+
+@media (max-width: 40rem) {
+    .project,
+    .project:nth-child(-n + 2) { grid-column: span 6; }
+}
+
+/* --- Fact lists (Education, Leadership) ----------------------------------- */
+
+.list-title {
+    padding-bottom: var(--space-3);
+    border-bottom: var(--rule) solid var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+}
+
+.facts li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--line);
+}
+
+.facts__head {
+    font-size: var(--text-md);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+}
+
+.facts__sub {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+/* --- Toolkit -------------------------------------------------------------- */
+
+.skill-group {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-5);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--line);
+}
+
+.skill-group:first-child { border-top: var(--rule) solid var(--ink); }
+
+.skill-group__name {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+}
+
+.skill-group__text {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag {
+    padding: 0.35em 0.8em;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    white-space: nowrap;
+    transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.tag:hover { background: var(--mark); }
+
+@media (max-width: 48rem) {
+    .skill-group {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-2);
+    }
+}
+
+/* --- Chat (Talk to me) -----------------------------------------------------
+   site.js drives everything through data-state on .chat:
+   idle | loading | ready | busy | error | unsupported */
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--ink);
+    overflow: hidden;
+}
+
+.chat__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--rule) solid var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+}
+
+.chat__dot {
+    width: 0.65rem;
+    height: 0.65rem;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-pill);
+    background: var(--line);
+}
+
+.chat[data-state="loading"] .chat__dot,
+.chat[data-state="busy"] .chat__dot {
+    background: var(--mark);
+    animation: pulse 0.9s ease-in-out infinite;
+}
+
+.chat[data-state="ready"] .chat__dot { background: var(--positive); }
+
+.chat[data-state="error"] .chat__dot,
+.chat[data-state="unsupported"] .chat__dot { background: var(--critical); }
+
+.chat__title { font-weight: 500; }
+
+.chat__status {
+    margin-left: auto;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+}
+
+.chat__log {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-height: 14rem;
+    max-height: min(26rem, 60vh);
+    padding: var(--space-5) var(--space-4);
+    overflow-y: auto;
+}
+
+.msg {
+    max-width: 88%;
+    padding: 0.7em 1em;
+    border-radius: var(--radius-md);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    animation: rise 300ms var(--ease-out);
+}
+
+.msg--bot {
+    align-self: flex-start;
+    border: 1px solid var(--line);
+    border-bottom-left-radius: var(--space-1);
+    background: var(--surface);
+}
+
+.msg--user {
+    align-self: flex-end;
+    border-bottom-right-radius: var(--space-1);
+    background: var(--ink);
+    color: var(--bg);
+}
+
+.msg--error {
+    align-self: flex-start;
+    border: 1px solid var(--critical);
+    color: var(--critical);
+}
+
+/* Blinking caret while the answer streams in. */
+.msg--typing::after {
+    content: "▍";
+    margin-left: 0.1em;
+    animation: pulse 0.8s steps(2) infinite;
+}
+
+.chat__gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-4);
+    border-top: 1px solid var(--line);
+    text-align: center;
+}
+
+.chat__hint {
+    max-width: 38ch;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+.chat__progress {
+    width: min(20rem, 100%);
+    height: 0.75rem;
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.chat__progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--mark);
+    transition: width 300ms linear;
+}
+
+.chat__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0 var(--space-4) var(--space-3);
+}
+
+.chip {
+    padding: 0.45em 0.9em;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    transition: background-color var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out);
+}
+
+.chip:hover {
+    background: var(--mark);
+    transform: translateY(-2px);
+}
+
+.chip[disabled] {
+    opacity: 0.45;
+    cursor: progress;
+    transform: none;
+}
+
+.chat__form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+    border-top: var(--rule) solid var(--ink);
+}
+
+.chat__input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.5em 0;
+    border: none;
+    background: none;
+}
+
+.chat__input::placeholder { color: var(--text-subtle); }
+.chat__input:focus { outline: none; }
+.chat__form:focus-within { background: var(--surface); }
+
+/* --- Copy button ---------------------------------------------------------- */
+
+.copy-btn__done,
+.copy-btn[data-copied="true"] .copy-btn__idle { display: none; }
+.copy-btn[data-copied="true"] .copy-btn__done { display: inline; }
+
+/* --- Demo video dialog ---------------------------------------------------- */
+
+.demo {
+    width: min(64rem, 94vw);
+    margin: auto;
+    padding: var(--space-3);
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+}
+
+.demo::backdrop { background: var(--backdrop); }
+
+.demo video {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    background: var(--ink);
+}
+
+.demo form {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--space-3);
+}
+
+
+/* ===========================================================================
+   4. LAYOUTS
+   =========================================================================== */
+
+/* --- Hero ----------------------------------------------------------------- */
+
+.hero { padding-block: clamp(1.5rem, 7vh, 5rem) var(--space-7); }
+
+.hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+}
+
+.hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+}
+
+/* Entrance: each line rises in turn. */
+.hero__content > * { animation: rise 800ms var(--ease-out) both; }
+.hero__content > :nth-child(2) { animation-delay: 80ms; }
+.hero__content > :nth-child(3) { animation-delay: 160ms; }
+.hero__content > :nth-child(4) { animation-delay: 240ms; }
+.hero__content > :nth-child(5) { animation-delay: 320ms; }
+
+.hero__name {
+    font-family: var(--font-display-tight);
+    font-size: var(--text-hero);
+    font-stretch: 85%;
+    line-height: 0.9;
+}
+
+/* Two lines, always: "Htet" / "Myat Aung". */
+.hero__name span {
+    display: block;
+    white-space: nowrap;
+}
+
+.hero__pitch {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: var(--tracking-tight);
+}
+
+.hero__meta {
+    color: var(--text-muted);
+    font-size: var(--text-md);
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+}
+
+.hero__portrait {
+    position: relative;
+    width: clamp(12rem, 8rem + 14vw, 19rem);
+    margin-right: var(--offset);
+    animation: rise 900ms var(--ease-out) 200ms both;
+}
+
+/* Photo on a yellow block that is offset like a misregistered print. */
+.hero__portrait img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: var(--rule) solid var(--ink);
+    border-radius: var(--radius-md);
+    box-shadow: var(--offset) var(--offset) 0 var(--mark), var(--offset) var(--offset) 0 var(--rule) var(--ink);
+}
+
+.hero__portrait .stamp {
+    position: absolute;
+    left: -2.25rem;
+    bottom: -2.25rem;
+}
+
+@media (max-width: 52rem) {
+    .hero__inner { grid-template-columns: minmax(0, 1fr); }
+
+    .hero__portrait {
+        width: clamp(9rem, 38vw, 12rem);
+        margin-bottom: var(--space-5);
+    }
+
+    .hero__portrait .stamp {
+        left: auto;
+        right: -4.5rem;
+        bottom: -1.5rem;
+    }
+}
+
+/* --- Split: two columns that stack on narrow screens ---------------------- */
+
+.split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: start;
+}
+
+/* --- Talk to me ----------------------------------------------------------- */
+
+.talk {
+    margin-top: var(--section-gap);
+    padding-block: var(--section-gap);
+    border-top: var(--rule) solid var(--ink);
+    background: var(--surface);
+}
+
+.talk__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: start;
+}
+
+.talk__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+}
+
+.talk__lede {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+}
+
+.talk__notes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+@media (max-width: 56rem) {
+    .split,
+    .talk__inner { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --- Footer: the closing "Hire me." --------------------------------------- */
+
+.site-footer {
+    --shadow-color: var(--bg);
+    padding-block: var(--section-gap) var(--space-6);
+    background: var(--ink);
+    color: var(--bg);
+}
+
+.site-footer ::selection { color: var(--ink); }
+.site-footer :focus-visible { outline-color: var(--mark); }
+
+.site-footer__shout {
+    font-family: var(--font-display-tight);
+    font-size: var(--text-hero);
+    font-stretch: 85%;
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: var(--tracking-tight);
+}
+
+.site-footer__shout span { color: var(--mark); }
+
+.site-footer__lede {
+    max-width: 44ch;
+    margin-top: var(--space-5);
+    color: var(--on-ink-muted);
+    font-size: var(--text-lg);
+    line-height: 1.4;
+}
+
+.site-footer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+}
+
+.site-footer__actions .btn { max-width: 100%; }
+
+.site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+}
+
+.site-footer__links a:hover { color: var(--mark); }
+
+.site-footer__note {
+    margin-top: var(--space-5);
+    color: var(--on-ink-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+}
+
+/* --- 404 ------------------------------------------------------------------ */
+
+.notfound {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: var(--space-5);
+    min-height: 70vh;
+    text-align: center;
+}
+
+.notfound h1 { font-size: var(--text-3xl); }
