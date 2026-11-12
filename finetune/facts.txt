@@ -1,0 +1,76 @@
+[About]
+- Available · Summer 2027 internships
+- Htet Myat Aung
+- ML engineer who builds, measures and leads.
+- Second-year Computer Science (AI) at Royal Holloway. First Class.
+- 100%: Pass rate on all 6 frontier LLMs. Up from 0%.
+- 10 LLMs: Evaluated in my first-author study.
+- 300: Versioned datasets under my automated checks.
+- Top 5: UKCISA #WeAreInternational Awards 2026.
+- An AI version of me. It runs on your device. Nothing leaves it.
+- Open to Summer 2027 internships. Based in Egham, Surrey, near London. I reply within 24 hours.
+- Email: henry.htetmyataung@gmail.com
+[Work: Undergraduate Research Fellow (UROP)]
+- DICE Lab, Royal Holloway — Jun – Sep 2026 Funded
+- The only first-year selected. 30+ applied.
+- First author of the report. Do LLMs learn general rules, or memorise answers? Tested on 10 models, in Prolog. Supervised by Prof. Kostas Stathis.
+- Result: unguided models memorise example grid sizes. They do not generalise.
+- A schema in the prompt is the deciding factor. It lifted all 6 frontier models from 0% to 100%.
+- Built an open-source pipeline: 10 models × 4 prompt conditions × 20 samples. 6 frontier APIs, 4 local via Ollama. Automated Prolog repair loop.
+- Found and fixed a silent evaluator bug. It zeroed every rule-based score, across 3 scoring layers.
+[Work: Student Research Software Engineer, ML]
+- ISG Smart Card Centre, Royal Holloway — Oct 2026 – Now Part-time
+- Sole engineer. Implementing a 2026 multi-objective optimisation paper as a 5-class classifier. PyTorch, XGBoost.
+- Target: one core, tight memory. Balancing F1, model size and latency.
+[Work: Volunteer Research Assistant]
+- DICE Lab, Royal Holloway — Mar 2026 – Now Volunteer
+- Built automated syntax and execution checks. They cover 300 versioned datasets.
+- Part of the authoring-to-validation toolchain for an LLM autoformalization benchmark.
+[Work: Early Software Engineer]
+- Sharpers Log — Mar – Aug 2026 Part-time
+- Automated a manual sales-research workflow with an LLM pipeline.
+- It ingests CRM exports, enriches records via a search API and drafts sector-tuned outreach.
+- Validation gate on every LLM-generated message.
+[Projects: Toy Models of Superposition]
+- Replication · Anthropic paper
+- Paper replicated
+- Replicated Anthropic's Toy Models of Superposition paper. It shows how a network stores more features than it has neurons.
+- Interpretability · Jupyter
+[Projects: Financial Sentiment Classifier]
+- NLP
+- 0.657 macro-F1 vs 0.25 baseline
+- Leakage-safe NLP pipeline. 4,840 de-duplicated financial news sentences. TF-IDF and logistic regression, stratified 5-fold cross-validation. 95% bootstrap CI 0.604 to 0.708.
+- pandas · scikit-learn
+[Projects: NEO Hazard Classifier]
+- Machine learning
+- Hazard recall 0.36 → 1.00
+- Class-weighted neural network. 6,000+ imbalanced NASA records. AUC-ROC 0.958. 12% false-alarm rate.
+- Python · neural networks
+[Projects: Sentinel]
+- Hackathon · Cursor × Briefcase London
+- Human-in-the-loop Claude agent
+- Vets fintech counterparties via the Specter API. Decides PROCEED or DECLINE. Escalates to a human below 0.65 confidence.
+- Claude API · Specter API
+[Projects: MyanPay]
+- Hackathon · LSE Agentic Society
+- Pay by voice. 94% intent accuracy
+- Spoken-payments LLM agent. Whisper speech recognition. A confirmation gate on every payment.
+- LLM agent · Whisper
+[Background: Leadership]
+- Founder & Lead, AI Safety Student Research Group, RHUL — Founded Nov 2026. A weekly group under the AI & Robotics Society. It reads and replicates AI safety papers.
+- President, RHUL AI & Robotics Society — Ran Python, Vim and ML workshops. 30 at the Python one. Leading Dronathon 2027 with King's College London. Leads RHUL's Cambridge Battlecode team.
+- Maths Mentor, RHUL Maths Mentoring Scheme — Selected from hundreds. Mentors 27 students.
+- Student Speaker, Times Higher Education — Panel speaker on study groups. Invited panellist at THE Student Success UK & IE, University of Bath, Nov 2026.
+[Background: Education]
+- BSc Computer Science (Artificial Intelligence) — Royal Holloway, University of London · Sep 2025 – Jun 2028
+- First Class. Year 1 average 74%. — Linear Algebra 98%. Mathematical Methods 94%.
+- ISC Excellence Scholarship — 1 of 10 awarded, from 200.
+- UKCISA #WeAreInternational Awards 2026 — Finalist. Top 5.
+- BlueDot Technical AI Safety course — Additional training.
+- Auditing MSc seminars, by invitation — Modules: Data Structures and Complexity, Operating Systems, Databases, Information Security, Software Engineering, OOP.
+[Toolkit]
+- ML: PyTorch, XGBoost, scikit-learn, TensorFlow, NumPy, pandas
+- Research methods: LLM evaluation, Controlled experiments, Stratified cross-validation, Bootstrap confidence intervals, Autoformalization
+- Languages: Python, Prolog, Java, C, TypeScript, SQL
+- Tools: Ollama, Claude API, Whisper, FastAPI, Docker, Git, Linux
+- Spoken: English - fluent, Burmese - native, Chinese - conversational, Japanese - conversational

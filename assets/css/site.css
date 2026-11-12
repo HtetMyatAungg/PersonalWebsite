@@ -648,8 +648,6 @@ mark {
     white-space: nowrap;
 }
 
-.stat__arrow { font-weight: 400; }
-
 .stat__label {
     max-width: 24ch;
     color: var(--text-muted);

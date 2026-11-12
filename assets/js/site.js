@@ -19,78 +19,317 @@
        The model runs in the visitor's browser on WebGPU, through WebLLM.
        Nothing the visitor types leaves their device.
 
+       Keep the model SMALL. Most laptops have an integrated GPU: a 1.5B model
+       took 40 s per answer on one and then crashed it ("device lost"). Size is
+       also the download the visitor waits for.
+
        `id` is a model from WebLLM's built-in list. To switch to the model
        fine-tuned on Htet (see CLAUDE.md, "Swapping in the fine-tuned model"):
          weights: URL of the Hugging Face repo holding the MLC-converted weights
          base:    WebLLM id of the stock model it was fine-tuned from
-         id:      any unique name for it, e.g. "htet-qwen2.5-1.5b"
+         id:      any unique name for it, e.g. "htet-llama-1b"
        Leave `weights` null to use the stock model.
 
        To try another model without editing this file: /?model=<WebLLM id>#talk
        ====================================================================== */
     const MODEL = {
-        id: "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
-        sizeMB: 1000,
+        id: "Llama-3.2-1B-Instruct-q4f16_1-MLC",
+        sizeMB: 700,
         weights: null,
         base: null,
     };
 
+    /* Same version in llm-worker.js. Change both together. */
     const WEBLLM_URL = "https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.88/+esm";
+    const WORKER_URL = "/assets/js/llm-worker.js";
 
-    /* What the model is told before every conversation. The FACTS are read off
-       the page itself (every [data-facts] block), so the page is the single
-       source of truth: edit the HTML and the model's knowledge follows. */
+    /* ======================================================================
+       HOW AN ANSWER IS MADE
+
+       A model small enough to run well in a browser cannot be trusted to speak
+       for Htet from the whole page: given all the facts it mixes them up or
+       invents ("available June to September 2026"). Measured, repeatedly. So
+       the model is never asked to recall anything. For each question:
+
+         1. notesFor()   picks the few lines of the page that match the question
+         2. the model    rephrases those lines as a short first-person answer
+         3. supported()  checks every number, name and word of the answer
+                         against those lines
+         4. if the check fails, the visitor gets the page's own lines instead
+
+       So an answer is either verified against the page or quoted from it.
+       A question that matches nothing on the page never reaches the model.
+       ====================================================================== */
+
     const PERSONA = [
-        "You are the AI version of Htet Myat Aung, answering visitors on his personal website.",
-        "Most visitors are recruiters or researchers deciding whether to hire him.",
-        "Speak as Htet, in the first person (\"I built...\"). Be friendly, direct and confident.",
-        "",
-        "Rules:",
-        "1. Use only the FACTS below. Never invent employers, numbers, dates, skills or opinions.",
-        "2. If the FACTS do not answer the question, say you do not have that detail here and give this email: " + EMAIL,
-        "3. Keep answers short: one to three short sentences. Plain text only, no lists, no markdown.",
-        "4. If asked about anything unrelated to Htet or his work, say you only talk about Htet and his work.",
+        "You are the AI version of Htet Myat Aung on his personal website.",
+        "Answer the QUESTION as Htet, in the first person (\"I built...\").",
+        "Use ONLY the NOTES. Do not add any fact, number or name that is not in the NOTES.",
+        "One or two short sentences. Plain text.",
     ].join("\n");
 
-    /* ---- Facts: read the page into plain text ----------------------------
-       Runs first, before the count-up animation rewrites any numbers.
-       Links, buttons, images and decorative (aria-hidden) nodes are skipped. */
-    const FACTS = (function readFacts() {
+    /* ---- Facts: read the page into lines -----------------------------------
+       One list of lines per [data-facts] element. Runs first, before the
+       count-up animation rewrites any numbers. Links, buttons, images and
+       decorative (aria-hidden) nodes are skipped. */
+    const FACT_ROOTS = (function readFacts() {
         const SKIP = 'a, button, nav, svg, img, video, script, [aria-hidden="true"]';
         const BLOCK = /^(P|H1|H2|H3|DIV|SECTION|ARTICLE|UL|OL|DL)$/;
-        const lines = [];
-        let line = "";
 
-        const flush = () => {
-            const text = line.replace(/\s+/g, " ").trim().replace(/,$/, "");
-            if (text) lines.push(text);
-            line = "";
+        const read = (root) => {
+            const lines = [];
+            let line = "";
+            let item = 0;             /* > 0 while inside a list item */
+
+            const flush = () => {
+                const text = line.replace(/\s+/g, " ").trim().replace(/,$/, "");
+                if (text) lines.push(text);
+                line = "";
+            };
+
+            const walk = (node) => {
+                if (node.nodeType === Node.TEXT_NODE) { line += node.nodeValue; return; }
+                if (node.nodeType !== Node.ELEMENT_NODE || node.matches(SKIP)) return;
+
+                const tag = node.tagName;
+                /* Inside a list item, paragraphs join into one line: a heading and its
+                   detail belong together ("... Awards 2026 — Finalist. Top 5."). */
+                const block = BLOCK.test(tag) && !(item && tag === "P");
+                if (block || tag === "DT") flush();
+                if (item && tag === "P" && line.trim()) line = line.trimEnd() + " — ";
+                if (tag === "H2") line += "## ";
+                if (tag === "H3") line += "### ";
+                if (tag === "LI") item += 1;
+                node.childNodes.forEach(walk);
+                if (tag === "DT") line += ": ";              /* "100%: Pass rate on ..." */
+                if (tag === "LI") {
+                    item -= 1;
+                    line = line.trimEnd();
+                    if (node.querySelector("p") || /[.!?]$/.test(line)) flush();    /* an entry or a sentence: its own line */
+                    else if (line) line += ", ";                                    /* a bare tag: "PyTorch, XGBoost, ..." */
+                }
+                if (block || tag === "DD") flush();
+            };
+
+            walk(root);
+            flush();
+            return lines;
         };
 
-        const walk = (node) => {
-            if (node.nodeType === Node.TEXT_NODE) { line += node.nodeValue; return; }
-            if (node.nodeType !== Node.ELEMENT_NODE || node.matches(SKIP)) return;
-
-            const tag = node.tagName;
-            const block = BLOCK.test(tag);
-            if (block || tag === "DT") flush();
-            if (tag === "H2") line += "## ";
-            if (tag === "H3") line += "### ";
-            node.childNodes.forEach(walk);
-            if (tag === "DT") line += ": ";          /* "100%: Pass rate on ..." */
-            if (tag === "LI") {                       /* a list reads as one line: "PyTorch, XGBoost, ..." */
-                line = line.trimEnd();
-                if (line) line += /[.!?:]$/.test(line) ? " " : ", ";
-            }
-            if (block || tag === "DD") flush();
-        };
-
-        document.querySelectorAll("[data-facts]").forEach(walk);
-        return lines.join("\n");
+        return Array.from(document.querySelectorAll("[data-facts]"), read);
     })();
 
-    /* Exactly what the model is given before the visitor's first question. */
-    const SYSTEM_PROMPT = PERSONA + "\n\nFACTS\n" + FACTS;
+    /* ---- Topics --------------------------------------------------------------
+       The page as the model's lookup table. One topic per ### heading (a job, a
+       project, a list), plus "About": the lines above the first section (name,
+       pitch, headline numbers) and the footer sentence. */
+    const TOPICS = [{ heading: "About", lines: [] }];
+    let section = "";
+
+    (FACT_ROOTS[0] || []).forEach((line) => {
+        if (line.startsWith("## ")) section = line.slice(3);
+        else if (line.startsWith("### ")) TOPICS.push({ section, heading: section + ": " + line.slice(4), lines: [] });
+        else TOPICS[TOPICS.length - 1].lines.push(line);
+    });
+    FACT_ROOTS.slice(1).forEach((lines) => { TOPICS[0].lines.push(...lines); });
+    TOPICS[0].lines.push("Email: " + EMAIL);
+
+    /* A section made only of one-line topics (Toolkit: five short lists) becomes
+       one topic, so "do you know X?" is answered with every list in view. */
+    Array.from(new Set(TOPICS.map((topic) => topic.section).filter(Boolean))).forEach((name) => {
+        const own = TOPICS.filter((topic) => topic.section === name);
+        if (own.length < 2 || own.some((topic) => topic.lines.length !== 1)) return;
+        const lines = own.map((topic) => topic.heading.slice(name.length + 2) + ": " + topic.lines[0]);
+        TOPICS.splice(TOPICS.indexOf(own[0]), own.length, { section: name, heading: name, lines });
+    });
+
+    /* Words that carry no topic. */
+    const STOP = new Set(("a an and are as at be but by can could did do does for from had has have he her his how i if in "
+        + "is it its me my of on or our she so than that the their them they this to us was we were what when where which "
+        + "who whom why will with would you your about tell any some please give much many am im ive not no yes").split(" "));
+
+    /* Words visitors use that the page does not, and the page words they mean.
+       Add a line here when a real question fails to find its topic. */
+    const ALSO = {
+        /* who he is, why hire him: About */
+        yourself: "measures available", introduce: "measures available", summarise: "measures available",
+        pitch: "measures available", hi: "measures available", hello: "measures available", hey: "measures available",
+        hire: "pass evaluated measures", strength: "pass evaluated measures", best: "pass evaluated measures",
+        candidate: "pass evaluated measures", superpower: "pass evaluated measures", apart: "pass evaluated measures",
+        available: "available summer", start: "available summer", free: "available summer", open: "available summer",
+        internship: "available summer", role: "available summer", looking: "available summer",
+        contact: "email reply", reach: "email reply", touch: "email reply",
+        located: "based", location: "based", live: "based",
+        real: "version device", person: "version device", human: "version device", bot: "version device", talking: "version device",
+        private: "device leaves", privacy: "device leaves", data: "device leaves", store: "device leaves",
+        /* research */
+        research: "urop fellow", supervisor: "supervised", supervise: "supervised", advisor: "supervised",
+        find: "result", found: "result", finding: "result", discover: "result", conclusion: "result",
+        test: "tested pipeline", tested: "pipeline", experiment: "tested pipeline", designed: "pipeline",
+        improve: "schema lifted", competitive: "selected applied", published: "author report", author: "author report",
+        bug: "evaluator fixed", mistake: "evaluator fixed",
+        /* work */
+        now: "now", current: "now", currently: "now", working: "now", today: "now", latest: "now",
+        job: "work engineer", company: "sharpers", industry: "sharpers", employer: "work",
+        optimising: "target balancing", constraint: "target balancing", hardware: "target core",
+        implemented: "implementing", reliable: "validation gate", output: "validation gate",
+        /* education */
+        study: "education bsc", studying: "education bsc", degree: "education bsc", university: "education holloway",
+        grade: "education average", record: "education average", graduate: "education", finish: "education", end: "education",
+        award: "education scholarship", won: "education scholarship", honour: "education scholarship",
+        module: "education", course: "education bluedot", covered: "education modules",
+        math: "education algebra", school: "education",
+        /* leadership */
+        lead: "leadership president founder", leader: "leadership president founder",
+        outside: "leadership president", extracurricular: "leadership president",
+        team: "leadership battlecode", teamwork: "leadership battlecode", player: "leadership battlecode",
+        society: "leadership president", club: "leadership president",
+        teach: "leadership workshop", taught: "leadership workshop", teaching: "leadership workshop", explain: "leadership workshop",
+        speaking: "leadership speaker", confident: "leadership speaker",
+        /* toolkit */
+        skill: "toolkit", stack: "toolkit", tech: "toolkit", technology: "toolkit", tool: "toolkit",
+        language: "toolkit", know: "toolkit", familiar: "toolkit", used: "toolkit", comfortable: "toolkit",
+        programming: "toolkit", coding: "toolkit", framework: "toolkit", method: "toolkit", evaluate: "toolkit evaluation",
+        speak: "toolkit spoken",
+        /* projects */
+        project: "projects", built: "projects", build: "projects", made: "projects", shipped: "projects", portfolio: "projects",
+        paper: "replication report optimisation", replicate: "replication", replicated: "replication",
+        interpretability: "superposition anthropic", anthropic: "superposition", speech: "whisper spoken",
+        imbalanced: "hazard", nasa: "hazard", hackathon: "hackathon",
+    };
+
+    const MONTHS = /^(jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)(uary|ruary|ch|il|e|y|ust|tember|ober|ember)$/;
+
+    const wordsOf = (text) => (text.toLowerCase().match(/[a-z0-9]+/g) || [])
+        .filter((word) => word.length > 1 && !STOP.has(word))
+        .map((word) => word.replace(MONTHS, "$1"))                                      /* september -> sep */
+        .map((word) => (word.length > 3 ? word.replace(/([^s])s$/, "$1") : word));     /* projects -> project */
+
+    TOPICS.forEach((topic) => {
+        topic.lineWords = topic.lines.map((line) => new Set(wordsOf(line)));
+        topic.headingWords = new Set(wordsOf(topic.heading));
+        topic.words = new Set(wordsOf(topic.heading + " " + topic.lines.join(" ")));
+    });
+
+    const TOPICS_PER_QUESTION = 2;
+    const LINES_PER_TOPIC = 6;
+    const CLOSE_ENOUGH = 0.7;     /* a second topic must score this share of the first */
+
+    /* The notes for one question: from the topics that share the most words with
+       it, the lines that share the most words with it, in page order. A word in
+       a heading counts three times; a typed word counts twice an implied one.
+       Usually one topic, two when they match about equally. Returns [] when
+       nothing on the page matches. */
+    const notesFor = (question) => {
+        const asked = new Map();      /* word -> weight: 2 if typed, 1 if implied by ALSO */
+        const typed = wordsOf(question);
+        (typed.length ? typed : ["introduce"]).forEach((word) => {      /* "who are you?" has no topic words */
+            asked.set(word, 2);
+            wordsOf(ALSO[word] || "").forEach((extra) => { if (!asked.has(extra)) asked.set(extra, 1); });
+        });
+
+        const weigh = (words, headingWords) => {
+            let score = 0;
+            asked.forEach((weight, word) => {
+                if (words.has(word)) score += weight * (headingWords && headingWords.has(word) ? 3 : 1);
+            });
+            return score;
+        };
+
+        const ranked = TOPICS
+            .map((topic) => ({ topic, score: weigh(topic.words, topic.headingWords) }))
+            .filter((entry) => entry.score > 0)
+            .sort((x, y) => y.score - x.score);
+
+        /* A weaker second topic is how two true facts become one false sentence
+           (measured: a replication "done at the DICE Lab"). Only near-equals go along. */
+        return ranked
+            .filter((entry) => entry.score >= ranked[0].score * CLOSE_ENOUGH)
+            .slice(0, TOPICS_PER_QUESTION)
+            .map(({ topic }) => {
+                /* The first line of a topic says what it is (employer, category), so it always
+                   goes along. Then the best-matching lines, topped up with the opening ones. */
+                const scored = topic.lines.map((line, index) => ({ index, score: weigh(topic.lineWords[index]) }));
+                const chosen = scored
+                    .map((entry) => (entry.index === 0 ? { index: 0, score: Infinity } : entry))
+                    .sort((x, y) => y.score - x.score || x.index - y.index)
+                    .slice(0, topic === TOPICS[0] ? topic.lines.length : LINES_PER_TOPIC);     /* About goes whole */
+                const inOrder = (entries) => entries.map((entry) => entry.index).sort((x, y) => x - y).map((index) => topic.lines[index]);
+                const matched = scored.filter((entry) => entry.score > 0);
+                return {
+                    heading: topic.heading,
+                    lines: inOrder(chosen),                                         /* what the model reads */
+                    matched: inOrder(matched.length ? matched : chosen),            /* what a quote shows */
+                };
+            });
+    };
+
+    const notesText = (notes) => notes
+        .map((note) => "[" + note.heading + "]\n" + note.lines.map((line) => "- " + line).join("\n"))
+        .join("\n");
+
+    /* Words a first-person answer may add without the page saying them. Kept to
+       words that cannot create a claim. Verbs like built, won, led, wrote or
+       founded are NOT here on purpose: "I built PyTorch" must fail. */
+    const GLUE = new Set(("also and both then here there currently now today still since during while one lot well very just "
+        + "only include including called named use used using know work worked working found study studying studied").split(" "));
+
+    /* Is every claim in the answer backed by the notes? Sentence by sentence.
+       Each sentence of the answer must restate ONE sentence of the page, or up to
+       three that sit next to each other in the same line. Against that small window
+       (plus the topic's heading and opening line):
+         - every number in the answer sentence must appear;
+         - every word must appear, or be a form of a word that does
+           (memorize ~ memorise, researcher ~ research), or be GLUE.
+       Nothing else is allowed in. That is deliberately strict: it is what stops
+       "I won the award" (the page says finalist), "a finalist in the ISC
+       Scholarship" (two different lines) and "the replication was done at the
+       DICE Lab" (two different topics). The cost is that some true answers fail
+       too; they are shown as a quote instead, which is also true.
+       And the answer must not address the visitor as Htet ("your research"). */
+    const WINDOW = 3;             /* neighbouring page sentences one answer sentence may draw on */
+
+    const supported = (answer, notes) => {
+        if (/\byou(r|rs)?\b/i.test(answer)) return false;
+
+        const windows = [];
+        notes.forEach((note) => {
+            /* What the topic is (its heading and opening line: employer, dates,
+               category) may back any sentence about it. */
+            const about = note.heading + " " + note.lines[0] + " ";
+            note.lines.forEach((line) => {
+                const parts = line.split(/(?<=[.!?])\s+|\s+—\s+/).filter(Boolean);
+                parts.forEach((part, index) => {
+                    windows.push(about + parts.slice(index, index + WINDOW).join(" "));
+                });
+            });
+        });
+
+        const sources = windows.map((text) => {
+            const known = new Set(wordsOf(text));
+            const stems = new Set(Array.from(known).filter((word) => word.length >= 6).map((word) => word.slice(0, 6)));
+            return { text, backed: (word) => known.has(word) || GLUE.has(word) || (word.length >= 6 && stems.has(word.slice(0, 6))) };
+        });
+
+        const sentences = answer.split(/(?<=[.!?])\s+/).filter((sentence) => /[A-Za-z0-9]/.test(sentence));
+        let claims = 0;
+
+        const stands = sentences.every((sentence) => {
+            const numbers = sentence.match(/\d[\d.,]*\d|\d/g) || [];
+            const content = wordsOf(sentence).filter((word) => !GLUE.has(word));
+            claims += content.length;
+            return sources.some((source) =>
+                numbers.every((number) => source.text.includes(number)) && content.every(source.backed));
+        });
+
+        return stands && claims > 0;
+    };
+
+    /* The page's own words, for when the model's answer fails the check. */
+    const quote = (notes) => "From my page:\n" + notes[0].matched.join("\n");
+
+    const NOT_ON_PAGE = "That is not on my page, so I won't guess. I can tell you about my work, my projects and my background. "
+        + "For anything else, email me: " + EMAIL;
 
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const canObserve = "IntersectionObserver" in window;
@@ -196,7 +435,17 @@
     /* ---- Talk to me --------------------------------------------------------
        State lives in data-state on [data-chat]:
          idle -> loading -> ready <-> busy      (error and unsupported are ends)
-       The model is only downloaded after the visitor presses the start button. */
+       The model is only downloaded after the visitor presses the start button.
+
+       What keeps it quick and alive on ordinary laptops:
+         1. It runs in a worker (llm-worker.js), so the page never freezes.
+         2. Each question is a tiny, fresh prompt (a few notes plus the
+            question), so there is almost nothing to read before answering.
+         3. warmUp() runs one throwaway answer while the visitor is waiting
+            anyway, so the first real one is not slow.
+         4. If the GPU drops the model, revive() reloads it and asks again.
+         5. A question typed while it is still waking is held and answered
+            the moment it is ready. */
     const chat = document.querySelector("[data-chat]");
     if (!chat) return;
 
@@ -215,10 +464,14 @@
     const requested = new URLSearchParams(location.search).get("model");
     const modelId = requested || MODEL.id;
     const custom = !requested && MODEL.weights && MODEL.base;
-    const HISTORY_TURNS = 6;      /* messages kept as context, newest last */
 
+    const SYSTEM = { role: "system", content: PERSONA };
+    const MAX_TOKENS = 90;        /* one or two short sentences */
+
+    let webllm = null;
     let engine = null;
-    const history = [];
+    let queued = null;            /* a question typed while the model was still waking */
+    let lastNotes = [];           /* so a follow-up ("who supervised it?") keeps its topic */
 
     const setState = (state, label) => {
         chat.dataset.state = state;
@@ -235,7 +488,15 @@
     };
 
     const giveUp = (state, label, message) => {
+        if (queued) {
+            queued.bubble.className = "msg msg--error";
+            queued.bubble.textContent = "I could not wake up to answer that. Email me: " + EMAIL;
+            queued = null;
+        }
         setState(state, label);
+        ui.gate.hidden = false;
+        ui.chips.hidden = true;
+        ui.form.hidden = true;
         ui.start.hidden = state === "unsupported";
         ui.start.disabled = false;
         ui.start.textContent = "Try again";
@@ -258,11 +519,49 @@
         ? "Already downloaded. It wakes in a few seconds."
         : "Downloads a " + (requested ? "" : size + " ") + "model to your browser. One time.";
 
+    /* In a worker when the browser allows it; on the main thread otherwise. */
+    const createEngine = async (options) => {
+        let worker = null;
+        try {
+            worker = new Worker(WORKER_URL, { type: "module" });
+            const crashed = new Promise((resolve, reject) => {
+                worker.onerror = () => reject(new Error("The model worker could not start."));
+            });
+            return await Promise.race([webllm.CreateWebWorkerMLCEngine(worker, modelId, options), crashed]);
+        } catch (error) {
+            console.warn(error);
+            if (worker) worker.terminate();
+            return webllm.CreateMLCEngine(modelId, options);
+        }
+    };
+
+    /* One throwaway answer, so the GPU has compiled everything before the
+       visitor's first real question. */
+    const warmUp = async () => {
+        await engine.chat.completions.create({
+            messages: [SYSTEM, { role: "user", content: "NOTES\n- Htet says hi.\n\nQUESTION\nSay hi." }],
+            temperature: 0,
+            max_tokens: 8,
+        });
+    };
+
+    const showReady = () => {
+        setState("ready", "Awake");
+        ui.gate.hidden = true;
+        ui.chips.hidden = false;
+        ui.form.hidden = false;
+    };
+
     const load = async () => {
         if (engine || chat.dataset.state === "loading") return;
         setState("loading", "Waking up");
         ui.start.disabled = true;
         ui.progress.hidden = false;
+        ui.hint.textContent = "Waking up. You can type your first question now.";
+        ui.chips.hidden = false;        /* the visitor can ask while it loads; see ask() */
+        ui.form.hidden = false;
+        setInputs(true);
+        ui.input.focus({ preventScroll: true });
 
         try {
             if (!(await navigator.gpu.requestAdapter())) {
@@ -270,12 +569,12 @@
                 return;
             }
 
-            const webllm = await import(WEBLLM_URL);
+            webllm = await import(WEBLLM_URL);
             const options = {
                 initProgressCallback: (report) => {
                     const percent = Math.round((report.progress || 0) * 100);
                     ui.progress.firstElementChild.style.width = percent + "%";
-                    setState("loading", percent < 100 ? "Loading " + percent + "%" : "Starting");
+                    setState("loading", percent < 100 ? "Loading " + percent + "%" : "Warming up");
                 },
             };
 
@@ -288,60 +587,132 @@
                 };
             }
 
-            engine = await webllm.CreateMLCEngine(modelId, options);
+            const created = await createEngine(options);
+            engine = created;
+            setState("loading", "Warming up");
+            await warmUp();
             try { localStorage.setItem("hma-model", modelId); } catch (e) { /* private mode */ }
 
-            setState("ready", "Awake");
-            ui.gate.hidden = true;
-            ui.chips.hidden = false;
-            ui.form.hidden = false;
-            ui.input.focus({ preventScroll: true });
+            showReady();
+            if (queued) {
+                const { question, bubble } = queued;
+                queued = null;
+                respond(question, bubble);
+            } else {
+                ui.input.focus({ preventScroll: true });
+            }
         } catch (error) {
             console.error(error);
-            giveUp("error", "Failed", "The model could not start on this device. Email me instead: " + EMAIL);
+            engine = null;
+            /* A dropped download is not the device's fault, and trying again resumes it. */
+            const interrupted = /network|fetch|cache|quota/i.test(String(error && error.name) + " " + String(error && error.message));
+            giveUp("error", "Failed", interrupted
+                ? "The download was interrupted. Check your connection and try again. Or email me: " + EMAIL
+                : "The model could not start on this device. Email me instead: " + EMAIL);
         }
+    };
+
+    /* The GPU can drop the model mid-chat (low memory, driver reset). The
+       weights are already cached, so reloading takes seconds, not a download. */
+    const revive = async () => {
+        setState("busy", "Restarting");
+        await engine.reload(modelId);
+        await warmUp();
+    };
+
+    const setInputs = (enabled) => {
+        ui.input.disabled = !enabled;
+        ui.chips.querySelectorAll("button").forEach((chip) => { chip.disabled = !enabled; });
     };
 
     const setBusy = (busy) => {
         setState(busy ? "busy" : "ready", busy ? "Thinking" : "Awake");
-        ui.input.disabled = busy;
-        ui.chips.querySelectorAll("button").forEach((chip) => { chip.disabled = busy; });
+        setInputs(!busy);
     };
 
-    const ask = async (question) => {
-        question = question.trim();
-        if (!question || !engine || chat.dataset.state !== "ready") return;
+    /* Write the finished answer into its bubble as if typed. Driven by the clock,
+       not by screen repaints, so it always finishes: in a background tab, and
+       after a GPU crash, repaints stop but timers do not. */
+    const TYPING_SPEED = 0.2;     /* characters per millisecond */
+    const typeOut = (bubble, text) => new Promise((resolve) => {
+        const started = performance.now();
+        const step = () => {
+            const shown = reducedMotion || document.hidden
+                ? text.length
+                : Math.min(text.length, Math.ceil((performance.now() - started) * TYPING_SPEED));
+            bubble.textContent = text.slice(0, shown);
+            ui.log.scrollTop = ui.log.scrollHeight;
+            if (shown < text.length) setTimeout(step, 16);
+            else resolve();
+        };
+        step();
+    });
 
+    /* Steps 1 to 4 of "How an answer is made", above. */
+    const answer = async (question, bubble) => {
+        let notes = notesFor(question);
+        const followUp = !notes.length && lastNotes.length && /\b(it|that|this|there|those|them)\b/i.test(question);
+        if (followUp) notes = lastNotes;
+
+        if (!notes.length) {                    /* nothing on the page: do not ask the model */
+            await typeOut(bubble, NOT_ON_PAGE);
+            return;
+        }
+        lastNotes = notes;
+
+        /* Not streamed: nothing is shown until it has passed the check. */
+        const reply = await engine.chat.completions.create({
+            messages: [SYSTEM, { role: "user", content: "NOTES\n" + notesText(notes) + "\n\nQUESTION\n" + question }],
+            temperature: 0,
+            max_tokens: MAX_TOKENS,
+        });
+
+        const text = (reply.choices[0].message.content || "").replace(/\*\*|`/g, "").trim();
+        if (!text) throw new Error("The model returned nothing.");
+        const passed = supported(text, notes);
+        chat.last = { question, notes: notesText(notes), draft: text, passed };      /* for debugging */
+        await typeOut(bubble, passed ? text : quote(notes));
+    };
+
+    /* Answer into an existing bubble. Reloads the model once if it has died. */
+    const respond = async (question, bubble) => {
         setBusy(true);
-        addMessage("user", question);
-        history.push({ role: "user", content: question });
-        const bubble = addMessage("bot msg--typing", "");
-        let answer = "";
-
         try {
-            const stream = await engine.chat.completions.create({
-                messages: [{ role: "system", content: SYSTEM_PROMPT }].concat(history.slice(-HISTORY_TURNS)),
-                stream: true,
-                temperature: 0.2,
-                max_tokens: 200,
-            });
-
-            for await (const chunk of stream) {
-                answer += (chunk.choices[0] && chunk.choices[0].delta.content) || "";
-                bubble.textContent = answer.replace(/\*\*|`/g, "");     /* small models love markdown */
-                ui.log.scrollTop = ui.log.scrollHeight;
+            await answer(question, bubble);
+        } catch (firstError) {
+            console.warn(firstError);
+            try {
+                bubble.textContent = "";
+                await revive();
+                setBusy(true);
+                await answer(question, bubble);
+            } catch (secondError) {
+                console.error(secondError);
+                bubble.className = "msg msg--error";
+                bubble.textContent = "That did not work. Ask again, or email me: " + EMAIL;
             }
-            history.push({ role: "assistant", content: answer });
-        } catch (error) {
-            console.error(error);
-            history.pop();
-            bubble.className = "msg msg--error";
-            bubble.textContent = "That did not work. Ask again, or email me: " + EMAIL;
         }
 
         bubble.classList.remove("msg--typing");
         setBusy(false);
         ui.input.focus({ preventScroll: true });
+    };
+
+    const ask = (question) => {
+        question = question.trim();
+        const state = chat.dataset.state;
+        if (!question || (state !== "ready" && state !== "loading") || queued) return;
+
+        addMessage("user", question);
+        const bubble = addMessage("bot msg--typing", "");
+
+        if (state === "loading") {
+            /* Still waking: hold the question. load() answers it when ready. */
+            queued = { question, bubble };
+            setInputs(false);
+            return;
+        }
+        respond(question, bubble);
     };
 
     ui.start.addEventListener("click", load);
@@ -358,6 +729,14 @@
         if (chip) ask(chip.dataset.chatAsk);
     });
 
-    /* For checking from the console: document.querySelector("[data-chat]").systemPrompt */
-    chat.systemPrompt = SYSTEM_PROMPT;
+    /* For checking from the console, and for finetune/ (see CLAUDE.md):
+         const chat = document.querySelector("[data-chat]")
+         chat.persona              what the model is always told
+         chat.facts                every topic and line it can be handed
+         chat.notesFor("...")      the notes one question would get
+         chat.last                 the last question, its notes, the model's draft, and whether it passed */
+    chat.persona = PERSONA;
+    chat.facts = notesText(TOPICS);
+    chat.notesFor = (question) => notesText(notesFor(question));
+    chat.supported = (text, question) => supported(text, notesFor(question));
 })();
