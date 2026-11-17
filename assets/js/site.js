@@ -393,8 +393,8 @@
     }
 
     /* ---- Nav highlight -----------------------------------------------------
-       Two destinations. "Talk to me" is current once #talk reaches the middle
-       of the viewport, and stays current below it; above it, "Me" is. */
+       "Me" is current until #talk reaches the middle of the viewport. At and
+       below it no link is: "Talk to me" in the nav opens LinkedIn instead. */
     const talkSection = document.getElementById("talk");
     const navLinks = document.querySelectorAll("[data-nav]");
 

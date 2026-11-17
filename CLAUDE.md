@@ -12,8 +12,9 @@ decision, Nov 2026). Lead with research; industry work is secondary.
 
 ## Standing decisions — do not undo without being asked
 
-- **One page, two destinations: "Me" and "Talk to me".** Nothing else in the
-  nav. No blog, no separate research or projects pages, no contact form. New
+- **One page, two nav links: "Me" and "Talk to me".** "Talk to me" (in the
+  nav and in the hero) opens LinkedIn, by the owner's request; the chat is
+  reached by scrolling. Nothing else in the nav. No blog, no separate research or projects pages, no contact form. New
   content goes into the "Me" section.
 - **White, black and one accent: highlighter yellow.** No purple, no blue, no
   teal, no decorative gradients, no dark theme, no theme toggle. The owner
@@ -70,9 +71,10 @@ CNAME, .nojekyll        Custom domain; stops Pages running Jekyll. Keep both.
 
 ## Page structure (`index.html`)
 
-1. **Header** (sticky): avatar + name → `#me`; nav `Me` / `Talk to me`; black
-   **Hire me** button (mailto). A thin progress line tracks scroll. `site.js`
-   moves `aria-current` between the two nav links.
+1. **Header** (sticky): avatar + name → `#me`; nav `Me` / `Talk to me`
+   (LinkedIn, new tab); black **Hire me** button (mailto). A thin progress
+   line tracks scroll. `site.js` sets `aria-current` on "Me" above `#talk`
+   and clears it at and below.
 2. **Hero:** pill ("Available · Summer 2027 research internships") → name →
    "ML researcher who *tests. / builds. / leads.*" (rolling word) → one line
    of context → **Hire me**, Talk to me (opens LinkedIn, owner's request),
@@ -378,7 +380,7 @@ Content is never hidden behind motion: reveals only start hidden when
 | How an answer is made | `PERSONA`, `[data-facts]`, `TOPICS`, `ALSO`, `notesFor`, `GLUE`, `supported`, `quote` | Reading the page runs first, before count-up rewrites numbers. |
 | Scroll reveal | `.reveal` | Clears its stagger delay afterwards so hovers stay instant. |
 | Count-up | `[data-count-to]` | The real number is in the HTML. |
-| Nav highlight | `[data-nav]`, `#talk` | "Talk to me" is current at and below `#talk`. |
+| Nav highlight | `[data-nav]`, `#talk` | "Me" is current above `#talk`; no link is at and below it. |
 | Copy | `[data-copy]` | Sets `data-copied` for 1.8 s. |
 | Demo dialog | `[data-demo]`, `[data-demo-open]` | The opener is a real link to the video, so it works without JS. Plays at 1.5×. |
 | Chat | `[data-chat]` and `[data-chat-*]` | See *Talk to me*. |
