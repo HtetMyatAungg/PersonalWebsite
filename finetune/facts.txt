@@ -1,41 +1,47 @@
 [About]
-- Available · Summer 2027 internships
+- Available · Summer 2027 research internships
 - Htet Myat Aung
-- ML engineer who builds, measures and leads.
+- ML researcher who tests, builds and leads.
 - Second-year Computer Science (AI) at Royal Holloway. First Class.
 - 100%: Pass rate on all 6 frontier LLMs. Up from 0%.
 - 10 LLMs: Evaluated in my first-author study.
 - 300: Versioned datasets under my automated checks.
-- Top 5: UKCISA #WeAreInternational Awards 2026.
+- 30+: Applicants for my funded UROP. The only first-year selected.
 - An AI version of me. It runs on your device. Nothing leaves it.
-- Open to Summer 2027 internships. Based in Egham, Surrey, near London. I reply within 24 hours.
+- Open to Summer 2027 research internships, in academic or industry AI labs. Based in Egham, Surrey, near London. I reply within 24 hours.
 - Email: henry.htetmyataung@gmail.com
-[Work: Undergraduate Research Fellow (UROP)]
-- DICE Lab, Royal Holloway — Jun – Sep 2026 Funded
-- The only first-year selected. 30+ applied.
-- First author of the report. Do LLMs learn general rules, or memorise answers? Tested on 10 models, in Prolog. Supervised by Prof. Kostas Stathis.
-- Result: unguided models memorise example grid sizes. They do not generalise.
-- A schema in the prompt is the deciding factor. It lifted all 6 frontier models from 0% to 100%.
-- Built an open-source pipeline: 10 models × 4 prompt conditions × 20 samples. 6 frontier APIs, 4 local via Ollama. Automated Prolog repair loop.
-- Found and fixed a silent evaluator bug. It zeroed every rule-based score, across 3 scoring layers.
-[Work: Student Research Software Engineer, ML]
-- ISG Smart Card Centre, Royal Holloway — Oct 2026 – Now Part-time
-- Sole engineer. Implementing a 2026 multi-objective optimisation paper as a 5-class classifier. PyTorch, XGBoost.
-- Target: one core, tight memory. Balancing F1, model size and latency.
-[Work: Volunteer Research Assistant]
+[Research: Undergraduate Research Fellow (UROP)]
+- DICE Lab, Royal Holloway, with Prof. Kostas Stathis — Jun – Sep 2026 Funded
+- The only first-year selected for the funded UROP. 30+ applied. First author of the resulting report.
+- Found that model tier sets the ceiling on how far an LLM can abstract. Scaffolding decides whether it reaches that ceiling.
+- Causal experiments varied grid size (N = 5, 8, 11). Unguided models memorise example sizes. They do not learn general Prolog rules.
+- The scaffolding effect: a schema in the prompt lifted pass rates from 0% to 100% on all 6 frontier models.
+- Built an open-source pipeline: 10 models, 6 frontier APIs and 4 local via Ollama. 40 configurations × 20 samples per cell. Automated Prolog repair loop.
+- Three-layer scoring: syntax, runtime, semantic F1. Found and fixed a silent evaluator bug. It zeroed every rule-based score.
+[Research: Formal Verification Student Researcher]
+- DICE Lab, Royal Holloway — Winter 2026 Upcoming
+- Formal verification of digital twins: soundness and state guarantees.
+[Research: Volunteer Research Assistant]
 - DICE Lab, Royal Holloway — Mar 2026 – Now Volunteer
-- Built automated syntax and execution checks. They cover 300 versioned datasets.
-- Part of the authoring-to-validation toolchain for an LLM autoformalization benchmark.
-[Work: Early Software Engineer]
-- Sharpers Log — Mar – Aug 2026 Part-time
-- Automated a manual sales-research workflow with an LLM pipeline.
-- It ingests CRM exports, enriches records via a search API and drafts sector-tuned outreach.
-- Validation gate on every LLM-generated message.
+- Built the authoring-to-validation toolchain for an LLM autoformalization benchmark. It spans 300 versioned datasets.
+- Automated syntax and execution checks, for the GAMA and LELMA projects.
+[Research: Student Research Software Engineer, ML]
+- ISG Smart Card and IoT Security Centre, Royal Holloway — Oct – Dec 2026 Part-time
+- Built the k-fold cross-validation and benchmarking harness for a published 2026 intrusion detector. It is multi-objective-optimised, with 5 classes, on the ROAD CAN dataset.
+- Measured 98.2% test accuracy, a 9.7 KB model and 1.2 ms latency per sample. Target: one core, tight memory. XGBoost, scikit-learn.
+- Built a FastAPI backend for the demo.
+[Publication: LARP: Learning Abstract Rules in Prolog via LLM Autoformalization]
+- H. M. Aung (first author) — arXiv preprint In preparation
 [Projects: Toy Models of Superposition]
-- Replication · Anthropic paper
-- Paper replicated
-- Replicated Anthropic's Toy Models of Superposition paper. It shows how a network stores more features than it has neurons.
-- Interpretability · Jupyter
+- Replication · Interpretability
+- 11+ features in 5 dimensions
+- Replicated the “Demonstrating Superposition” result of Anthropic's paper (Elhage et al., 2022). A ReLU model packs 5 features into 5 hidden dimensions at sparsity 0, and 11+ at sparsity 0.99 and up. A linear model stays at 5. Extended it with a sigmoid activation and a full JAX port.
+- PyTorch · JAX
+[Projects: First-Order Unification Engine]
+- Symbolic AI
+- Robinson's unification, from scratch
+- Implemented the algorithm behind Prolog and automated reasoning. Variable bindings, compound-term substitution and occurs-check validation.
+- Python
 [Projects: Financial Sentiment Classifier]
 - NLP
 - 0.657 macro-F1 vs 0.25 baseline
@@ -57,20 +63,25 @@
 - Spoken-payments LLM agent. Whisper speech recognition. A confirmation gate on every payment.
 - LLM agent · Whisper
 [Background: Leadership]
-- Founder & Lead, AI Safety Student Research Group, RHUL — Founded Nov 2026. A weekly group under the AI & Robotics Society. It reads and replicates AI safety papers.
-- President, RHUL AI & Robotics Society — Ran Python, Vim and ML workshops. 30 at the Python one. Leading Dronathon 2027 with King's College London. Leads RHUL's Cambridge Battlecode team.
+- Founder, AI Safety Student Research Group, RHUL — Founded Nov 2026. A weekly group under the AI & Robotics Society. It reads and replicates AI safety papers.
+- President, RHUL AI & Robotics Society — Since Oct 2026. 122 members. Leads RHUL's Cambridge Battlecode team.
+- Workshops and Dronathon 2027 — Ran Python, Vim and ML workshops for the society. 30 at the Python one. Leading Dronathon 2027 with King's College London.
 - Maths Mentor, RHUL Maths Mentoring Scheme — Selected from hundreds. Mentors 27 students.
 - Student Speaker, Times Higher Education — Panel speaker on study groups. Invited panellist at THE Student Success UK & IE, University of Bath, Nov 2026.
+[Background: Industry]
+- Early Software Engineer, Sharper Logs — Part-time, remote · Mar – Aug 2026
+- Cut 40 hours of manual CRM research per batch to a 30-second LLM pipeline. — Per-company caching cut API calls 20%. Validation gates on every generated message. Per-record error isolation.
 [Background: Education]
 - BSc Computer Science (Artificial Intelligence) — Royal Holloway, University of London · Sep 2025 – Jun 2028
+- Research interests — Neurosymbolic AI, LLM evaluation, interpretability.
 - First Class. Year 1 average 74%. — Linear Algebra 98%. Mathematical Methods 94%.
-- ISC Excellence Scholarship — 1 of 10 awarded, from 200.
-- UKCISA #WeAreInternational Awards 2026 — Finalist. Top 5.
-- BlueDot Technical AI Safety course — Additional training.
-- Auditing MSc seminars, by invitation — Modules: Data Structures and Complexity, Operating Systems, Databases, Information Security, Software Engineering, OOP.
+- ISC Excellence Scholarship — 1 of 10 awarded, from 200 applicants.
+- UKCISA #WeAreInternational Student of the Year Award 2026 — Finalist. Top 5.
+- BlueDot Impact Technical AI Safety course — Taken in 2026.
+- Auditing MSc seminars, by invitation — Seminars: NIVDIA Research, AI Safety, and Ethics.
 [Toolkit]
-- ML: PyTorch, XGBoost, scikit-learn, TensorFlow, NumPy, pandas
-- Research methods: LLM evaluation, Controlled experiments, Stratified cross-validation, Bootstrap confidence intervals, Autoformalization
+- ML: PyTorch, JAX, TensorFlow, XGBoost, scikit-learn, NumPy, pandas
+- Research: LLM evaluation, Autoformalization, Tool-use agents, Controlled experiments, Stratified cross-validation, Bootstrap confidence intervals
 - Languages: Python, Prolog, Java, C, TypeScript, SQL
-- Tools: Ollama, Claude API, Whisper, FastAPI, Docker, Git, Linux
+- Engineering: FastAPI, Docker, Git, Linux, CI/CD, TDD, Ollama, Claude API, Whisper
 - Spoken: English - fluent, Burmese - native, Chinese - conversational, Japanese - conversational

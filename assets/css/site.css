@@ -710,7 +710,7 @@ mark {
     to { transform: translateX(-100%); }
 }
 
-/* --- Jobs (Work) -----------------------------------------------------------
+/* --- Jobs (Research, Publication) -------------------------------------------
    Source order is role, org, dates, points (that is the order the "Talk to me"
    model reads). Grid areas put the dates in the left column on wide screens. */
 
@@ -793,12 +793,11 @@ mark {
 
 .projects {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
 }
 
 .project {
-    grid-column: span 2;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -807,9 +806,6 @@ mark {
     border-radius: var(--radius-md);
     background: var(--bg);
 }
-
-/* First two are the headline pair. */
-.project:nth-child(-n + 2) { grid-column: span 3; }
 
 /* Hover lift. Declared after .reveal so it wins the transform. */
 .js .project.is-visible {
@@ -864,17 +860,11 @@ mark {
     font-size: var(--text-sm);
 }
 
-@media (max-width: 60rem) {
-    .project,
-    .project:nth-child(-n + 2) { grid-column: span 3; }
-}
-
 @media (max-width: 40rem) {
-    .project,
-    .project:nth-child(-n + 2) { grid-column: span 6; }
+    .projects { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* --- Fact lists (Education, Leadership) ----------------------------------- */
+/* --- Fact lists (Education, Leadership, Industry) ------------------------- */
 
 .list-title {
     padding-bottom: var(--space-3);
@@ -1276,6 +1266,9 @@ mark {
     gap: clamp(2rem, 1rem + 4vw, 4rem);
     align-items: start;
 }
+
+/* Two lists in one column (Leadership, then Industry). */
+.split .facts + .list-title { margin-top: var(--space-7); }
 
 /* --- Talk to me ----------------------------------------------------------- */
 

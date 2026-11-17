@@ -152,30 +152,41 @@
        Add a line here when a real question fails to find its topic. */
     const ALSO = {
         /* who he is, why hire him: About */
-        yourself: "measures available", introduce: "measures available", summarise: "measures available",
-        pitch: "measures available", hi: "measures available", hello: "measures available", hey: "measures available",
-        hire: "pass evaluated measures", strength: "pass evaluated measures", best: "pass evaluated measures",
-        candidate: "pass evaluated measures", superpower: "pass evaluated measures", apart: "pass evaluated measures",
+        yourself: "builds available", introduce: "builds available", summarise: "builds available",
+        pitch: "builds available", hi: "builds available", hello: "builds available", hey: "builds available",
+        hire: "pass evaluated builds", strength: "pass evaluated builds", best: "pass evaluated builds",
+        candidate: "pass evaluated builds", superpower: "pass evaluated builds", apart: "pass evaluated builds",
         available: "available summer", start: "available summer", free: "available summer", open: "available summer",
         internship: "available summer", role: "available summer", looking: "available summer",
+        interest: "education background interests neurosymbolic interpretability evaluation", interested: "education background interests neurosymbolic interpretability evaluation",
+        focus: "education background interests neurosymbolic interpretability evaluation", passion: "education background interests neurosymbolic interpretability evaluation",
         contact: "email reply", reach: "email reply", touch: "email reply",
         located: "based", location: "based", live: "based",
         real: "version device", person: "version device", human: "version device", bot: "version device", talking: "version device",
         private: "device leaves", privacy: "device leaves", data: "device leaves", store: "device leaves",
         /* research */
-        research: "urop fellow", supervisor: "supervised", supervise: "supervised", advisor: "supervised",
-        find: "result", found: "result", finding: "result", discover: "result", conclusion: "result",
-        test: "tested pipeline", tested: "pipeline", experiment: "tested pipeline", designed: "pipeline",
-        improve: "schema lifted", competitive: "selected applied", published: "author report", author: "author report",
+        research: "urop fellow", supervisor: "stathis prof", supervise: "stathis prof", advisor: "stathis prof",
+        supervised: "stathis prof", professor: "stathis prof",
+        find: "found ceiling scaffolding", finding: "found ceiling scaffolding", discover: "found ceiling scaffolding",
+        result: "found ceiling scaffolding", conclusion: "found ceiling scaffolding",
+        test: "causal experiments pipeline", tested: "causal experiments pipeline", experiment: "causal experiments pipeline",
+        designed: "pipeline", improve: "schema lifted", competitive: "selected applied", author: "author report larp",
         bug: "evaluator fixed", mistake: "evaluator fixed",
+        generalise: "memorise unguided ceiling scaffolding", generalize: "memorise unguided ceiling scaffolding",
+        publication: "publication larp preprint", publish: "publication larp preprint", published: "publication larp preprint",
+        preprint: "publication larp", arxiv: "publication larp", larp: "publication",
+        formal: "verification twins", verify: "formal verification", twin: "formal verification", upcoming: "upcoming winter",
+        next: "upcoming winter", future: "upcoming winter", symbolic: "neurosymbolic unification", logic: "prolog unification",
         /* work */
         now: "now", current: "now", currently: "now", working: "now", today: "now", latest: "now",
-        job: "work engineer", company: "sharpers", industry: "sharpers", employer: "work",
-        optimising: "target balancing", constraint: "target balancing", hardware: "target core",
-        implemented: "implementing", reliable: "validation gate", output: "validation gate",
+        job: "research engineer", company: "industry sharper", industry: "industry sharper", employer: "research",
+        startup: "industry sharper", commercial: "industry sharper",
+        optimising: "target core memory", constraint: "target core memory", hardware: "target core",
+        security: "intrusion detector", benchmark: "benchmarking harness", accuracy: "measured accuracy",
+        implemented: "implemented scratch", reliable: "validation gates", output: "validation gates",
         /* education */
         study: "education bsc", studying: "education bsc", degree: "education bsc", university: "education holloway",
-        grade: "education average", record: "education average", graduate: "education", finish: "education", end: "education",
+        grade: "education average", record: "education average", year: "education average class", class: "education average", graduate: "education", finish: "education", end: "education",
         award: "education scholarship", won: "education scholarship", honour: "education scholarship",
         module: "education", course: "education bluedot", covered: "education modules",
         math: "education algebra", school: "education",
@@ -193,7 +204,7 @@
         speak: "toolkit spoken",
         /* projects */
         project: "projects", built: "projects", build: "projects", made: "projects", shipped: "projects", portfolio: "projects",
-        paper: "replication report optimisation", replicate: "replication", replicated: "replication",
+        paper: "publication larp replication", replicate: "replication", replicated: "replication",
         interpretability: "superposition anthropic", anthropic: "superposition", speech: "whisper spoken",
         imbalanced: "hazard", nasa: "hazard", hackathon: "hackathon",
     };
@@ -328,7 +339,7 @@
     /* The page's own words, for when the model's answer fails the check. */
     const quote = (notes) => "From my page:\n" + notes[0].matched.join("\n");
 
-    const NOT_ON_PAGE = "That is not on my page, so I won't guess. I can tell you about my work, my projects and my background. "
+    const NOT_ON_PAGE = "That is not on my page, so I won't guess. I can tell you about my research, my projects and my background. "
         + "For anything else, email me: " + EMAIL;
 
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;

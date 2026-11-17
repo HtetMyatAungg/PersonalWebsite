@@ -6,7 +6,9 @@ dependencies, no package.json.** Edit, commit, push to `main`, live in about a
 minute.
 
 **The site has one job: make a visitor want to hire Htet.** Every decision
-below serves that.
+below serves that. **The audience is research labs:** the page sells him for
+Summer 2027 research internships in academic or industry AI labs (owner's
+decision, Nov 2026). Lead with research; industry work is secondary.
 
 ## Standing decisions — do not undo without being asked
 
@@ -19,10 +21,14 @@ below serves that.
 - **Short sentences only.** No paragraph on the page is longer than about
   three short sentences. Numbers beat adjectives.
 - **The CV is the source of truth.** Every number and title on the page comes
-  from `HtetMyatAung-CV.pdf`. Two items are on the page because the owner
-  asked for them, though the CV does not list them: **MyanPay** and the
-  **Toy Models of Superposition replication**. Keep both. Add nothing else
-  that is not on the CV or stated by the owner.
+  from `HtetMyatAung-CV.pdf` (the one-page research CV, Nov 2026). Where the
+  new CV reworded or corrected a fact, the page follows it. Some items come
+  from the previous CV and are kept because they are still true: the
+  Financial Sentiment, NEO and Sentinel projects, the leadership details
+  (workshops, Dronathon, THE speaker, "selected from hundreds"), and "Top 5"
+  for UKCISA. **MyanPay** is on the page because the owner asked for it.
+  The owner wrote the MSc-seminars line directly. Add nothing that is not
+  on a CV or stated by the owner.
 - **MyanLearn is gone, on purpose.** The owner stopped it. Do not bring back
   the project or the "18+ countries" figure.
 - **The page is dynamic.** Motion is part of the brief (see *Motion*). All of
@@ -36,8 +42,8 @@ below serves that.
 ## File map
 
 ```
-index.html              The whole site: Me (hero, proof, work, projects,
-                        background, toolkit), Talk to me (chat), footer ("Hire me.")
+index.html              The whole site: Me (hero, proof, research, publication,
+                        projects, background, toolkit), Talk to me (chat), footer ("Hire me.")
 404.html                Not-found page AND the legacy-URL redirect table
 assets/css/site.css     The only stylesheet
 assets/js/site.js       The page script: motion, copy, demo dialog, the chat
@@ -67,22 +73,34 @@ CNAME, .nojekyll        Custom domain; stops Pages running Jekyll. Keep both.
 1. **Header** (sticky): avatar + name → `#me`; nav `Me` / `Talk to me`; black
    **Hire me** button (mailto). A thin progress line tracks scroll. `site.js`
    moves `aria-current` between the two nav links.
-2. **Hero:** availability pill → name → "ML engineer who *builds. / measures.
-   / leads.*" (rolling word) → one line of context → **Hire me**, Talk to me,
-   CV. Portrait on a yellow offset block, with a spinning "HIRE ME · SUMMER
-   2027" stamp that is itself a mailto link.
+2. **Hero:** pill ("Available · Summer 2027 research internships") → name →
+   "ML researcher who *tests. / builds. / leads.*" (rolling word) → one line
+   of context → **Hire me**, Talk to me, CV. Portrait on a yellow offset
+   block, with a spinning "HIRE ME · SUMMER 2027" stamp that is itself a
+   mailto link. **Rolling words must be 7 characters or fewer** ("builds."):
+   with "measures." the pitch wraps to two lines at 1280px and pushes Hire me
+   off a 1280×600 screen. Measured.
 3. **Proof strip:** four numbers that count up: `100%` (pass rate, up from
-   0%), `10 LLMs` evaluated, `300` datasets checked, `Top 5` (UKCISA award).
+   0%), `10 LLMs` evaluated, `300` datasets checked, `30+` (UROP applicants;
+   the only first-year selected).
 4. **Ticker:** decorative skills marquee (`aria-hidden`).
-5. **01 Work:** four `.job` rows in the CV's order: UROP, ISG Smart Card
-   Centre, Volunteer RA, Sharpers Log. Source order is role, org, dates, points.
-6. **02 Projects:** five `.project` cards, each linked to its repo: Toy Models
-   of Superposition (replication), Financial Sentiment Classifier, NEO Hazard
+5. **01 Research** (`#work`): four `.job` rows in the CV's order: UROP,
+   Formal Verification (upcoming), Volunteer RA, ISG Smart Card and IoT
+   Security Centre. Source order is role, org, dates, points.
+6. **02 Publication** (`#publication`): LARP, as a `.job` row with no points
+   (title, author, venue). Keep the heading one word: "Publications" is 1px
+   too wide at 320px.
+7. **03 Projects:** six `.project` cards in two even columns, each linked to
+   its repo: Toy Models of Superposition, First-Order Unification Engine
+   (the research pair), Financial Sentiment Classifier, NEO Hazard
    Classifier, Sentinel, MyanPay. MyanPay's "Watch demo" opens a `<dialog>`.
-7. **03 Background:** Leadership | Education (`.facts` lists in a `.split`).
-8. **04 Toolkit:** `.skill-group` rows of `.tag`s, same groups as the CV.
-9. **Talk to me** (`#talk`): intro + the `.chat` panel.
-10. **Footer** (`#hire`, black): giant "Hire me.", email button, copy button, links.
+8. **04 Background:** Leadership, then Industry (Sharper Logs) | Education
+   (`.facts` lists in a `.split`). Research interests are an Education item,
+   as on the CV.
+9. **05 Toolkit:** `.skill-group` rows of `.tag`s: ML, Research, Languages,
+   Engineering (the CV's groups, plus the methods from the previous CV), Spoken.
+10. **Talk to me** (`#talk`): intro + the `.chat` panel.
+11. **Footer** (`#hire`, black): giant "Hire me.", email button, copy button, links.
 
 The 404 page copies the header (without `aria-current`) and loads no script.
 **A header change must be made in both files.**
@@ -273,7 +291,9 @@ say things the site throws away. Write them one fact per sentence, in the
 page's words (the rules are in the comment above `TOPICS`). To measure, for
 each answer run in the console
 `document.querySelector("[data-chat]").supported(answer, question)`. When
-last measured, 324 of 354 passed (92%).
+last measured (Nov 2026, one careful phrasing per question, contact answers
+left out), 178 of 199 passed (89%). Every failure was routing (the question
+fetches other notes on the site), none was wording.
 
 The dataset teaches **manner and the page's facts**, not Htet's personal
 writing voice: it was written from the CV, not from his own messages.
@@ -322,7 +342,7 @@ the same reason. Do not remove either.
 **Breakpoints** (all `max-width`): `40rem` (header hides the name; projects go
 one column), `48rem` (job rows and skill rows stack), `52rem` (hero stacks,
 words first, portrait second), `56rem` (stats 2×2; `.split` and
-`.talk__inner` stack), `60rem` (projects two columns).
+`.talk__inner` stack).
 
 `[hidden] { display: none !important }` is in Base on purpose: `site.js`
 toggles `hidden` on chat parts that set their own `display`.
@@ -374,7 +394,8 @@ JS off, all of "Me" still reads; only motion, copy, the dialog and the chat go.
   then rebuild `finetune/` (see *Talk to me*).
 - **Add a job:** copy a `<li class="job reveal">`. Order: role, org, dates, points.
 - **Add a project:** copy an `<article class="project reveal">`. The `<h3>`
-  title first, then the kicker. The first two cards are the wide ones.
+  title first, then the kicker. Cards sit in two even columns; alternate
+  `data-reveal-delay="80"` on the right-hand ones.
 - **Change a proof number:** the `.stats` block. `data-count-to` and the text
   inside the span must be the same number.
 - **Change the email or a link:** literal HTML; grep the old value. The email
@@ -421,5 +442,16 @@ needs `localhost` or HTTPS. Before pushing:
 - `myanpay-demo.mp4` is 39 MB in the repo. It only downloads on "Watch demo".
 - `CLAUDE.md` and `finetune/` are publicly readable on the live site
   (`.nojekyll` serves every file). Nothing in them is private. Keep it so.
-- MyanPay and the Toy Models replication are on the site but not on the CV.
-  If the CV is the only thing a recruiter reads, they will not see them.
+- MyanPay, the Financial Sentiment, NEO and Sentinel projects, and some
+  leadership details are on the site but not on the current CV. If the CV
+  is the only thing a recruiter reads, they will not see them.
+- At exactly 1280×600 the bottom 6px of the hero's Hire me button fall below
+  the fold (it was the same before the research rewrite). The header's Hire
+  me is always visible.
+- The word "first" in a question can pull in the First-Order Unification
+  Engine card (its heading words count triple). "Which project should I look
+  at first?" gets that card. `ALSO` maps `year` and `class` to Education so
+  "first year" and "First Class" still land there.
+- The research rewrite (Nov 2026) was not tested with the live model: it was
+  not cached on the test browser. Topic routing and the answer check were
+  tested. Run the *Checks* list in Chrome before pushing.
