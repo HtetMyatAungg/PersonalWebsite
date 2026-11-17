@@ -75,7 +75,8 @@ CNAME, .nojekyll        Custom domain; stops Pages running Jekyll. Keep both.
    moves `aria-current` between the two nav links.
 2. **Hero:** pill ("Available · Summer 2027 research internships") → name →
    "ML researcher who *tests. / builds. / leads.*" (rolling word) → one line
-   of context → **Hire me**, Talk to me, CV. Portrait on a yellow offset
+   of context → **Hire me**, Talk to me (opens LinkedIn, owner's request),
+   CV. Portrait on a yellow offset
    block, with a spinning "HIRE ME · SUMMER 2027" stamp that is itself a
    mailto link. **Rolling words must be 7 characters or fewer** ("builds."):
    with "measures." the pitch wraps to two lines at 1280px and pushes Hire me
